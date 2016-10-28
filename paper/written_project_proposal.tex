@@ -1,0 +1,101 @@
+
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{ {/home/dchouren/Documents/} }
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{-0.5in}
+
+\usepackage{scrextend}
+\usepackage{float}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{afterpage}
+\usepackage{enumitem}
+%\mathbb{set}
+
+% Sample macros -- how you define new commands
+% My own set of frequently-used macros have grown to many hundreds of lines.
+% Here are some simple samples.
+
+\newcommand{\Adv}{{\mathbf{Adv}}}       
+\newcommand{\prp}{{\mathrm{prp}}}                  % How to define new commands 
+\newcommand{\calK}{{\cal K}}
+\newcommand{\outputs}{{\Rightarrow}}                
+\newcommand{\getsr}{{\:\stackrel{{\scriptscriptstyle\hspace{0.2em}\$}}{\leftarrow}\:}}
+\newcommand{\andthen}{{\::\;\;}}    % \, \: \; for thinspace, medspace, thickspace
+\newcommand{\Rand}[1]{{\mathrm{Rand}[{#1}]}}       % A command with one argument
+\newcommand{\Perm}[1]{{\mathrm{Perm}[{#1}]}}       
+\newcommand{\Randd}[2]{{\mathrm{Rand}[{#1},{#2}]}} % and with two arguments
+\providecommand{\floor}[1]{\left \lfloor #1 \right \rfloor }
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\usepackage{cite}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\bf Land-Use Classification for Modeling Urban Population Dynamics}
+\date{\today}
+\author{Daway Chou-Ren, 2017\\\\
+Advisor: Szymon Rusinkiewicz\\
+}
+
+
+\begin{document}
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Motivation and Goal} 
+A proliferation of geo-referenced images in easy to search online stores such as Flickr, combined with the rise of extremely powerful deep learning algorithms for image classification, means that it is now possible to make new geographic knowledge discoveries. By augmenting powerful pretrained image classifiers, we can classify thousands of classes of images and even understand actions occuring within scenes, such as dancing or eating. By mapping an image's location to its content, we can generate location-wide maps of human activity. This has the potential for a wide variety of applications, such as discovering population flows, geographic and temporal activity centers or even generating urban sentiment maps by extracting emotion from images. The goal of this project will be to explore geographic knowledge for a particular urban area.
+
+\section{Related Work}
+\subsection{Geo-referenced Images}
+Web applications such as Flickr allow users to upload images along with their geo-tags. This has resulted in a massive dataset of geo-referenced images. As of 2014, Flickr had over 6 billion photos, with 50 million more being uploaded each month. This publicly available information has been used for a variety of interesting tasks, such as summarizing and visualizing similar images, creating virtual flythroughs and searchable databases for tourist locations, and even generating 3D models of entire cities.\cite{jaffe2006generating}\cite{ahern2007world}\cite{agarwal2009building}
+
+\subsection{Deep Learning Image Classification}
+
+In the past decade, deep learning models have proven highly adept at various tasks, such as speech recognition, image object detection, and overall pattern recognition in many fields. Backpropgation algorithms are used to modify weight parameters in many layers of input/output nodes. By tuning activation parameters for nodes in each layer, different representations can be detected. Various layer acchitectures have been invented to reduce the number of parameters that need to be tuned, to allow for input convolutions, and to allow for input image translations. Deep convolutional nets have proven especially adept at producing layer activations which can correspond to object recognition.\cite{lecun2015deep}\\
+
+There are an abundance of high-quality pre-trained image classifiers, such as the ResNet and VGG implementations, which have been trained on ImageNet, which achieve high accuracies at labeling everyday objects.\cite{simonyan2014very}\cite{he2015deep}\cite{deng2009imagenet} Datsets such as the Scene Understanding (SUN) and Google Places datasets have been used to train classifiers to recognize places such as zoos, beaches, and other locations.\cite{xiao2010sun}\cite{zhou2014learning}\\
+
+One subfield of deep learning image classification is transfer learning, where a deep neural architecture is pretrained on a large dataset, such as SUN, Places or ImageNet. Embedded within the trained architecture will be a final output feature layer, which represents image features that have been idenfied as being able to distinguish between various labels in the training set. If a network has been trained on Google Places, for example, extracting this layer for any inputted image will return a feature vector representation that the network deems will best differentiate whether the image is of a beach, lake, city, etc. This feature vector can then be run through a different network trained on a different dataset, transferring what the first network learned about the image to the second. In this way, powerful image classifiers can be trained to highly specific image recognition tasks.\cite{bengio2012deep}
+
+
+\section{Approach and Plan}
+
+We will
+\begin{enumerate}
+	\item Do an extensive literature review of deep learning architectures used for image classification as well as general geographic image research
+	\item Generate a high-quality training set of geo-referenced images and their labels
+	\item Use this set to train an image classification system for general image understanding/scene labeling, most likely by using a pre-trained classifier and augmenting it with transfer learning to our application-specific image training set
+	\item Pull an geo-referenced image set for an urban area, most likely from a service such as Flickr
+	\item Apply the image classification system to our image set in a selected urban area
+	\item Explore the discovered spatial-temporal patterns of human activity and/or image sentiment
+	\item Refine our classifier to extract desired information that appears interesting
+\end{enumerate}
+
+There are many immediate applications for a spatial-temporal map of human activity or sentiment. One is to identify where and when activities are occuring, such as looking for where soccer is being played on weekends or looking for romantic date spots on Fridays. But we expect that less straightforward sociology and civil engineering applications will reveal themselves. An obvious example of this might be discovering traffic accident hotspots.\\
+
+Unlike several land-use classification studies which use labeled datasets such as the popular UC Merced, we will need to create a labeled set that better describes recreational acitvities.\cite{castelluccio2015land} The UC Merced set has labels such as agricultural, airplane, denseresidential, freeway, and storagetanks, whereas we will most likely want activity-based labels like eating or dancing or general descriptors like romantic to describe restaurants.\\
+
+
+
+
+\section{Evaluation Plan}
+As of now, this project's goal is fairly open-ended and will probably be narrowed to a specific knowledge discovery purpose as a data set is prepared for exploration. Successful subgoals will be easy to measure, however. These will include 
+\begin{enumerate}
+	\item Preparation of a high-quality labeled training image set with geo-referenced mappings 
+	\item Training of a robust image activity or image sentiment classifier
+	\item Applying the classifier to images in an urban location
+\end{enumerate}
+
+\bibliographystyle{plain}
+\pagebreak
+\bibliography{thesis_proposal}
+
+\end{document}

@@ -1,0 +1,8 @@
+@inproceedings{karalas2015deep,
+  title={Deep learning for multi-label land cover classification},
+  author={Karalas, Konstantinos and Tsagkatakis, Grigorios and Zervakis, Michalis and Tsakalides, Panagiotis},
+  booktitle={SPIE Remote Sensing},
+  pages={96430Q--96430Q},
+  year={2015},
+  organization={International Society for Optics and Photonics}
+}
