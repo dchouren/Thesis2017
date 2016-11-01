@@ -3,6 +3,7 @@ import urllib.request
 import os
 import sys
 import datetime
+from os.path import join
 
 import ipdb
 
@@ -26,11 +27,14 @@ else:
 timeskip = 86400 #one day
 jan_1_2016 = 1451606400
 jan_1_2006 = 1136073600
+oct_09_2008 = 1223510400
 
-time_start = jan_1_2006
+time_start = oct_09_2008
 time_end = time_start + timeskip
 
-while time_end < 1136073600 + 604800:
+output_dir = '/tigress/dchouren/thesis/resources/paths'
+
+while time_end < jan_1_2016:
     print(time_start)
 
     f = flickr.photos_search(bbox='-74.052544, 40.525070, -73.740685, 40.889249', min_upload_date=time_start, max_upload_date=time_end)
@@ -74,7 +78,7 @@ while time_end < 1136073600 + 604800:
             # break
     filename = datetime.datetime.fromtimestamp(time_start).strftime('%Y-%m-%d_') + str(write_count)
     write_count += 1
-    with open(filename, 'w') as outf:
+    with open(join(output_dir, filename), 'w') as outf:
         for info in infos:
             outf.write(info + '\n')
         print('Wrote {} to {}'.format(len(infos), filename))
