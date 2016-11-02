@@ -1,4 +1,5 @@
 import sys
+import os
 from subprocess import call
 from os.path import join
 from glob import glob
@@ -8,12 +9,13 @@ image_dir = '/tigress/dchouren/thesis/images/'
 
 def download_file(filename):
     print('Starting {}'.format(filename))
+    os.mkdir(join(image_dir, filename))
     with open(filename, 'r') as inf:
         for line in inf:
             url = line.split(',')[0]
             image_name = url.split('/')[-1]
 
-            return_code = call(['wget', '-t', '3', '-T', '5', '--quiet', url, '-O', join(image_dir, image_name)])
+            return_code = call(['wget', '-t', '3', '-T', '5', '--quiet', url, '-O', join(image_dir, filename, image_name)])
             if return_code == 0:
                 print('Success: {}'.format(url))
             else:
