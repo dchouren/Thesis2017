@@ -30,7 +30,8 @@ def download_file(label, filename):
 
 def download_dir(dirname):
     label = get_leaf_dir(dirname)
-    os.mkdir(join(image_dir, label))
+    if not os.path.isdir(join(image_dir, label)):
+        os.mkdir(join(image_dir, label))
 
     filenames = glob(join(dirname, '*'))
     for filename in filenames:
