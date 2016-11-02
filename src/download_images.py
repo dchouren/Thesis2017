@@ -14,7 +14,6 @@ def get_leaf_dir(dirname):
 def download_file(label, filename):
     print('Starting {}'.format(filename))
 
-    os.mkdir(join(image_dir, filename))
     with open(filename, 'r') as inf:
         for line in inf:
             url = line.split(',')[0]
@@ -34,7 +33,6 @@ def download_dir(dirname):
     os.mkdir(join(image_dir, label))
 
     filenames = glob(join(dirname, '*'))
-    print(filenames)
     for filename in filenames:
         download_file(label, filename)
 
