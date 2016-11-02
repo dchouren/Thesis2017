@@ -7,15 +7,20 @@ from glob import glob
 
 image_dir = '/tigress/dchouren/thesis/images/'
 
-def download_file(filename):
+def get_leaf_dir(dirname):
+    return dirname.split('/')[-1]
+
+
+def download_file(label, filename):
     print('Starting {}'.format(filename))
+
     os.mkdir(join(image_dir, filename))
     with open(filename, 'r') as inf:
         for line in inf:
             url = line.split(',')[0]
             image_name = url.split('/')[-1]
 
-            return_code = call(['wget', '-t', '3', '-T', '5', '--quiet', url, '-O', join(image_dir, filename, image_name)])
+            return_code = call(['wget', '-t', '3', '-T', '5', '--quiet', url, '-O', join(image_dir, label, image_name)])
             if return_code == 0:
                 print('Success: {}'.format(url))
             else:
@@ -25,10 +30,13 @@ def download_file(filename):
 
 
 def download_dir(dirname):
+    label = get_leaf_dir(dirname)
+    os.mkdir(join(image_dir, label))
+
     filenames = glob(join(dirname, '*'))
     print(filenames)
     for filename in filenames:
-        download_file(filename)
+        download_file(label, filename)
 
 
 if __name__ == '__main__':
