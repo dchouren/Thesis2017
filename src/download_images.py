@@ -33,7 +33,7 @@ def download_dir(dirname):
     if not os.path.isdir(join(image_dir, label)):
         os.mkdir(join(image_dir, label))
 
-    filenames = glob(join(dirname, '*'))
+    filenames = sorted(glob(join(dirname, '*')))
     for filename in filenames:
         download_file(label, filename)
 
