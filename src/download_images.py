@@ -24,6 +24,7 @@ def download_file(filename):
 
 def download_dir(dirname):
     filenames = glob(join(dirname, '*'))
+    print(filenames)
     for filename in filenames:
         download_file(filename)
 
