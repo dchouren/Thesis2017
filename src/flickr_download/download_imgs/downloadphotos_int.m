@@ -2,10 +2,10 @@ function downloadphotos_int()
 %originally written by Tamara Berg, extended by James Hays
 
 %download images listed in every text file in this directory
-% search_result_dir = '/nfs/hn22/jhhays/flickr_scripts/search_results/'
-search_result_dir = '/scratch/dchouren/resources/paths'
+% search_result_dir = '/scratch/dchouren/resources/paths'
+search_result_dir = '/Users/daway/Thesis2017/resources/paths/'
 %directory where you want to download the images
-output_dir = ['/scratch/dchouren/images'];
+output_dir = ['/scratch/dchouren/images/'];
 %the algorithm will create subdirs and subsubdirs in the above dir.
 
 %with the number of images we're expecting we will need two levels of
@@ -18,7 +18,7 @@ output_dir = ['/scratch/dchouren/images'];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 fprintf('Reading image metadata from %s\n', search_result_dir);
-search_results = dir(fullfile(search_result_dir, '*.txt'));
+search_results = dir(fullfile(search_result_dir, '*'));
 num_results = length(search_results);
 rand('twister', sum(100*clock)); %seed random number generator
 search_results = search_results(randperm(num_results)); %randomizing order
@@ -27,6 +27,7 @@ fprintf(' Downloading the images in %d search results\n',num_results)
 
 for i = 1:size(search_results,1)
     current_filename = search_results(i).name;
+    current_filename_fh = current_filename;
     % current_filename_fh = current_filename(1:end-4); %cutting off .txt extension 
     
     fprintf('\n !!! Checking for lock on %s\n', current_filename)
@@ -42,6 +43,7 @@ for i = 1:size(search_results,1)
         % file where the metadata is located
         fid = fopen([search_result_dir current_filename],'r');
         fprintf(' Reading search results in file %s\n', current_filename);
+        disp(fid);
 
         count=0;
         dircount=0;
@@ -80,9 +82,11 @@ for i = 1:size(search_results,1)
               unix(cmd);
             end
             count=count+1;
+
+            disp(line);
               
             first_line = line;
-            src_url, latitude, longitude, accuracy, owner, title, description = strtok(line, ',')
+            [src_url, latitude, longitude, accuracy, owner, title, description] = strread(line,'%s','delimiter',',');
             
             
             %first lets try and grab the large size, which should be max
@@ -99,7 +103,8 @@ for i = 1:size(search_results,1)
             %use the -O [output file name] option
             %-t specifies number of retries
             %-T specifies all timeouts, in seconds.  if it times out does it retry?
-            filename = strsplit(src_url, '/')(end)
+            tokens = strsplit(src_url, '/')
+            filename = tokens(end)
             cmd = ['wget -t 3 -T 5 --quiet ' url ...
                    ' -O ' '/scratch/dchouren/images/' filename ];
                
