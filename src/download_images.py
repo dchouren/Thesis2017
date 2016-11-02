@@ -23,6 +23,8 @@ def download_file(label, filename):
             if return_code == 0:
                 print('Success: {}'.format(url))
             else:
+                with open('errors', 'a') as errorf:
+                    errorf.write(line)
                 print('Error: {}'.format(url))
 
     print('Done {}'.format(filename))
