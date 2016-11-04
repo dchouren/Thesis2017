@@ -98,21 +98,21 @@ while (maxtime < endtime):
             null_test = int(total_images) #want to make sure this won't crash later on for some reason
             null_test = float(total_images)
 
-            print('\nnumimgs: ' + total_images)
-            print('mintime: ' + str(mintime) + ' maxtime: ' + str(maxtime) + ' timeskip:  ' + str(maxtime - mintime))
+            print('\Num images: ' + total_images)
+            print('Min time: ' + str(mintime) + ' Max time: ' + str(maxtime) + ' Timeskip:  ' + str(maxtime - mintime))
 
             if int(total_images) > desired_photos:
-                print('too many photos in block, reducing maxtime')
+                # print('Too many photos in block, reducing maxtime')
                 upper_bound = maxtime
                 maxtime = (lower_bound + maxtime) / 2 #midpoint between current value and lower bound.
 
             if int(total_images) < desired_photos:
-                print('too few photos in block, increasing maxtime')
+                # print('Too few photos in block, increasing maxtime')
                 lower_bound = maxtime
                 maxtime = (upper_bound + maxtime) / 2
 
-            print('Lower bound is ' + str(datetime.fromtimestamp(lower_bound)))
-            print('Upper bound is ' + str(datetime.fromtimestamp(upper_bound)))
+            # print('Lower bound is ' + str(datetime.fromtimestamp(lower_bound)))
+            # print('Upper bound is ' + str(datetime.fromtimestamp(upper_bound)))
 
             if int(total_images) > 0: #only if we're not in a degenerate case
                 keep_going = keep_going - 1
@@ -127,33 +127,29 @@ while (maxtime < endtime):
             print ('Exception encountered while querying for images\n')
 
     #end of while binary search
-    print('Finished binary search')
+    # print('Finished binary search')
 
-    s = '\nmintime: ' + str(mintime) + ' maxtime: ' + str(maxtime)
-    print(s)
-    # output.write(s + '\n')
+    print('\nMintime: ' + str(datetime.fromtimestamp(mintime)) + ' Maxtime: ' + str(datetime.fromtimestamp(maxtime)))
 
-    s = 'numimgs: ' + total_images
-    print(s)
+    print('Num images: ' + total_images)
 
     current_image_num = 1
 
     num = int(rsp[0].get('pages'))
-    s =  'total pages: ' + str(num)
-    print(s)
+    print('Total pages: ' + str(num))
 
     #only visit 16 pages max, to try and avoid the dreaded duplicate bug
     #16 pages = 4000 images, should be duplicate safe.  Most interesting pictures will be taken.
 
     num_visit_pages = min(16,num)
 
-    print('visiting only ' + str(num_visit_pages) + ' pages ( up to ' + str(num_visit_pages * 250) + ' images)')
+    print('Visiting ' + str(num_visit_pages) + ' pages (up to ' + str(num_visit_pages * 250) + ' images)')
 
     total_images_queried += min((num_visit_pages * 250), int(total_images))
 
     #print 'stopping before page ' + str(int(math.ceil(num/3) + 1)) + '\n'
 
-    for pagenum in range(1, num_visit_pages):
+    for pagenum in range(0, num_visit_pages):
         f = search_flickr(pagenum, mintime, maxtime)
 
         for i, photo in enumerate(f[0]):
@@ -175,6 +171,8 @@ while (maxtime < endtime):
 
             info = ','.join([src_url, latitude, longitude, accuracy, owner, title, str(description)])
             infos.append(info)
+
+            query_count += 1
 
             if query_count >= limit:
                 filename = datetime.fromtimestamp(maxtime).strftime('%Y-%m-%d-%H-%M-%S')
@@ -216,4 +214,3 @@ if not wrote_query:
 
 
 
-    
