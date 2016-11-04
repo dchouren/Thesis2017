@@ -15,11 +15,14 @@ def download_file(label, filename):
     print('Starting {}'.format(filename))
 
     with open(filename, 'r') as inf:
+        day_file = get_leaf_dir(filename)
+        if not os.path.isdir(join(image_dir, day_file)):
+            os.mkdir(join(image_dir, day_file))
         for line in inf:
             url = line.split(',')[0]
             image_name = url.split('/')[-1]
 
-            return_code = call(['wget', '-t', '3', '-T', '5', '--quiet', url, '-O', join(image_dir, label, image_name)])
+            return_code = call(['wget', '-t', '3', '-T', '5', '--quiet', url, '-O', join(image_dir, day_file, image_name)])
             if return_code == 0:
                 print('Success: {}'.format(url))
             else:
