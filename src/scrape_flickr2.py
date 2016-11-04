@@ -98,7 +98,7 @@ while (maxtime < endtime):
             null_test = int(total_images) #want to make sure this won't crash later on for some reason
             null_test = float(total_images)
 
-            print('\Num images: ' + total_images)
+            print('\nNum images: ' + total_images)
             print('Min time: ' + str(mintime) + ' Max time: ' + str(maxtime) + ' Timeskip:  ' + str(maxtime - mintime))
 
             if int(total_images) > desired_photos:
