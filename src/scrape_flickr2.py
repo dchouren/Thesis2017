@@ -15,6 +15,7 @@
 import sys, string, math, time, socket
 from flickrapi import FlickrAPI
 from datetime import datetime
+from os.path import join
 
 import ipdb
 
@@ -26,9 +27,9 @@ socket.setdefaulttimeout(30)  #30 second time out on sockets before they throw
 #to respond to our big searches.
 
 print(sys.argv)
-# query_filename = sys.argv[1]
-# output_dir = sys.argv[2]
-limit = int(sys.argv[1])
+
+output_dir = sys.argv[1]
+limit = int(sys.argv[2])
 
 
 API_KEY = '639ee716be3441f34a88df4f92747883'
@@ -129,7 +130,7 @@ while (maxtime < endtime):
     #end of while binary search
     # print('Finished binary search')
 
-    print('\nMintime: ' + str(datetime.fromtimestamp(mintime)) + ' Maxtime: ' + str(datetime.fromtimestamp(maxtime)))
+    print('\nMintime: ' + str(datetime.fromtimestamp(mintime)) + ' Maxtime: ' + str(datetime.fromtimestamp(maxtime)) + ' Timeskip: ' + str(datetime.fromtimestamp(timeskip)))
 
     print('Num images: ' + total_images)
 
@@ -175,7 +176,7 @@ while (maxtime < endtime):
             query_count += 1
 
             if query_count >= limit:
-                filename = datetime.fromtimestamp(maxtime).strftime('%Y-%m-%d-%H-%M-%S')
+                filename = join(output_dir, datetime.fromtimestamp(maxtime).strftime('%Y-%m-%d-%H-%M-%S'))
                 with open(filename, 'w') as outf:
                     for info in infos:
                         outf.write(info + '\n')
@@ -191,7 +192,7 @@ while (maxtime < endtime):
 
 
 if not wrote_query:
-    filename = datetime.fromtimestamp(maxtime).strftime('%Y-%m-%d-%H-%M-%S')
+    filename = join(output_dir, datetime.fromtimestamp(maxtime).strftime('%Y-%m-%d-%H-%M-%S'))
     with open(str(filename), 'w') as outf:
         for info in infos:
             outf.write(info + '\n')
