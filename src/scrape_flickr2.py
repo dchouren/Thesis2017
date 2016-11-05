@@ -60,7 +60,7 @@ timeskip = 604800  #one week
 #timeskip = 2257 #for resuming previous query
 
 mintime = 1325376000 # 1/1/2012
-mintime = 1325724506 # restart 11/5
+mintime = 1332112633 # restart 11/5
 maxtime = mintime+timeskip
 endtime =  1478131200  # 11/03/2016
 
