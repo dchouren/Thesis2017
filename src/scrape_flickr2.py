@@ -1,3 +1,7 @@
+'''
+python scrape_flickr2.py /tigress/dchouren/thesis/resources/paths 10000
+'''
+
 #!/usr/bin/python
 
 #Image querying script written by Tamara Berg,
@@ -27,6 +31,10 @@ socket.setdefaulttimeout(30)  #30 second time out on sockets before they throw
 #to respond to our big searches.
 
 print(sys.argv)
+
+if len(sys.argv) != 3:
+  print(__doc__)
+  sys.exit(0)
 
 output_dir = sys.argv[1]
 limit = int(sys.argv[2])
@@ -63,6 +71,7 @@ mintime = 1325376000 # 1/1/2012
 mintime = 1332112633 # restart 11/5
 mintime = 1359400860 # restart 11/30
 mintime = 1374019200 # restart 12/23
+mintime = 1452729600 # restart 1/4
 maxtime = mintime+timeskip
 endtime =  1478131200  # 11/03/2016
 
