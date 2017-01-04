@@ -61,6 +61,8 @@ timeskip = 604800  #one week
 
 mintime = 1325376000 # 1/1/2012
 mintime = 1332112633 # restart 11/5
+mintime = 1359400860 # restart 11/30
+mintime = 1374019200 # restart 12/23
 maxtime = mintime+timeskip
 endtime =  1478131200  # 11/03/2016
 
