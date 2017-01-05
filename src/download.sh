@@ -7,6 +7,10 @@ NUM_P=$3
 cd $path_dir
 for f in *
 do
+  if [ -d "${image_dir}/${f}" ]; then
+    continue
+  fi
+  
   echo "$f"
   mkdir ${image_dir}/"$f"
   cd ${image_dir}/"$f"
