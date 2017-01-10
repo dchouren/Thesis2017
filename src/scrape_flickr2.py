@@ -72,6 +72,11 @@ mintime = 1332112633 # restart 11/5
 mintime = 1359400860 # restart 11/30
 mintime = 1374019200 # restart 12/23
 mintime = 1452729600 # restart 1/4
+mintime = 1454371200 # restart 1/5
+mintime = 1456099200
+mintime = 1462838400 
+mintime = 1466208000
+mintime = 1469404800
 maxtime = mintime+timeskip
 endtime =  1478131200  # 11/03/2016
 

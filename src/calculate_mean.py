@@ -13,7 +13,7 @@ b_avgs = []
 g_avgs = []
 r_avgs = []
 
-images = glob.glob(join(image_dir, '*'))
+images = glob.glob(join(image_dir, '*', '*', '*.jpg'))
 for i, image in enumerate(images):
     if i % 10000 == 0:
         print(i, time.ctime())

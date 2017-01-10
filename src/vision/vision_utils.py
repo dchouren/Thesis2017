@@ -12,10 +12,7 @@ CLASS_INDEX_PATH = 'https://s3.amazonaws.com/deep-learning-models/image-models/i
 hybrid_map_file = 'resources/json/hybrid_class_index.json'
 
 
-#####
-## FOR IMAGENET ONLY
-## IF USING PLACES OR ANOTHER MODEL YOU NEED TO MEAN CENTER WITH DIFFERENT VALUES
-def load_and_preprocess_image(im_path, x_size=224, y_size=224, rescale=False):
+def load_and_preprocess_image(im_path, dataset='imagenet', x_size=224, y_size=224, rescale=False):
     try:
         img = image.load_img(im_path, target_size=(x_size, y_size))
     except:
@@ -23,30 +20,41 @@ def load_and_preprocess_image(im_path, x_size=224, y_size=224, rescale=False):
         return False
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
-    x = preprocess_input(x)
+    x = preprocess_input(x, dataset=dataset)
     if rescale:
         x *= 1./255
     return x
 
 
-#####
-## FOR IMAGENET ONLY
-## IF USING PLACES OR ANOTHER MODEL YOU NEED TO MEAN CENTER WITH DIFFERENT VALUES
-def preprocess_input(x, dim_ordering='default'):
+def preprocess_input(x, dataset='imagenet', dim_ordering='default'):
     if dim_ordering == 'default':
         dim_ordering = K.image_dim_ordering()
     assert dim_ordering in {'tf', 'th'}
 
+    # default imagenet values
+    r_val = 103.939
+    g_val = 116.779
+    b_val = 123.680
+
+    if dataset == 'hybrid':
+        r_val = 103.955
+        g_val = 116.415
+        b_val = 123.088
+    elif dataset == 'places365':
+        r_val = 104.113
+        g_val = 112.812
+        b_val = 117.230
+
     if dim_ordering == 'th':
-        x[:, 0, :, :] -= 103.939
-        x[:, 1, :, :] -= 116.779
-        x[:, 2, :, :] -= 123.68
+        x[:, 0, :, :] -= r_val
+        x[:, 1, :, :] -= g_val
+        x[:, 2, :, :] -= b_val
         # 'RGB'->'BGR'
         x = x[:, ::-1, :, :]
     else:
-        x[:, :, :, 0] -= 103.939
-        x[:, :, :, 1] -= 116.779
-        x[:, :, :, 2] -= 123.68
+        x[:, :, :, 0] -= r_val
+        x[:, :, :, 1] -= g_val
+        x[:, :, :, 2] -= b_Val
         # 'RGB'->'BGR'
         x = x[:, :, :, ::-1]
     return x
