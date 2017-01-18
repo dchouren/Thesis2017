@@ -2,7 +2,7 @@
 
 set -e
 
-if [[ "$#" -ne 8 && "$#" -ne 7 && "$#" -ne 6  ]]; then
+if [[ "$#" -ne 5 && "$#" -ne 4 && "$#" -ne 3  ]]; then
     echo "Must be run from /thesis/ root dir NOT from /src if pwd is not specified"
     echo "Usage:"
     echo "./src/launch_extract_bottlenecks.sh  image_root_dir  output_file  model  [email]  [pwd]"
@@ -11,9 +11,9 @@ if [[ "$#" -ne 8 && "$#" -ne 7 && "$#" -ne 6  ]]; then
 fi
 
 
-image_root_dir=$(readlink -f "$1")
-output=$(readlink -f "$2")
-model=$(readlink -f "$3")
+image_root_dir=$1
+output=$2
+model=$3
 email="$4"
 THESIS="$5"
 SRC=$THESIS/src
@@ -57,14 +57,17 @@ srun /usr/bin/time -f '%E elapsed, %U user, %S system, %M memory, %x status' $3"
 
 jobs=()
 
-slurm_header "03:00:00" "8GB" "/bin/bash -c \"
+year=$(echo ${image_root_dir} | rev | cut -d'/' -f 1 | rev) 
+job_name="extract_bottlenecks${year}_${model}"
+echo $job_name
+echo ${SLURM_OUT}/${job_name}
+slurm_header "48:00:00" "62GB" "/bin/bash -c \"
     set -e
-    python src/vision/extract_bottlenecks.py $image_root_dir $output $model
-  \"" "extract_bottlenecks${image_root_dir}_${model}" > $SLURM_OUT/$extract_bottlenecks${image_root_dir}_${model}.slurm
+    python ${SRC}/vision/extract_bottlenecks.py $image_root_dir $output $model
+  \"" ${SLURM_OUT}/${job_name}.out > $SLURM_OUT/${job_name}.slurm
 
-  jobs+=($(sbatch $SLURM_OUT/$meeting_base.slurm | cut -f4 -d' '))
-  notify_email $SLURM_OUT/$extract_bottlenecks${image_root_dir}_${model}.slurm > /tmp/$USER/$meeting_base
-done
+jobs+=($(sbatch $SLURM_OUT/${job_name}.slurm | cut -f4 -d' '))
+notify_email $SLURM_OUT/${job_name}.slurm > /tmp/$USER/${job_name}
 
 
 jobs=$(echo ${jobs[@]} | tr ' ' ':')

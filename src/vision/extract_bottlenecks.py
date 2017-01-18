@@ -8,10 +8,29 @@ example: python src/vision/extract_bottlenecks.py $IMAGES/testsets/wrapper $RESO
 import sys
 import os
 import glob
+from os.path import join
 
-from bottleneck_train import save_bottleneck_features
 from models.utils import _load_model
 
+from keras.preprocessing.image import ImageDataGenerator
+from keras.models import Sequential
+from keras.layers import Activation, Dropout, Flatten, Dense
+from keras.optimizers import RMSprop, SGD
+
+import ipdb
+
+
+def save_bottleneck_features(model, directory, img_size, batch_size, nb_samples, output_path):
+    datagen = ImageDataGenerator(rescale=1. / 255)
+
+    print('Running {}'.format(directory))
+    generator = datagen.flow_from_directory(
+        directory,
+        target_size=img_size,
+        batch_size=batch_size,
+        shuffle=False)
+    bottleneck_features = model.predict_generator(generator, nb_samples)
+    np.save(open(output_path, 'wb'), bottleneck_features)
 
 if len(sys.argv) != 4:
     print (__doc__)
@@ -21,12 +40,17 @@ im_dir = sys.argv[1]
 output = sys.argv[2]
 model_name = sys.argv[3]
 
+sub_year_dirs = glob.glob(join(im_dir, '*'))
 model = _load_model(model_name, include_top=False)
 
-labels = sorted(os.listdir(im_dir))
-class_sizes = [len(os.listdir(os.path.join(im_dir, label))) for label in labels]
+for sub_year in sub_year_dirs:
+    print(sub_year)
+    labels = sorted(os.listdir(sub_year))
+    class_sizes = [len(os.listdir(os.path.join(sub_year, label))) for label in labels]
 
-nb_samples = sum(class_sizes)
+    nb_samples = sum(class_sizes)
 
-save_bottleneck_features(model, im_dir, (224, 224), 256, nb_samples, output)
-print('Saved {} images to {}'.format(nb_samples, output))
+    sub_year_label = sub_year.split('/')[-1]
+    save_bottleneck_features(model, sub_year, (224, 224), 256, nb_samples, output + '_' + sub_year_label + '.npy')
+
+    print('Saved {} images to {}'.format(nb_samples, output))

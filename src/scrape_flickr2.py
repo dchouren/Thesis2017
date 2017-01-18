@@ -77,6 +77,10 @@ mintime = 1456099200
 mintime = 1462838400 
 mintime = 1466208000
 mintime = 1469404800
+mintime = 1474156800
+mintime = 1475366400
+mintime = 1477440000
+#Get the aliases and functions
 maxtime = mintime+timeskip
 endtime =  1478131200  # 11/03/2016
 

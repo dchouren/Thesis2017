@@ -19,7 +19,7 @@ from keras.preprocessing import image
 from keras.utils.data_utils import get_file
 from keras.utils.layer_utils import convert_all_kernels_in_model
 
-from src.vision.vision_utils import decode_predictions, preprocess_input
+#from src.vision.vision_utils import decode_predictions, preprocess_input
 
 
 TH_WEIGHTS_PATH = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_th_dim_ordering_th_kernels.h5'
@@ -163,4 +163,4 @@ if __name__ == '__main__':
     print('Input image shape:', x.shape)
 
     preds = model.predict(x)
-    print('Predicted:', decode_predictions(preds))
+    #print('Predicted:', decode_predictions(preds))
