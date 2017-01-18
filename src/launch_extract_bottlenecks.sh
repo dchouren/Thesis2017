@@ -57,17 +57,25 @@ srun /usr/bin/time -f '%E elapsed, %U user, %S system, %M memory, %x status' $3"
 
 jobs=()
 
-year=$(echo ${image_root_dir} | rev | cut -d'/' -f 1 | rev) 
-job_name="extract_bottlenecks${year}_${model}"
-echo $job_name
-echo ${SLURM_OUT}/${job_name}
-slurm_header "48:00:00" "62GB" "/bin/bash -c \"
-    set -e
-    python ${SRC}/vision/extract_bottlenecks.py $image_root_dir $output $model
-  \"" ${SLURM_OUT}/${job_name}.out > $SLURM_OUT/${job_name}.slurm
+months=( "01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" )
 
-jobs+=($(sbatch $SLURM_OUT/${job_name}.slurm | cut -f4 -d' '))
-notify_email $SLURM_OUT/${job_name}.slurm > /tmp/$USER/${job_name}
+year=$(echo ${image_root_dir} | rev | cut -d'/' -f 1 | rev)
+
+for month in "${months[@]}"
+do
+  im_sub_dir=${image_root_dir}/${month}
+
+  job_name="extract_bottlenecks_${model}_${year}_${month}"
+
+  slurm_header "48:00:00" "62GB" "/bin/bash -c \"
+      set -e
+      python ${SRC}/vision/extract_bottlenecks.py $im_sub_dir $output $model
+    \"" ${SLURM_OUT}/${job_name}.out > $SLURM_OUT/${job_name}.slurm
+
+  jobs+=($(sbatch $SLURM_OUT/${job_name}.slurm | cut -f4 -d' '))
+
+  notify_email $SLURM_OUT/${job_name}.slurm > /tmp/$USER/${job_name}
+done
 
 
 jobs=$(echo ${jobs[@]} | tr ' ' ':')
