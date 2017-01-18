@@ -7,7 +7,7 @@ if [[ "$#" -ne 5 && "$#" -ne 4 && "$#" -ne 3  ]]; then
     echo "Usage:"
     echo "./src/launch_extract_bottlenecks.sh  image_root_dir  output_file  model  [email]  [pwd]"
     echo "Example:"
-    echo "./src/launch_extract_bottlenecks $IMAGES/2015 $RESOURCES/test_2015.npy vgg16  dchouren@princeton.edu /tigress/dchouren/thesis"
+    echo "./src/launch_extract_bottlenecks.sh $IMAGES/2015 $RESOURCES/test_2015 vgg16  dchouren@princeton.edu /tigress/dchouren/thesis"
 fi
 
 
@@ -67,7 +67,7 @@ do
 
   job_name="extract_bottlenecks_${model}_${year}_${month}"
 
-  slurm_header "48:00:00" "62GB" "/bin/bash -c \"
+  slurm_header "36:00:00" "32GB" "/bin/bash -c \"
       set -e
       python ${SRC}/vision/extract_bottlenecks.py $im_sub_dir $output $model
     \"" ${SLURM_OUT}/${job_name}.out > $SLURM_OUT/${job_name}.slurm

@@ -54,6 +54,7 @@ nb_samples = sum(class_sizes)
 im_dir_label = im_dir.split('/')[-1]
 output_path = output + '_' + im_dir_label + '.npy'
 print(output_path)
+
 save_bottleneck_features(model, im_dir, (224, 224), 256, nb_samples, output_path)
 
 print('Saved {} images to {}'.format(nb_samples, output))

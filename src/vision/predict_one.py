@@ -20,7 +20,7 @@ from models.utils import _load_model
 from vision_utils import load_and_preprocess_image, _decode_predictions
 
 
-if len(sys.argv) != 4:
+if len(sys.argv) != 2:
     print (__doc__)
     sys.exit(0)
 
@@ -37,9 +37,8 @@ im_dir = sys.argv[1]
 
 base_model = _load_model('vgg16', include_top=False)
 
-ipdb.set_trace()
 
-model = load_model('/scratch/dchouren/resources/thumbnail/dslr/trained_models/top_resnet50_100_55707_dslr.h5')
+# model = load_model('/scratch/dchouren/resources/thumbnail/dslr/trained_models/top_resnet50_100_55707_dslr.h5')
 
 # menu_model = load_model('old_menu.h5')
 # # menu_model = load_model('/scratch/dchouren/resources/textlike/menu_receipt/trained_models/top_vgg16_30_31089_text.h5')
@@ -100,7 +99,6 @@ model = load_model('/scratch/dchouren/resources/thumbnail/dslr/trained_models/to
 
 # ipdb.set_trace()
 image_paths = glob.glob(join(im_dir, '*.jpg'))
-
 # print(image_paths)
 all_preds = []
 # get_layer_output = K.function([model.layers[0].input], [model.layers[20].output])
@@ -113,7 +111,7 @@ for im_path in image_paths:
     preds = base_model.predict(x)[0]
     # pred, prob = _decode_predictions(preds, 'dslr')
 
-    ipdb.set_trace()
+    # ipdb.set_trace()
     print(im_path, pred, prob)
 
 
