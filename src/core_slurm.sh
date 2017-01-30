@@ -17,7 +17,7 @@ function notify_email() {
 # $3 = command
 # $4 = job name
 # $5 = slurm output
-function gpu_slurm_header() {
+function gpu_slurm_header {
   echo "#!/bin/sh
   # Request runtime
   #SBATCH --time=$1
@@ -39,7 +39,8 @@ function gpu_slurm_header() {
   # Set working directory:
   #SBATCH --workdir=$SLURM_OUT
   $5
-  srun /usr/bin/time -f '%E elapsed, %U user, %S system, %M memory, %x status' /bin/bash -c \"set -e $3\""
+  srun /usr/bin/time -f '%E elapsed, %U user, %S system, %M memory, %x status' /bin/bash -c \"set -e $3\"" 
+  echo "in gpu slurm header"
 }
 
 
