@@ -56,7 +56,7 @@ if len(sys.argv) != 7:
     print (__doc__)
     sys.exit(0)
 
-scratch_dir = join('/scratch', getpass.getuser())
+scratch_dir = join('/scratch/network', getpass.getuser())
 
 model_name = sys.argv[1]
 task = sys.argv[2]
@@ -146,10 +146,10 @@ def train_top_model():
 
 print('Loading model')
 model = _load_model(model_name, include_top=False)
-# print('Saving training features')
-# save_bottleneck_features(model, train_data_dir, img_size, batch_size, nb_train_samples, bf_train_path)
-# print('Saving validation features')
-# save_bottleneck_features(model, validation_data_dir, img_size, batch_size, nb_val_samples, bf_val_path)
+print('Saving training features')
+save_bottleneck_features(model, train_data_dir, img_size, batch_size, nb_train_samples, bf_train_path)
+print('Saving validation features')
+save_bottleneck_features(model, validation_data_dir, img_size, batch_size, nb_val_samples, bf_val_path)
 
 train_top_model()
 
