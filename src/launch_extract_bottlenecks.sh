@@ -37,7 +37,7 @@ do
 
   job_name="extract_bottlenecks_${model}_${year}_${month}"
 
-  slurm_header $runtime $memory $program_command ${SLURM_OUT}/${job_name}.out > $SLURM_OUT/${job_name}.slurm
+  gpu_slurm_header $runtime $memory $program_command ${SLURM_OUT}/${job_name}.out > $SLURM_OUT/${job_name}.slurm
 
   jobs+=($(sbatch $SLURM_OUT/${job_name}.slurm | cut -f4 -d' '))
 
