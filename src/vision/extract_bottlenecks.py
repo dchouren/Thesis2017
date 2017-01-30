@@ -29,6 +29,7 @@ def save_bottleneck_features(model, directory, img_size, batch_size, nb_samples,
         target_size=img_size,
         batch_size=batch_size,
         shuffle=False)
+    print(nb_samples)
     bottleneck_features = model.predict_generator(generator, nb_samples)
     np.save(open(output_path, 'wb'), bottleneck_features)
 

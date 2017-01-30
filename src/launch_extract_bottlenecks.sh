@@ -7,7 +7,7 @@ if [[ "$#" -ne 5 && "$#" -ne 4 && "$#" -ne 3  ]]; then
     echo "Usage:"
     echo "./src/launch_extract_bottlenecks.sh  image_root_dir  output_file  model  [email]  [pwd]"
     echo "Example:"
-    echo "./src/launch_extract_bottlenecks.sh $IMAGES/2015 $RESOURCES/test_2015 vgg16  dchouren@princeton.edu /tigress/dchouren/thesis"
+    echo "./src/launch_extract_bottlenecks.sh /scratch/network/dchouren/images/2015 /tiger/dchouren/thesis/resources/test_2015 vgg16  dchouren@princeton.edu /tigress/dchouren/thesis"
 fi
 
 
@@ -57,7 +57,8 @@ srun /usr/bin/time -f '%E elapsed, %U user, %S system, %M memory, %x status' $3"
 
 jobs=()
 
-months=( "01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" )
+# months=( "01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" )
+months=( "13" )
 
 year=$(echo ${image_root_dir} | rev | cut -d'/' -f 1 | rev)
 
