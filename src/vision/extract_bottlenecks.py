@@ -10,6 +10,8 @@ import os
 import glob
 from os.path import join
 
+import numpy as np
+
 from models.utils import _load_model
 
 from keras.preprocessing.image import ImageDataGenerator
