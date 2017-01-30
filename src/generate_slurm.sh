@@ -25,6 +25,7 @@ SRC=$THESIS/src
 SLURM_OUT=$THESIS/slurm
 mkdir -p $SLURM_OUT
 
+echo $SLURM_OUT
 
 jobs=()
 
@@ -36,7 +37,7 @@ else
   function_call=slurm_header
 fi
 echo $runtime
-$function_call $runtime $memory $program_command ${SLURM_OUT}/${job_name}.out > $SLURM_OUT/${job_name}.slurm
+$function_call $runtime $memory "$program_command" ${SLURM_OUT}/${job_name}.out > $SLURM_OUT/${job_name}.slurm
 
 jobs+=($(sbatch $SLURM_OUT/${job_name}.slurm | cut -f4 -d' '))
 

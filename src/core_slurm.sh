@@ -17,7 +17,7 @@ function notify_email() {
 # $3 = command
 # $4 = job name
 # $5 = slurm output
-function gpu_slurm_header {
+function gpu_slurm_header() {
 echo "#!/bin/sh
 # Request runtime
 #SBATCH --time=$1
