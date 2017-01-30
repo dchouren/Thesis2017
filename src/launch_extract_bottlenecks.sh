@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-source ./core_slurm.sh
+source $(dirname $0)/core_slurm.sh
 
 if [[ "$#" -ne 5 && "$#" -ne 4 && "$#" -ne 3  ]]; then
     echo "Must be run from /thesis root dir NOT from /src if pwd is not specified"
