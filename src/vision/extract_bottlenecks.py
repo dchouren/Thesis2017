@@ -14,8 +14,6 @@ import numpy as np
 
 from models.utils import _load_model
 
-import numpy as np
-
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
 from keras.layers import Activation, Dropout, Flatten, Dense
