@@ -12,6 +12,8 @@ from os.path import join
 
 from models.utils import _load_model
 
+import numpy as np
+
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
 from keras.layers import Activation, Dropout, Flatten, Dense
@@ -29,6 +31,7 @@ def save_bottleneck_features(model, directory, img_size, batch_size, nb_samples,
         target_size=img_size,
         batch_size=batch_size,
         shuffle=False)
+    print(nb_samples)
     bottleneck_features = model.predict_generator(generator, nb_samples)
     np.save(open(output_path, 'wb'), bottleneck_features)
 
