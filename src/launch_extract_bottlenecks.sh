@@ -3,20 +3,20 @@
 set -e
 source $(dirname $0)/core_slurm.sh
 
-if [[ "$#" -ne 5 && "$#" -ne 4 && "$#" -ne 3  ]]; then
+if [[ "$#" -ne 4 ]]; then
     echo "Must be run from /thesis root dir NOT from /src if pwd is not specified"
     echo "Usage:"
-    echo "./src/launch_extract_bottlenecks.sh  runtime  memory  program_command [email]  [pwd]"
+    echo "./src/launch_extract_bottlenecks.sh  runtime  memory  model  year"
     echo "Example:"
-    echo "./src/launch_extract_bottlenecks.sh 48:00:00 62GB \"python src/vision/extract_bottlenecks.py /scratch/network/dchouren/images/2015 /tiger/dchouren/thesis/resources/test_2015 vgg16\"  dchouren@princeton.edu /tigress/dchouren/thesis"
+    echo "./src/launch_extract_bottlenecks.sh 24:00:00 62GB vgg16 2015"
 fi
 
 runtime="$1"
 memory="$2"
-program_command="$3"
+model="$3"
+year="$4"
 
-email="$4"
-THESIS="$5"
+THESIS="/tigress/dchouren/thesis"
 SRC=$THESIS/src
 
 # slurm_header runtime mem program name [additional_sbatch_instr]
@@ -26,22 +26,26 @@ mkdir -p $SLURM_OUT
 
 jobs=()
 
-# months=( "01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" )
-months=( "13" )
+months=( "01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" )
 
-year=$(echo ${image_root_dir} | rev | cut -d'/' -f 1 | rev)
+extract_bottlenecks_command="python /tigress/dchouren/thesis/src/vision/extract_bottlenecks.py"
+base_arg_1="/scratch/network/dchouren/images/"$year
+base_arg_2="/tigress/dchouren/thesis/resources/"$year
+base_arg_3=$model
+
+base_job_name="extract_bottlenecks"
 
 for month in "${months[@]}"
 do
-  im_sub_dir=${image_root_dir}/${month}
+  job_name="${base_job_name}_${model}_${year}_${month}"
 
-  job_name="extract_bottlenecks_${model}_${year}_${month}"
+  program_command="${extract_bottlenecks_command} ${base_arg_1}/${month} ${base_arg_2}_${month} ${base_arg_3}"
 
-  gpu_slurm_header $runtime $memory $program_command ${SLURM_OUT}/${job_name}.out > $SLURM_OUT/${job_name}.slurm
+  echo $program_command
+
+  gpu_slurm_header $runtime $memory "${program_command}" ${job_name} > $SLURM_OUT/${job_name}.slurm
 
   jobs+=($(sbatch $SLURM_OUT/${job_name}.slurm | cut -f4 -d' '))
-
-  notify_email $SLURM_OUT/${job_name}.slurm > /tmp/$USER/${job_name}
 done
 
 

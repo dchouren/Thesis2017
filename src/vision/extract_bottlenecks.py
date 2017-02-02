@@ -31,7 +31,7 @@ def save_bottleneck_features(model, directory, img_size, batch_size, nb_samples,
         target_size=img_size,
         batch_size=batch_size,
         shuffle=False)
-    print(nb_samples)
+    print('{} samples'.format(nb_samples))
     bottleneck_features = model.predict_generator(generator, nb_samples)
     np.save(open(output_path, 'wb'), bottleneck_features)
 
@@ -40,7 +40,7 @@ if len(sys.argv) != 4:
     sys.exit(0)
 
 im_dir = sys.argv[1]
-output = sys.argv[2]
+output = sys.argv[2] + '.npy'
 model_name = sys.argv[3]
 
 # sub_year_dirs = glob.glob(join(im_dir, '*'))
@@ -50,15 +50,15 @@ model = _load_model(model_name, include_top=False)
 #     print(sub_year)
 labels = sorted(os.listdir(im_dir))
 class_sizes = [len(os.listdir(os.path.join(im_dir, label))) for label in labels]
-
+#ipdb.set_trace()
 nb_samples = sum(class_sizes)
 
 # sub_year_label = sub_year.split('/')[-1]
-im_dir_label = im_dir.split('/')[-1]
-output_path = output + '_' + im_dir_label + '.npy'
-print(output_path)
+# im_dir_label = im_dir.split('/')[-1]
+# output_path = output + '_' + im_dir_label + '.npy'
+# print(output_path)
 
-save_bottleneck_features(model, im_dir, (224, 224), 256, nb_samples, output_path)
+save_bottleneck_features(model, im_dir, (224, 224), 32, nb_samples, output)
 
 print('Saved {} images to {}'.format(nb_samples, output))
 

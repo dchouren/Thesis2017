@@ -8,7 +8,7 @@ if [[ "$#" -ne 7 && "$#" -ne 6 && "$#" -ne 5 ]]; then
     echo "Usage:"
     echo "./src/generate_slurm.sh  runtime  memory  program_command  job_name  use_gpu"
     echo "Example:"
-    echo "./src/generate_slurm.sh 48:00:00 62GB \"python src/vision/extract_bottlenecks.py /scratch/network/dchouren/images/2015/14/train /tiger/dchouren/thesis/resources/test_2015 vgg16\" test_2015_14 true dchouren@princeton.edu /tigress/dchouren/thesis"
+    echo "./src/generate_slurm.sh 48:00:00 62GB \"python /tigress/dchouren/thesis/src/vision/extract_bottlenecks.py /scratch/network/dchouren/images/2015/14/train /scratch/network/dchouren/resources/test_2015 vgg16\" test_2015_14 true dchouren@princeton.edu /tigress/dchouren/thesis"
 fi
 
 runtime="$1"
@@ -36,8 +36,8 @@ else
   echo "Using CPU"
   function_call=slurm_header
 fi
-echo $runtime
-$function_call $runtime $memory "$program_command" ${SLURM_OUT}/${job_name}.out > $SLURM_OUT/${job_name}.slurm
+
+$function_call $runtime $memory "$program_command" ${job_name} > $SLURM_OUT/${job_name}.slurm
 
 jobs+=($(sbatch $SLURM_OUT/${job_name}.slurm | cut -f4 -d' '))
 

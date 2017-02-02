@@ -19,27 +19,24 @@ function notify_email() {
 # $5 = slurm output
 function gpu_slurm_header() {
 echo "#!/bin/sh
-# Request runtime
+#SBATCH -N 1
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks-per-socket=1
+#SBATCH --gres=gpu:1
 #SBATCH --time=$1
-# Request a number of CPUs per task:
-#SBATCH --cpus-per-task=1
-#SBATCH --ntasks=1
-# Request a number of nodes:
-#SBATCH --nodes=1
-# Request an amount of memory per node:
 #SBATCH --mem=$2
 # Specify a job name:
 #SBATCH -J $4
-#SBATCH -o $4
-# Request GPU stuff
-#SBATCH -N 1 
-#SBATCH --ntasks-per-node=1
-#SBATCH --ntasks-per-socket=1 
-#SBATCH --gres=gpu:1
-# Set working directory:
+#SBATCH -o $SLURM_OUT/$4.out
+
+#SBATCH --mail-type=end
+#SBATCH --mail-user=dchouren@princeton.edu 
+
 #SBATCH --workdir=$SLURM_OUT
+module load cudatoolkit/8.0 cudann/cuda-8.0/5.1
 $5
-srun /usr/bin/time -f '%E elapsed, %U user, %S system, %M memory, %x status' /bin/bash -c \"set -e $3\"" 
+
+THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32,optimizer=fast_compile $3"
 }
 
 
@@ -63,11 +60,17 @@ echo "#!/bin/sh
 #SBATCH --mem=$2
 # Specify a job name:
 #SBATCH -J $4
-#SBATCH -o $4
+#SBATCH -o $SLURM_OUT/$4.out
+# Email
+#SBATCH --mail-type=begin
+#SBATCH --mail-user=dchouren@princeton.edu
 # Set working directory:
 #SBATCH --workdir=$SLURM_OUT
 $5
-srun /usr/bin/time -f '%E elapsed, %U user, %S system, %M memory, %x status' /bin/bash -c \"set -e $3\""
+srun /usr/bin/time -f '%E elapsed, %U user, %S system, %M memory, %x status' /bin/bash -c \"
+set -e 
+$3
+\""
 }
 
 
