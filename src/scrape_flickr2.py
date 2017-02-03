@@ -80,6 +80,7 @@ mintime = 1469404800
 mintime = 1474156800
 mintime = 1475366400
 mintime = 1477440000
+mintime = 1451606400 # restart 2/3, clean 2016 run
 #Get the aliases and functions
 maxtime = mintime+timeskip
 endtime =  1478131200  # 11/03/2016
@@ -100,9 +101,9 @@ while (maxtime < endtime):
     upper_bound = mintime + timeskip * 20 #upper bound of the upper time limit
     maxtime     = .95 * lower_bound + .05 * upper_bound
 
-    print('\nBinary search on time range upper bound')
-    print('Lower bound is ' + str(datetime.fromtimestamp(lower_bound)))
-    print('Upper bound is ' + str(datetime.fromtimestamp(upper_bound)))
+    # print('\nBinary search on time range upper bound')
+    # print('Lower bound is ' + str(datetime.fromtimestamp(lower_bound)))
+    # print('Upper bound is ' + str(datetime.fromtimestamp(upper_bound)))
 
     keep_going = 6 #search stops after a fixed number of iterations
     while( keep_going > 0 and maxtime < endtime):
