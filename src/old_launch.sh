@@ -1,14 +1,13 @@
 #!/bin/bash
 
 set -e
-source ./core_slurm.sh
 
 if [[ "$#" -ne 5 && "$#" -ne 4 && "$#" -ne 3  ]]; then
     echo "Must be run from /thesis root dir NOT from /src if pwd is not specified"
     echo "Usage:"
-    echo "./src/launch_extract_bottlenecks.sh  image_root_dir  output_file  model  [email]  [pwd]"
+    echo "./src/old_launch.sh image_root_dir  output_file  model  [email]  [pwd]"
     echo "Example:"
-    echo "./src/launch_extract_bottlenecks.sh /scratch/network/dchouren/images/2015 /tiger/dchouren/thesis/resources/test_2015 vgg16  dchouren@princeton.edu /tigress/dchouren/thesis"
+    echo "./src/old_launch.sh /scratch/network/dchouren/images/2015 /tiger/dchouren/thesis/resources/test_2015 vgg16  dchouren@princeton.edu /tigress/dchouren/thesis"
 fi
 
 
@@ -69,10 +68,10 @@ do
 
   job_name="extract_bottlenecks_${model}_${year}_${month}"
 
-  slurm_header "36:00:00" "32GB" "/bin/bash -c \"
-      set -e
-      python ${SRC}/vision/extract_bottlenecks.py $im_sub_dir $output $model
-    \"" ${SLURM_OUT}/${job_name}.out > $SLURM_OUT/${job_name}.slurm
+  slurm_header "36:00:00" "2GB" "/bin/bash -c \"
+set -e 
+python ${SRC}/vision/extract_bottlenecks.py $im_sub_dir $output $model
+\"" ${SLURM_OUT}/${job_name}.out > $SLURM_OUT/${job_name}.slurm
 
   jobs+=($(sbatch $SLURM_OUT/${job_name}.slurm | cut -f4 -d' '))
 

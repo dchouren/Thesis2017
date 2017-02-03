@@ -128,6 +128,7 @@ def save_bottlebeck_features():
             batch_size=32,
             class_mode=None,
             shuffle=False)
+    print(train_data_dir)
     bottleneck_features_train = model.predict_generator(generator, nb_train_samples)
     np.save(open('bottleneck_features_train.npy', 'w'), bottleneck_features_train)
 
