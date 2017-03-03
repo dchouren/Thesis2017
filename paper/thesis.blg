@@ -1,0 +1,62 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: ./thesis.aux
+The style file: IEEEtranS.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: thesis.bib
+Repeated entry---line 341 of file thesis.bib
+ : @article{simonyan2014very
+ :                          ,
+I'm skipping whatever remains of this entry
+-- IEEEtranS.bst version 1.13 (2008/09/30) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+** Sorting version - not for normal IEEE work.
+
+Done.
+You've used 41 entries,
+            4498 wiz_defined-function locations,
+            1105 strings with 16183 characters,
+and the built_in function-call counts, 44153 in all, are:
+= -- 3795
+> -- 1424
+< -- 357
++ -- 754
+- -- 348
+* -- 2282
+:= -- 6189
+add.period$ -- 97
+call.type$ -- 41
+change.case$ -- 297
+chr.to.int$ -- 900
+cite$ -- 41
+duplicate$ -- 2676
+empty$ -- 3261
+format.name$ -- 387
+if$ -- 10083
+int.to.chr$ -- 0
+int.to.str$ -- 41
+missing$ -- 451
+newline$ -- 146
+num.names$ -- 82
+pop$ -- 1293
+preamble$ -- 1
+purify$ -- 256
+quote$ -- 2
+skip$ -- 3206
+stack$ -- 0
+substring$ -- 2356
+swap$ -- 2198
+text.length$ -- 57
+text.prefix$ -- 0
+top$ -- 6
+type$ -- 451
+warning$ -- 0
+while$ -- 224
+width$ -- 43
+write$ -- 408
+(There was 1 error message)
