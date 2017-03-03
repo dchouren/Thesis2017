@@ -1,4 +1,4 @@
-# ./download.sh /tigress/dchouren/thesis/resources/paths/2013 /scratch/dchouren/images/2013 1
+# ./download.sh /tigress/dchouren/thesis/resources/paths/2013 /scratch/network/dchouren/images/2013 1
 
 PATH_DIR=$1
 IMAGE_DIR=$2
@@ -12,8 +12,8 @@ do
   fi
   
   echo "$f"
-  mkdir ${IMAGE_DIR}/"$f"
-  cd ${IMAGE_DIR}/"$f"
+  mkdir -p ${IMAGE_DIR}/"$f"/"$f"
+  cd ${IMAGE_DIR}/"$f"/"$f"
   #cat ${PATH_DIR}/"$f" | cut -d ',' -f 1 | xargs -P $NUM_P -n 1 curl -s -O 
   cat ${PATH_DIR}/"$f" | cut -d ',' -f 1 | parallel curl -L -s -O
 done 

@@ -32,12 +32,15 @@ socket.setdefaulttimeout(30)  #30 second time out on sockets before they throw
 
 print(sys.argv)
 
-if len(sys.argv) != 3:
+if len(sys.argv) != 4:
   print(__doc__)
   sys.exit(0)
 
 output_dir = sys.argv[1]
 limit = int(sys.argv[2])
+mintime = datetime.strptime(sys.argv[3], '%Y-%m-%d %H:%M:%S').timestamp()
+
+print('Mintime: {}'.format(mintime))
 
 
 API_KEY = '639ee716be3441f34a88df4f92747883'
@@ -67,20 +70,20 @@ timeskip = 604800  #one week
 #timeskip = 3600 #one hour
 #timeskip = 2257 #for resuming previous query
 
-mintime = 1325376000 # 1/1/2012
-mintime = 1332112633 # restart 11/5
-mintime = 1359400860 # restart 11/30
-mintime = 1374019200 # restart 12/23
-mintime = 1452729600 # restart 1/4
-mintime = 1454371200 # restart 1/5
-mintime = 1456099200
-mintime = 1462838400 
-mintime = 1466208000
-mintime = 1469404800
-mintime = 1474156800
-mintime = 1475366400
-mintime = 1477440000
-mintime = 1451606400 # restart 2/3, clean 2016 run
+# mintime = 1325376000 # 1/1/2012
+# mintime = 1332112633 # restart 11/5
+# mintime = 1359400860 # restart 11/30
+# mintime = 1374019200 # restart 12/23
+# mintime = 1452729600 # restart 1/4
+# mintime = 1454371200 # restart 1/5
+# mintime = 1456099200
+# mintime = 1462838400 
+# mintime = 1466208000
+# mintime = 1469404800
+# mintime = 1474156800
+# mintime = 1475366400
+# mintime = 1477440000
+# mintime = 1451606400 # restart 2/3, clean 2016 run
 #Get the aliases and functions
 maxtime = mintime+timeskip
 endtime =  1478131200  # 11/03/2016
@@ -192,7 +195,7 @@ while (maxtime < endtime):
             except:
                 continue
 
-            info = ','.join([src_url, latitude, longitude, accuracy, owner, title, str(description)])
+            info = ','.join([src_url, date_taken, latitude, longitude, accuracy, owner, title, str(description)])
             infos.append(info)
 
             query_count += 1

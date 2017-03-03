@@ -35,7 +35,9 @@ x_size, y_size = 224, 224
 # im_path = sys.argv[3]
 im_dir = sys.argv[1]
 
-base_model = _load_model('vgg16', include_top=False)
+base_model = _load_model('resnet152_hybrid1365', include_top=False)
+
+ipdb.set_trace()
 
 
 # model = load_model('/scratch/dchouren/resources/thumbnail/dslr/trained_models/top_resnet50_100_55707_dslr.h5')

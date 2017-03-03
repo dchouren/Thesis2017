@@ -29,9 +29,11 @@ jobs=()
 months=( "01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" )
 
 extract_bottlenecks_command="python /tigress/dchouren/thesis/src/vision/extract_bottlenecks.py"
-base_arg_1="/scratch/network/dchouren/images/"$year
-base_arg_2="/tigress/dchouren/thesis/resources/"$year
+base_arg_1="/scratch/network/dchouren/images/${year}"  # image dir
+base_arg_2="/tigress/dchouren/thesis/resources/bottlenecks/${model}/${year}"  # output base
 base_arg_3=$model
+
+mkdir -p $base_arg_2
 
 base_job_name="extract_bottlenecks"
 
@@ -39,7 +41,7 @@ for month in "${months[@]}"
 do
   job_name="${base_job_name}_${model}_${year}_${month}"
 
-  program_command="${extract_bottlenecks_command} ${base_arg_1}/${month} ${base_arg_2}_${month} ${base_arg_3}"
+  program_command="${extract_bottlenecks_command} ${base_arg_1}/${month} ${base_arg_2}/${month} ${base_arg_3}"
 
   echo $program_command
 
@@ -58,7 +60,7 @@ echo "************************************************************"
 echo "DONE WITH EVERYTHING"
 echo "************************************************************"
 
-
+watch -n 0.2 squeue -u dchouren
 
 
 
