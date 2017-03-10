@@ -42,6 +42,11 @@ T.~Berg, J.~Liu, S.~Woo~Lee, M.~L. Alexander, D.~W. Jacobs, and P.~N.
   birds,'' in \emph{Proceedings of the IEEE Conference on Computer Vision and
   Pattern Recognition}, 2014, pp. 2011--2018.
 
+\bibitem{bergamo2010exploiting}
+A.~Bergamo and L.~Torresani, ``Exploiting weakly-labeled web images to improve
+  object classification: a domain adaptation approach,'' in \emph{Advances in
+  Neural Information Processing Systems}, 2010, pp. 181--189.
+
 \bibitem{bowyer2016nd}
 K.~W. Bowyer and P.~J. Flynn, ``The nd-iris-0405 iris image dataset,''
   \emph{arXiv preprint arXiv:1606.04853}, 2016.
@@ -76,16 +81,31 @@ J.~Deng, W.~Dong, R.~Socher, L.-J. Li, K.~Li, and L.~Fei-Fei, ``Imagenet: A
   Pattern Recognition, 2009. CVPR 2009. IEEE Conference on}.\hskip 1em plus
   0.5em minus 0.4em\relax IEEE, 2009, pp. 248--255.
 
+\bibitem{fergus2010learning}
+R.~Fergus, L.~Fei-Fei, P.~Perona, and A.~Zisserman, ``Learning object
+  categories from internet image searches,'' \emph{Proceedings of the IEEE},
+  vol.~98, no.~8, pp. 1453--1466, 2010.
+
 \bibitem{girshick2014rich}
 R.~Girshick, J.~Donahue, T.~Darrell, and J.~Malik, ``Rich feature hierarchies
   for accurate object detection and semantic segmentation,'' in
   \emph{Proceedings of the IEEE conference on computer vision and pattern
   recognition}, 2014, pp. 580--587.
 
-\bibitem{he2016deep}
+\bibitem{hadsell2006dimensionality}
+R.~Hadsell, S.~Chopra, and Y.~LeCun, ``Dimensionality reduction by learning an
+  invariant mapping,'' in \emph{Computer vision and pattern recognition, 2006
+  IEEE computer society conference on}, vol.~2.\hskip 1em plus 0.5em minus
+  0.4em\relax IEEE, 2006, pp. 1735--1742.
+
+\bibitem{He2015}
 K.~He, X.~Zhang, S.~Ren, and J.~Sun, ``Deep residual learning for image
-  recognition,'' in \emph{Proceedings of the IEEE Conference on Computer Vision
-  and Pattern Recognition}, 2016, pp. 770--778.
+  recognition,'' \emph{arXiv preprint arXiv:1512.03385}, 2015.
+
+\bibitem{he2016deep}
+------, ``Deep residual learning for image recognition,'' in \emph{Proceedings
+  of the IEEE Conference on Computer Vision and Pattern Recognition}, 2016, pp.
+  770--778.
 
 \bibitem{jain1997object}
 A.~K. Jain, N.~K. Ratha, and S.~Lakshmanan, ``Object detection using gabor
@@ -130,6 +150,11 @@ Y.~LeCun, B.~Boser, J.~S. Denker, D.~Henderson, R.~E. Howard, W.~Hubbard, and
   L.~D. Jackel, ``Backpropagation applied to handwritten zip code
   recognition,'' \emph{Neural computation}, vol.~1, no.~4, pp. 541--551, 1989.
 
+\bibitem{li2010optimol}
+L.-J. Li and L.~Fei-Fei, ``Optimol: automatic online picture collection via
+  incremental model learning,'' \emph{International journal of computer
+  vision}, vol.~88, no.~2, pp. 147--168, 2010.
+
 \bibitem{lin2015learning}
 T.-Y. Lin, Y.~Cui, S.~Belongie, and J.~Hays, ``Learning deep representations
   for ground-to-aerial geolocalization,'' in \emph{Proceedings of the IEEE
@@ -169,11 +194,22 @@ A.~Rejeb~Sfar, N.~Boujemaa, and D.~Geman, ``Vantage feature frames for
   fine-grained categorization,'' in \emph{Proceedings of the IEEE Conference on
   Computer Vision and Pattern Recognition}, 2013, pp. 835--842.
 
+\bibitem{rubinstein2013unsupervised}
+M.~Rubinstein, A.~Joulin, J.~Kopf, and C.~Liu, ``Unsupervised joint object
+  discovery and segmentation in internet images,'' in \emph{Proceedings of the
+  IEEE conference on computer vision and pattern recognition}, 2013, pp.
+  1939--1946.
+
 \bibitem{russakovsky2013detecting}
 O.~Russakovsky, J.~Deng, Z.~Huang, A.~C. Berg, and L.~Fei-Fei, ``Detecting
   avocados to zucchinis: what have we done, and where are we going?'' in
   \emph{Proceedings of the IEEE International Conference on Computer Vision},
   2013, pp. 2064--2071.
+
+\bibitem{schroff2011harvesting}
+F.~Schroff, A.~Criminisi, and A.~Zisserman, ``Harvesting image databases from
+  the web,'' \emph{IEEE transactions on pattern analysis and machine
+  intelligence}, vol.~33, no.~4, pp. 754--766, 2011.
 
 \bibitem{shi2016stacked}
 J.~Shi, S.~Zhou, X.~Liu, Q.~Zhang, M.~Lu, and T.~Wang, ``Stacked deep
@@ -234,11 +270,6 @@ J.~Yang, K.~Yu, Y.~Gong, and T.~Huang, ``Linear spatial pyramid matching using
 S.~Zagoruyko and N.~Komodakis, ``Learning to compare image patches via
   convolutional neural networks,'' in \emph{Proceedings of the IEEE Conference
   on Computer Vision and Pattern Recognition}, 2015, pp. 4353--4361.
-
-\bibitem{zhang2014part}
-N.~Zhang, J.~Donahue, R.~Girshick, and T.~Darrell, ``Part-based r-cnns for
-  fine-grained category detection,'' in \emph{European conference on computer
-  vision}.\hskip 1em plus 0.5em minus 0.4em\relax Springer, 2014, pp. 834--849.
 
 \bibitem{zhou2014learning}
 B.~Zhou, A.~Lapedriza, J.~Xiao, A.~Torralba, and A.~Oliva, ``Learning deep
