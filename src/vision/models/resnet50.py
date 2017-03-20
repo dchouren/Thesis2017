@@ -193,7 +193,7 @@ def ResNet50(include_top=True, weights='imagenet',
 
     if include_top:
         x = Flatten()(x)
-        x = Dense(2, activation='softmax', name='fc1000')(x)
+        x = Dense(1, activation='softmax', name='fc1000')(x)
 
     model = Model(img_input, x)
 

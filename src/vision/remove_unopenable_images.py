@@ -9,7 +9,7 @@ if __name__ == '__main__':
     from os.path import join
 
     im_dir = sys.argv[1]
-    images = glob.glob(join(im_dir, '*/*/*.jpg'))
+    images = glob.glob(join(im_dir, '*/*/*/*.jpg'))
 
     for image_path in images:
         try:

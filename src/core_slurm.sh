@@ -33,10 +33,11 @@ echo "#!/bin/sh
 #SBATCH --mail-user=dchouren@princeton.edu 
 
 #SBATCH --workdir=$SLURM_OUT
-module load cudatoolkit/8.0 cudann/cuda-8.0/5.1
+module load cudatoolkit/8.0 
+module load cudann/cuda-8.0/5.1
 $5
 
-THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32,optimizer=fast_compile $3"
+THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32,lib.cnmem=1.0,optimizer=fast_compile $3"
 }
 
 
