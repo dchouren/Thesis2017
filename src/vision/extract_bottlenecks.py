@@ -31,7 +31,6 @@ def save_bottleneck_features(model, directory, img_size, batch_size, nb_samples,
         target_size=img_size,
         batch_size=batch_size,
         shuffle=False)
-    print('{} samples'.format(nb_samples))
     bottleneck_features = model.predict_generator(generator, nb_samples)
     np.save(open(output_path, 'wb'), bottleneck_features)
 
@@ -60,7 +59,7 @@ nb_samples = sum(class_sizes)
 
 save_bottleneck_features(model, im_dir, (224, 224), 32, nb_samples, output)
 
-print('Saved {} images to {}'.format(nb_samples, output))
+print('Saved images to {}'.format(output))
 
 
 

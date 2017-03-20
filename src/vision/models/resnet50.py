@@ -23,7 +23,7 @@ from keras.preprocessing import image
 from keras.utils.data_utils import get_file
 from keras.utils.layer_utils import convert_all_kernels_in_model
 
-from src.vision.vision_utils import decode_predictions, preprocess_input
+# from src.vision.vision_utils import decode_predictions, preprocess_input
 
 
 TH_WEIGHTS_PATH = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_th_dim_ordering_th_kernels.h5'
@@ -193,7 +193,7 @@ def ResNet50(include_top=True, weights='imagenet',
 
     if include_top:
         x = Flatten()(x)
-        x = Dense(1000, activation='softmax', name='fc1000')(x)
+        x = Dense(2, activation='softmax', name='fc1000')(x)
 
     model = Model(img_input, x)
 
@@ -250,4 +250,4 @@ if __name__ == '__main__':
     print('Input image shape:', x.shape)
 
     preds = model.predict(x)
-    print('Predicted:', decode_predictions(preds))
+    # print('Predicted:', decode_predictions(preds))

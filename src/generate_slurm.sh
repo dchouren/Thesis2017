@@ -41,7 +41,7 @@ $function_call $runtime $memory "$program_command" ${job_name} > $SLURM_OUT/${jo
 
 jobs+=($(sbatch $SLURM_OUT/${job_name}.slurm | cut -f4 -d' '))
 
-notify_email $SLURM_OUT/${job_name}.slurm > /tmp/$USER/${job_name}
+# notify_email $SLURM_OUT/${job_name}.slurm > /tmp/$USER/${job_name}
 
 jobs=$(echo ${jobs[@]} | tr ' ' ':')
 echo "SLURM JOBS" $jobs
@@ -53,6 +53,7 @@ echo "DONE WITH EVERYTHING"
 echo "************************************************************"
 
 
+watch -n 0.2 squeue -u dchouren
 
 
 

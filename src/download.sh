@@ -15,5 +15,5 @@ do
   mkdir -p ${IMAGE_DIR}/"$f"/"$f"
   cd ${IMAGE_DIR}/"$f"/"$f"
   #cat ${PATH_DIR}/"$f" | cut -d ',' -f 1 | xargs -P $NUM_P -n 1 curl -s -O 
-  cat ${PATH_DIR}/"$f" | cut -d ',' -f 1 | parallel curl -L -s -O
+  cat ${PATH_DIR}/"$f" | cut -d ',' -f 3 | parallel curl -L -s -O
 done 

@@ -35,9 +35,9 @@ x_size, y_size = 224, 224
 # im_path = sys.argv[3]
 im_dir = sys.argv[1]
 
-base_model = _load_model('resnet152_hybrid1365', include_top=False)
+base_model = _load_model('resnet50', include_top=False)
 
-ipdb.set_trace()
+# ipdb.set_trace()
 
 
 # model = load_model('/scratch/dchouren/resources/thumbnail/dslr/trained_models/top_resnet50_100_55707_dslr.h5')
@@ -110,11 +110,12 @@ for im_path in image_paths:
     x = load_and_preprocess_image(im_path, x_size, y_size, True)
     # base_preds = base_model.predict(x)
 
-    preds = base_model.predict(x)[0]
-    # pred, prob = _decode_predictions(preds, 'dslr')
+    preds = base_model.predict(x)
+    print(preds)
+    pred, prob = _decode_predictions(preds, 'imagenet')
 
     # ipdb.set_trace()
-    print(im_path, pred, prob)
+    print(im_path, preds)
 
 
 

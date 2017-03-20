@@ -1,3 +1,4 @@
 .idea/*
 src/keras/
 images/
+*.pyc

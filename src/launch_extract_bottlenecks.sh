@@ -26,7 +26,8 @@ mkdir -p $SLURM_OUT
 
 jobs=()
 
-months=( "01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" )
+# months=( "01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" )
+months=( "01_new" )
 
 extract_bottlenecks_command="python /tigress/dchouren/thesis/src/vision/extract_bottlenecks.py"
 base_arg_1="/scratch/network/dchouren/images/${year}"  # image dir
