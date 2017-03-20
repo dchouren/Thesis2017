@@ -12,15 +12,16 @@ CLASS_INDEX_PATH = 'https://s3.amazonaws.com/deep-learning-models/image-models/i
 hybrid_map_file = 'resources/json/hybrid_class_index.json'
 
 
-def load_and_preprocess_image(im_path, dataset='imagenet', x_size=224, y_size=224, rescale=False):
+def load_and_preprocess_image(im_path, dataset='imagenet', x_size=224, y_size=224, preprocess=True, rescale=False):
     try:
         img = image.load_img(im_path, target_size=(x_size, y_size))
     except:
-        # print('failure opening: {}'.format(im_path))
+        print('failure opening: {}'.format(im_path))
         return False
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
-    x = preprocess_input(x, dataset=dataset)
+    if preprocess:
+        x = preprocess_input(x, dataset=dataset)
     if rescale:
         x *= 1./255
     return x
@@ -54,7 +55,7 @@ def preprocess_input(x, dataset='imagenet', dim_ordering='default'):
     else:
         x[:, :, :, 0] -= r_val
         x[:, :, :, 1] -= g_val
-        x[:, :, :, 2] -= b_Val
+        x[:, :, :, 2] -= b_val
         # 'RGB'->'BGR'
         x = x[:, :, :, ::-1]
     return x
@@ -110,6 +111,9 @@ all_maps = {
 }
 
 def _decode_predictions(all_predictions, mapping):
+
+    if mapping == 'imagenet':
+        return decode_predictions(all_predictions)
 
     decoded_predictions = []
     preds_map = all_maps[mapping]

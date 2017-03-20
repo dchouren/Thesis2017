@@ -10,9 +10,8 @@ from keras.layers import BatchNormalization
 from keras.layers import Convolution2D, MaxPooling2D, ZeroPadding2D, AveragePooling2D
 from keras.layers import Dense, Activation, Flatten
 
-# from resnet50 import *
 
-weights_dir = '/spindle/dchouren/resources/weights/'
+weights_dir = '/tigress/dchouren/thesis/resources/weights/'
 
 def _load_model(model_name, include_top=True, weights='imagenet'):
     if model_name == 'resnet50':
@@ -21,6 +20,10 @@ def _load_model(model_name, include_top=True, weights='imagenet'):
     elif model_name == 'vgg16':
         from models.vgg16 import VGG16
         model = VGG16(weights=weights, include_top=include_top)
+        if weights == 'hybrid1365':
+            model.load_weights(join(weights_dir, 'vgg16_hybrid1365_weights.h5'))
+        elif weights == 'places365':
+            model.load_weights(join(weights_dir, 'vgg16_places365_weights.h5'))
     elif model_name == 'vgg19':
         from models.vgg19 import VGG19
         model = VGG19(weights=weights, include_top=include_top)
@@ -30,9 +33,18 @@ def _load_model(model_name, include_top=True, weights='imagenet'):
     elif model_name == 'vgg16_hybrid1365':
         from models.vgg16 import VGG16
         model = VGG16(weights=weights, include_top=include_top)
-        model.load_weights(join(weights_dir, 'imagenet_places', model_name + '.h5'))
+        model.load_weights(join(weights_dir, 'vgg16_hybrid1365_weights.h5'), by_name=True)
+    elif model_name == 'vgg16_places365':
+        from models.vgg16 import VGG16
+        model = VGG16(weights=weights, include_top=include_top)
+        model.load_weights(join(weights_dir, 'vgg16_places365_weights.h5'), by_name=True)
+    elif model_name == 'resnet152_hybrid1365':
+        from models.resnet import ResnetBuilder
+        model = ResnetBuilder.build_resnet_152((3, 224, 224), 100)
+        print(join(weights_dir, 'resnet152_hybrid1365.h5'))
+        model.load_weights(join(weights_dir, 'resnet152_hybrid1365.h5'), by_name=True)
     else:
-        print ('Not a valid model. Valid models are vgg16, vgg19, resnet50, inception, and vgg16_hybrid1365')
+        print ('Not a valid model. Valid models are vgg16, vgg19, resnet50, inception,  vgg16_hybrid1365, and vgg16_places365')
         sys.exit(1)
 
     return model
