@@ -3,5 +3,9 @@
 *__pycache__
 src/keras/
 images/
+<<<<<<< HEAD
 git/
 #models/
+=======
+*.pyc
+>>>>>>> 049cf337ff027e71fe4eccda550842eb9b7aaaa4

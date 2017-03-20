@@ -1,0 +1,296 @@
+
+\documentclass[pageno]{jpaper}
+
+\newcommand{\IWreport}{2016}
+\newcommand{\quotes}[1]{``#1''}
+
+
+\widowpenalty=9999
+
+\usepackage[normalem]{ulem}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{ {/Users/daway/Documents/Princeton/Thesis2017/plots/} }
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{-0.5in}
+
+% \usepackage{scrextend}
+\usepackage{float}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{afterpage}
+\usepackage{relsize}
+
+%\mathbb{set}
+
+% Sample macros -- how you define new commands
+% My own set of frequently-used macros have grown to many hundreds of lines.
+% Here are some simple samples.
+
+\newcommand{\Adv}{{\mathbf{Adv}}}       
+\newcommand{\prp}{{\mathrm{prp}}}                  % How to define new commands 
+\newcommand{\calK}{{\cal K}}
+\newcommand{\outputs}{{\Rightarrow}}                
+\newcommand{\getsr}{{\:\stackrel{{\scriptscriptstyle\hspace{0.2em}\$}}{\leftarrow}\:}}
+\newcommand{\andthen}{{\::\;\;}}    % \, \: \; for thinspace, medspace, thickspace
+\newcommand{\Rand}[1]{{\mathrm{Rand}[{#1}]}}       % A command with one argument
+\newcommand{\Perm}[1]{{\mathrm{Perm}[{#1}]}}       
+\newcommand{\Randd}[2]{{\mathrm{Rand}[{#1},{#2}]}} % and with two arguments
+\newcommand{\thetahat}{{\hat\theta}}
+\providecommand{\floor}[1]{\left \lfloor #1 \right \rfloor }
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\bf A Deep Representation for Images Through Weakly Supervised Learning\\[2ex] 
+       \rm\normalsize 2017}
+\date{\today}
+\author{\bf Daway Chou-Ren}
+
+
+\begin{document}
+\maketitle
+
+\thispagestyle{empty}
+\doublespacing
+
+\section{Abstract}
+We learn an image representation where similar images are close together and dissimilar iamges are farther apart. Typically, the task of learning fine-grained image similarity relies on obtaining carefully labeled data about image classes, such as whether an image displays a robin or a blue jay, and then training a model on this data to detect both inter-class and intra-class differences. We learn fine-grained similarity without relying on such labels, which take prohibitive amounts of time and manhours to obtain, especially for fine-grained tasks. Instead we train our model using an extremely weakly supervised process, relying on the geographic distance of geotagged Flickr images to serve as a proxy for this visual similarity. We use deep convolutional networks in a Siamese configuration rather than handcrafted features for robustness. 
+
+\section{Introduction}
+What does it mean for two images to be similar? Are two red-hued images similar, even if they are of different objects? Are an image of a cardinal and an image of a blue jay similar because they both show birds? Regardless of the semantic interpretation of the word 'similar', any model that determines whether or not two images are similar must first be able to embed them in a visual representation.\\
+
+Learning visual representations for images has been important for a variety of tasks, including image classification, semantic segmentation, object detection, and even geolocating images. The methods of extracting image representations have changed greatly over the years, moving from manually defined features like histograms of oriented gradients (HOGs) and scale-invariant feature transforms (SIFT)\cite{lowe1999object}\cite{dalal2005histograms}, to the current state of the art of extracting feature vectors from convolutional neural networks, beginning with the seminal work of Krizhevsky et al. which achieved classification results for the 2012 Imagenet ILSVRC image classification contest far surpassing previous state-of-the-art benchmarks\cite{krizhevsky2012imagenet}. Yet despite the change in techniques, the basic requirements for model training have remained the same. First, large quantities of reliably labeled data must be gathered, and then a model, usually a CNN, can trained on this data. With the popularization of CNNs, often Mechanical Turkers have employed to create massive and highly pure labeled datasets.\\
+
+The popularization of large scale image datasets such as ImageNet, which contains 14,197,122 images belonging to 1000 classes\cite{deng2009imagenet}, the MIT Places dataset which contains 7 million images for scene classification\cite{zhou2014learning}, the SUN scene classification database\cite{xiao2010sun}, and the Microsoft COCO dataset of 2.5 million images for common objects in context\cite{lin2014microsoft} have allowed researchers to build models highly adept at basic image classification tasks\cite{russakovsky2013detecting}. In a review of deep learning models trained on these massive datasets with many basic image classes (ImageNet contains classes for many animals and plants and items such as 'tennis ball', 'fountain pen', and 'tricycle') Russakovsky et al. concluded that deep learning techniques were able to transfer learning from these dataset classes to other generic classes, such as distinguishing dogs from airplanes.\cite{russakovsky2013detecting} However, more fine-grained image classification, such as between species of flowers, or of dogs of different ages, required learning different image embeddings.\\
+
+After the deep learning revolution, a major direction of image understanding research has been to develop more fine-grained datasets for the training of models for highly specific tasks. A quick search for image datasets published in 2016 returns ones for irises, ultrasounds, weather property, tumors, light fields, and food calories.\cite{bowyer2016nd}\cite{cortes2016ultrasound}\cite{chu2016image2weather}\cite{shi2016stacked}\cite{paudyal2016smart}\cite{pouladzadeh2015foodd}. Yet, although we have been able to train more and more specific models for finer and finer grained image classification, this research still relies on the gathering of accurately labeled data. It is infeasible to gather large quantities of data for every possible image understanding task.\\
+
+\subsection*{Noisy Supervised Training}
+
+Some more recent approaches have looked into augmenting highly supervised training with weakly supervised web data, thus greatly increasing the amount of data available for these highly specific image understanding tasks. Xu et al.\cite{xu2015augmenting} use existing datasets to learn feature representations and part-based object classifiers. They then extract accurate part labels from fuzzy web image data. Kraus et al take this line of work even further and use generic image recognition techniques on noisy web data and exceed state-of-the-art classification accuracies on the CUB-200-2011 dataset, without using any manually labeled data.\cite{krause2016unreasonable}\\
+
+\subsection*{Our Approach}
+This paper follows this recent work in utilizing the large quantity of image data available online through search engines and image hosting sites like Google and Flickr. Rather than use web queries to form fuzzy classes for image classification like Kraus et al, we seek to use geo-tagged images uploaded to Flickr to learn an image embedding useful for image similarity tasks. We do not train on any image pairs manually labeled as similar but rather rely on the physical geographic distance between two images to inform the training of our model. We explore how well geographic distance can serve as a stand-in for manually labeled similarity data, with a particular focus on exploring heuristics for sampling pairs of similar images for maximal learning efficiency.\\
+
+We choose to use deep learning representations of images trained through a Siamese network rather than use manually crafted features such as Gabor filters, scale-invariant feature transforms (SIFT), or histograms of oriented gradients (HOG), believing that allowing a model to learn features on its own will be more robust. In a departure from the research of Xu et al and Kraus et al, we also work with a classless representation of our data. We do not assign an image to a fuzzy class, such as belonging to the category 'bridge', but associate it only with its latitude and longitude data. In a sense, this means we treat each image as belonging to a unique geolocation class of size 1.\\
+
+Using our developed heuristics for sampling pairs of similar images for comparison with dissimilar images, we train a deep Siamese network to learn a low dimensional feature representation, with an objective of learning that pairs of images close in physical distance should be closer in our image embedding space.\\
+
+The contributions of this paper are [to be completed]
+
+\section{Related Work}
+
+\subsection{Effectiveness of Deep Learning}
+The field of image similarity relies on learning a useful model for embedding images into a feature space. Recent years have seen some groundbreaking advancements in the application of machine learning for vision tasks, especially in the field of deep learning. Convolutional neural networks\cite{lecun1989backpropagation} are capable of learning low, medium, and high level features, using nonlinear transformations to abstract high level features into more and more basic ones. Krizhevsky et al's momentous performance in the 2012 ILSVRC ImageNet classification competition provided the first demonstration of the effeciveness of deep learning.\cite{krizhevsky2012imagenet} Recent research has shown that deeper models can perform even better at a variety of image tasks.\cite{szegedy2015going} Much work on different activation functions has allowed CNNs to become much more sparse, and combined with work exploring deep network depths\cite{simonyan2014very}\cite{szegedy2015going} as well as with work allowing models to regulate their own depth\cite{he2016deep}, deep CNNs have proven extremely effective at learning a variety of useful image representations. Athiwaratkun and Kang show that just the image representation extracted by deep CNNs can be combined with simpler classifiers such as SVMs and random forests to achieve high accuracies for clustering tasks.\cite{athiwaratkun2015feature} In recent years, some deep learning models have even achieved classification accuracies surpassing even human performance. In 2015, He et al. achieved a 4.94\% top-5 test error on the ImageNet 2012 dataset, surpassing the human error performance of 5.1\%\cite{he2016deep}.\\
+
+Importantly, deep learning methods do not require the manual crafting of features based on domain-level knowledge. Instead, deep learning models learn to abstract patterns from data automatically. This approach stands in contrast to the majority of work done in the 1990s and 2000s, which made extensive use of manually defined image feature extraction techniques, such as Gabor filters, scale-invariant feature transforms (SIFT), and histograms of oriented gradients (HOG).\cite{jain1997object}\cite{lowe1999object}\cite{dalal2005histograms} In the latter half of the 2000s, hierarchical feature representations such as spatial pyramids, which transform images into segmentations, each of which is locally orderless, proved effective in a variety of image tasks as well\cite{yang2009linear}\cite{girshick2014rich}\cite{lazebnik2006beyond}. In the field of content-based image retrieval, spatial envelopes and transformed histograms where used to attempt to capture global scene properties\cite{oliva2001modeling}\cite{wu2011centrist}. Features extracted using these methods were then used with rigid distance functions such as Euclidean or cosine similarity distances to determine an overall image similarity. Much work has been done on designing better similarity measures for these low-level features. Notably, Jegou et al.\cite{jegou2012aggregating} adapt the Fisher kernel for use in aggregating local image descriptors into a reduced dimension vector while preserving the bulk of relative distance information. 
+
+\subsection{Deep Convolutional Neural Networks}
+Convolutional neural networks have become the de-facto standard in image tasks, as stacked convolutional layers are well suited for learning image descriptors.\cite{karpathy2014large}\cite{krizhevsky2012imagenet}\cite{szegedy2015going} Besides convolutional layers, CNNs typically consist of pooling layers, activation layers, fully connected layers, and a loss layer. A convolutional layer consists of a set of kernels $K$, each of which typically has width and height dimensions smaller than the dimensions of an inputted image, but with a depth matching the depth of the input. During the forward pass of network training, each filter is convolved with a sliding patch across the input's width and height, producing a feature map associated with that kernel. Each feature map codes the activation of the kernel along with the spatial location of that activation. Because the dimensions of $K$ are smaller than the input, convolutional layers only have local connectivity.\\
+
+Pooling layers, usually in the form of max-pooling, down sample the feature maps produced by the convolutional layers. Max pooling will output the maximum value in each part of a segmentation of a feature map. Pooling layers drastically reduce the computation required to train a network. Activation layers are used to control which nodes in a layer send output to the next layer. The standard activation currently used is the rectified linear activation unit (ReLU), which takes the form
+\begin{equation}
+	f(x) = \begin{cases}
+	   x & x > 0 \\
+	   0 & x\leq 0 \\
+     \end{cases}
+\end{equation}
+Various forms of ReLU have been proposed, notably the parametric ReLU (pReLU), which adds a learnable parameter, $\alpha$, to control a slope for the negative activation domain and which was used by He et al. to achieve better than human performance for ImageNet classification.\cite{he2016deep}
+\begin{equation}
+	f(x) = \begin{cases}
+	   x & x > 0 \\
+	   \alpha x & x \leq 0 \\
+     \end{cases}
+\end{equation}
+
+Since convolutional layers only produce feature maps on local scales, fully connected layers at the end of a CNN allow for high level features to be learned. These layers have full connections to all activated neurons from previous layers, which allow for global mixing of activated feature maps. To complete our discussion of the CNN, the loss layer specifies how a network should penalize incorrect predictions. Typically sigmoid cross-entropy loss is used. Regularization is also used, typically in the form of L1 or L2 weight decay. Dropout layers, which deactivate a random subset of a layer's neurons in each iteration of training, have also proved highly effective for neural network regularization.\cite{srivastava2014dropout}\\
+
+The term deep CNN refers to a CNN that has many layers. This definition is highly variable: the popular VGG16 model has 16 layers\cite{simonyan2014very} and versions of ResNet contain 50, 101, and 152 layers\cite{he2016deep}.\\
+
+We can more precisely define a CNN as a function $f$ that takes parameters $\theta$ and an input image $I$ to produce an image embedding $x$ and a loss $L$.
+
+
+% \subsection{Image Embedding as Used for Image Similarity}
+%
+% With the effectiveness of deep learned image features to tasks like classification, detection, and segmentation, the application of deep learned image features to image similarity is immediate: if a highly accurate ImageNet-trained model predicts two images to belong to the same class, they can be considered more similar than two images belonging to different classes. Distance functions applied to the 1000-class softmax probability outputs of such a model can be used to retrieve a more fine-grained image similarity score than this same-category categorical comparison.\\
+
+
+
+\subsection{Weakly Supervised Learning with Fuzzy Data}
+The problems with relying on supervised learning are many. It is difficult and time consuming to create large datasets, and even when these are created, such as for ImageNet, they are often specific to a certain task and do not necessarily extend to novel concepts. As Russakowsky et al. discussed\cite{russakovsky2013detecting}, pretrained models were only good at segmenting images into basic classes, and demonstrated that they were better tuned for classification of natural classes such as animals than they were for man-made objects. In recent years, a proliferation of intra-class datasets, such as for hundreds of species of flowers or birds, have allowed deep learning techniques to tackle everything from differentiating species of flowers\cite{angelova2013image}, leaves\cite{rejeb2013vantage}, and birds\cite{berg2014birdsnap}, but the limitations of a class-based formulation of image similarity remain apparent. More and more specific class formulas will need to be created, and this is higly reliant on how explicit human annotations are. Labeling an image as a dog rather than as a labrador will create problems if attempting to apply this data to a fine-grained image similarity task.\\
+
+Much work on using weakly supervised learning has focused on using web images as a source of easily and quickly obtainable weakly labeled dataset.\cite{bergamo2010exploiting}\cite{fergus2010learning}\cite{li2010optimol}\cite{schroff2011harvesting}. While on the whole successful, researchers note that web created classes suffer from polysemy and noise problems. A search for penguin images will not necessarily return only penguins because of the way images and surrounding text are indexed, and a search for screens might return both door screens and computer screen. In the field of object segmentations, Rubinstein et al achieved better than state of the art benchmark results training on a web gathered corpus, yet also noted difficulty with certain classes because of the low quality of some images.\cite{rubinstein2013unsupervised}
+
+Krause et al use fuzzy web-based data to remarkable effectiveness, successfully training classification for over 14,000 image classes, achieving close to human accuracy on the CUB Caltech bird species dataset, and beating state of the art results for CUB and the Stanford dog dataset\cite{krause2016unreasonable}. They quantify the fuzziness (incorrectly labeled images) in their images classes to be an average of 16\%, demonstrating that a certain amount of fuzziness is still able to be overcome in training. 
+
+
+\subsection{Siamese Neural Networks}
+
+As noted by Wang et al\cite{wang2014learning}, the network structures that are effective at classifying images into object classes are not necessarily well-designed for detecting image similarity, especially when image similar is defined not just as whether two objects are in the same class, but when our desired similar metric must be fine enough to rank similarities within classes. For example, a red book should be judged more similar to a maroon book and should a light green one. The Siamese architecture, first proposed by Bromley et al. in 1994\cite{bromley1993signature} for the purposes of verifying signatures, is well suited for this task. Siamese networks have since been used in a variety of similarity tasks, such as ground-to-aerial geolocalization\cite{lin2015learning}, matching visual similarity for product design\cite{bell2015learning}, comparing image patches\cite{zagoruyko2015learning}, and one-shot image classification\cite{koch2015siamese}.\\
+
+A Siamese net is a formulation of two copies of a CNN that share parameters and hyperparameters as well as a loss layer and thus weight updates. If we represent a Siamese net as $f$, then $f$ takes $\theta$, two images $I_1, I_2$ as well as an indicator variable $p$ to indicate if these images form a positive (similar) or negative (dissimilar) pair, produces two embeddings $x_1, x_2$ and one loss $L$. We wish to find a locally optimal $\theta$ such that for a triplet of embeddings $x_1, x_2, x_3$ produced by $f$, if $|x_1 - x_2|_2^2 < |x_1 - x_3|_2^2$, then we expect $I_1$ and $I_2$ to be much more semantically similar than $I_1$ and $I_3$.\\
+
+As discussed by Bell and Bala\cite{bell2015learning}, Siamese networks can be tweaked in various ways to produce both an embedding and a classification for each pair of images. The output from the CNN layer can regularized either for the embedding predictions or the class predictions or both. If there are multiple output from the CNN layer, multiple loss layers can be used as well.
+
+\begin{figure}[!htbp]
+  \label{fig:siamese_configurations}
+  \centering
+  \includegraphics[width=\textwidth]{siamese_configurations.jpg}
+  \caption{Some configurations from Bell and Bala}
+\end{figure}
+
+
+\section{Distance Metric for Siamese Network}
+The similarity of two images, $S(A,B)$, can be defined as the Euclidean distance of their feature embedded vectors, $f(A)$ and $f(B)$:
+\begin{equation}
+	S(A,B) = ||f(A) - f(B)||_2^2
+\end{equation}
+A cosine similarity $\dfrac{f(A) \cdot f(B)}{||f(A)||||f(B)||}$ can also be used. Here $f(\cdot)$ might be a feature embedding such as the weight representation of the final convolutional block in a convolutional neural network pretrained on ImageNet, or a CNN trained from scratch.\\
+
+A contrastic loss function posposed by Hadsell et al and followed by Lin et al for pairs of images is as follows:
+
+\begin{equation}
+	L(l, p_1, p_2) = \dfrac{1}{2}lS(p_1, p_2) + \dfrac{1}{2}(1-l)\text{max}(0, (g-S(p_1,p_2)))
+\end{equation}
+where $l$ is an indicator variable equal to 1 if the pair is similar and 0 if not, and $g$ is a regulator for the margin between unmatched pairs.\cite{hadsell2006dimensionality}\cite{lin2015learning} This loss function forces both similar pairs together than dissimilar pairs farther apart. \\
+
+We use pairwise comparisons of images, grouping sets of three images, $p_i, p_i^+,$ and $p_i^-,$ into two pairs, $(p_i, p_i^+)$ and $(p_i, p_i^-)$. We can extend this pair loss function into a hinge loss for triplets as follows\cite{wang2014learning}:
+\begin{equation}
+	l(p_i, p_i^+, p_i^-) = \text{max}\{0, g + ||f(p_i) - f(p_i^+)||_2^2 - ||f(p_i)-f(p_i^-)||_2^2\}
+\end{equation}\\
+
+We can add L2 regularization so that our objective function is
+\begin{equation}
+	\dfrac{\lambda}{2}||\mathbf{W}||_2^2 \text{max}\{0, g + ||f(p_i) - f(p_i^+)||_2^2 - ||f(p_i)-f(p_i^-)||_2^2\}
+\end{equation}
+where $\lambda$ is a regularization parameter and $\mathbf{W}$ is our weight parameter matrix.
+
+\section{Data}
+Our data consists of all geo-tagged images uploaded to Flickr between 00:00:00 (GMT) January 1, 2006 to 00:00:00 January 1, 2017 with latitude and longitude inside the bounding box [-74.052544, 40.525070, -73.740685, 40.889249]. This bounding box roughly corresponds to the city limits of New York, New York. There are over 6 million images in the dataset, with roughly 500,000 each for the years from 2009-2016. In addition to the latitude and longitude, each image was downloaded with an associated timestamp, Flickr user identifier, title and description (user uploaded caption). The vast majority of photos are from Manhattan, and distinct clusters can be seen around typical tourist attractions such as the World Trade Center, the Brooklyn Bridge, the Metropolitan Museum of Art, the Rockefeller Center, and up and down Broadway Avenue. To give an idea of the image densities shown, there are 6745 images with latitude beginning with 40.779 and longitude beginning with -73.963, which corresponds to 100 square meters around Metropolitan Museum of Artfrom from 2014 only.\\
+
+\begin{figure}[!htbp]
+  \label{densities}
+  \centering
+  \begin{minipage}[b]{0.4\textwidth}
+  \includegraphics[width=\textwidth]{newyork_density.png}
+  \caption{All images}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[!htbp]{0.4\textwidth}
+  \includegraphics[width=\textwidth]{manhattan_density.png}
+  \caption{Closer view of highest image density}
+  \end{minipage}
+\end{figure}
+
+With 6 million images, there are roughly $1.8\times 10^{13}$ possible image pairs, which is infeasible to train a CNN on, so we develop a heuristic for sampling positive and negative image pairs for efficient training, which we explain in [insert section].\\
+
+The highly clustered nature of the images leads us to believe that image triplets can be sampled with a positive pair being less than one meter apart and a negative pair defined as images more than 2000 meters apart. 2000 meters is significant threshold because the maximum dimension of any easily identifiable cluster is 1825 meters for the Brooklyn Bridge. Roughly 0.6\% of our image pairs have an image distance of one meter or less.\\
+
+\begin{figure}[!htbp] 
+  \label{ fig7} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{2014_distance_histogram.png} 
+    \caption{All sampled pairwise distances} 
+    \vspace{4ex}
+  \end{minipage}%%
+  \begin{minipage}[!htbp]{0.5\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{2014_distance_5000_histogram.png} 
+    \caption{Within 5000 meters} 
+    \vspace{4ex}
+  \end{minipage} 
+  \begin{minipage}[!htbp]{0.5\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{2014_distance_2000_histogram.png} 
+    \caption{Within 2000 meters} 
+    \vspace{4ex}
+  \end{minipage}%% 
+  \begin{minipage}[!htbp]{0.5\linewidth}
+    \centering
+    \includegraphics[width=\textwidth]{2014_distance_200_histogram.png} 
+    \caption{Within 200 meters} 
+    \vspace{4ex}
+  \end{minipage} 
+  \caption{Sampled pairwise distances}
+\end{figure}
+
+We show examples of photos taken at the Metropolitan Museum of Art and from the Brooklyn Bridge.\\
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=\textwidth]{brooklynbridge.jpg}
+  \caption{Photos from the Brooklyn Bridge (40.706 -73.996)}
+  \label{fig:brooklynbridge}
+\end{figure}
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=\textwidth]{met.jpg}
+  \caption{Photos from the Metropolitan Museum of Art (40.779 -73.963)}
+  \label{fig:met}
+\end{figure}
+
+To deal with the duplicated photos, we use aggressive duplication removal when selecting positive image pairs for training. These two sets of example clusters are extremely far apart in high-level semantic space and are perhaps not representative of the dataset as a whole, which consists of many generic street view photos. But they do demonstrate that there is significant high-level variation in image features as a function of geographic location, particularly when switching from indoor to outdoor settings.\\
+
+Though the existence of semantic clusters provides the basis for our model's learnability, we never explicitely create these clusters or segment our images in any way beyond creating 1 meter and 2000 meter balls for positive and negative image pair selection. In a similar paper which trained a CNN to geolocate Flickr images on a global scale, Weyand et al look at the geographic density of their photos and divide the earth into variable size latitude longitude bounding boxes which they use as image classes.\cite{weyand2016planet} The existence of classes allows Weyand et al to frame geolocalization as a standard classification problem to which a CNN is easily applied. We do not explicitly apply this sort of segmentation and we do not seek to predict a class but rather to find an image embedding.
+
+\subsection{Proprocessing}
+We downsample all images to size (224,224), a common size proven useful for feature represenation for the ImageNet classification task by the ResNet architectures.\cite{He2015} Because we expect the time of day a photo is taken to have a significant effect on its representation in an image embedding, we wish to keep the color channel for our images. However, many photos uploaded to Flickr are in grayscale, so we remove these using an entropy metric. We apply mean pixel subtraction to center our data.
+
+\subsection{Quantifying the Amount of Fuzziness}
+
+\section{Network Architecture and Training}
+
+\begin{figure}[!tbp]
+  \centering
+  \includegraphics[width=\textwidth]{pipeline.jpg}
+  \caption{Hand-drawn pipeline until I can make a nice graphic}
+  \label{fig:pipeline}
+\end{figure}
+Placeholder figure
+
+We use the parametric ReLU activation unit introduced by He et al.\cite{he2016deep} We add an L2 regularization term to our loss function $\dfrac{\lambda}{2}||W||_2^2$, where $W$ are our networks weights, $\lambda$ is a regularization parameter. 
+
+
+\section{Experiments}
+
+\section{Results}
+
+\section{Conclusion}
+
+% \bibliographystyle{plain}
+\pagebreak
+% \bstctlcite{bstctl:etal, bstctl:nodash, bstctl:simpurl}
+\bibliographystyle{IEEEtranS}
+\bibliography{thesis}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
