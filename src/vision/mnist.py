@@ -126,7 +126,7 @@ history = model.fit([tr_pairs[:, 0], tr_pairs[:, 1]], tr_y,
           batch_size=128,
           nb_epoch=nb_epoch)
 
-ipdb.set_trace()
+# ipdb.set_trace()
 
 # compute final accuracy on training and test sets
 pred = model.predict([tr_pairs[:, 0], tr_pairs[:, 1]])
