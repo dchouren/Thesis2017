@@ -19,6 +19,9 @@ from keras.layers import Dense, Dropout, Input, Lambda
 from keras.optimizers import RMSprop
 from keras import backend as K
 
+from sklearn.metrics import accuracy_score
+
+
 import ipdb
 
 
@@ -74,7 +77,10 @@ def create_base_network(input_dim):
 def compute_accuracy(predictions, labels):
     '''Compute classification accuracy with a fixed threshold on distances.
     '''
-    return labels[predictions.ravel() < 0.5].mean()
+    # ipdb.set_trace()
+    numeric_preds = 1 * [predictions.ravel() < 0.5][0]
+    return accuracy_score(numeric_preds, labels)
+    # return labels[predictions.ravel() < 0.5].mean()
 
 
 # the data, shuffled and split between train and test sets
@@ -86,7 +92,7 @@ X_test = X_test.astype('float32')
 X_train /= 255
 X_test /= 255
 input_dim = 784
-nb_epoch = 20
+nb_epoch = 2
 
 # create training+test positive and negative pairs
 digit_indices = [np.where(y_train == i)[0] for i in range(10)]
@@ -115,14 +121,12 @@ model = Model(input=[input_a, input_b], output=distance)
 rms = RMSprop()
 model.compile(loss=contrastive_loss, optimizer=rms)
 
-ipdb.set_trace()
-
 model.fit([tr_pairs[:, 0], tr_pairs[:, 1]], tr_y,
           validation_data=([te_pairs[:, 0], te_pairs[:, 1]], te_y),
           batch_size=128,
           nb_epoch=nb_epoch)
 
-ipdb.set_trace()
+# ipdb.set_trace()
 
 # compute final accuracy on training and test sets
 pred = model.predict([tr_pairs[:, 0], tr_pairs[:, 1]])
