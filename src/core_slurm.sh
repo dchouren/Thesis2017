@@ -32,7 +32,7 @@ echo "#!/bin/sh
 #SBATCH --mail-type=end
 #SBATCH --mail-user=dchouren@princeton.edu 
 
-#SBATCH --workdir=$SLURM_OUT
+#SBATCH --workdir=$SLURM
 module load cudatoolkit/8.0 
 module load cudann/cuda-8.0/5.1
 $5
@@ -66,7 +66,7 @@ echo "#!/bin/sh
 #SBATCH --mail-type=begin
 #SBATCH --mail-user=dchouren@princeton.edu
 # Set working directory:
-#SBATCH --workdir=$SLURM_OUT
+#SBATCH --workdir=$SLURM
 $5
 srun /usr/bin/time -f '%E elapsed, %U user, %S system, %M memory, %x status' /bin/bash -c \"
 set -e 

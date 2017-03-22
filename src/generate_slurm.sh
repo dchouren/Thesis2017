@@ -22,7 +22,9 @@ THESIS="$7"
 SRC=$THESIS/src
 
 # slurm_header runtime mem program name [additional_sbatch_instr]
-SLURM_OUT=$THESIS/slurm
+SLURM=$THESIS/slurm
+SLURM_OUT=$THESIS/out
+mkdir -p $SLURM
 mkdir -p $SLURM_OUT
 
 echo $SLURM_OUT
@@ -37,9 +39,9 @@ else
   function_call=slurm_header
 fi
 
-$function_call $runtime $memory "$program_command" ${job_name} > $SLURM_OUT/${job_name}.slurm
+$function_call $runtime $memory "$program_command" ${job_name} > $SLURM/${job_name}.slurm
 
-jobs+=($(sbatch $SLURM_OUT/${job_name}.slurm | cut -f4 -d' '))
+jobs+=($(sbatch $SLURM/${job_name}.slurm | cut -f4 -d' '))
 
 # notify_email $SLURM_OUT/${job_name}.slurm > /tmp/$USER/${job_name}
 

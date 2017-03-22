@@ -29,7 +29,6 @@ class _KDTree(object):
 
 if __name__ == '__main__':
     sys.setrecursionlimit(10000)
-    start_time = time.time()
 
     data_file = sys.argv[1]
     sample_size = int(sys.argv[2])
@@ -41,13 +40,15 @@ if __name__ == '__main__':
 
     sample_data = data[np.random.choice(data.shape[0], sample_size)]
     K = _KDTree(sample_data)
+    
+    start_time = time.time()
 
     dist = 0.000014
     neg_dist = 0.1838
-    # pos_pairs = K.get_pos_pairs(dist)
-    # np.save('./{}_test_pairs.npy'.format(sample_size), np.asarray(pos_pairs))
+    pos_pairs = K.get_pos_pairs(dist)
 
-    neg_pairs = K.get_neg_pairs(neg_dist)
-    np.save('./{}_neg_test_pairs.npy'.format(sample_size), np.asarray(neg_pairs))
-    print(time.time() - start_time)
-
+    # neg_pairs = K.get_neg_pairs(neg_dist)
+    np.save('./{}_test_pairs.npy'.format(sample_size), np.asarray(pos_pairs))
+    # np.save('./{}_neg_test_pairs.npy'.format(sample_size), np.asarray(neg_pairs))
+    
+    print('{}: {}'.format(sample_size, time.time() - start_time))

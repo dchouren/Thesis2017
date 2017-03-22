@@ -21,7 +21,7 @@ from keras.models import Sequential, Model
 from keras.layers import Dense, Dropout, Input, Lambda
 from keras.layers import Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D
-from keras.optimizers import RMSprop, Adadelta, Adagrad, Nadam, Adam, Adamax
+from keras.optimizers import RMSprop, Adadelta, Adagrad, Nadam, Adam, Adamax, SGD
 from keras import backend as K
 
 from _KDTree import _KDTree
@@ -62,7 +62,7 @@ def contrastive_loss(y_true, y_pred):
     http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
     '''
     margin = 1
-    return K.mean((1 - y_true) * K.square(y_pred) + (y_true) * K.square(K.maximum(margin - y_pred, 0)))
+    return K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))
 
 
 
@@ -133,6 +133,7 @@ def main():
 
     identifier = model_name + '_' + str(nb_epoch) + '_' + str(initial_split) + '_' + optimizer
 
+    sys.setrecursionlimit(10000)
 
     data_files = sorted(os.listdir(data_dir))[:initial_split]
 
@@ -195,14 +196,15 @@ def main():
     model = Model(input=[input_a, input_b], output=distance)
 
     # train
-    rms = RMSprop()
+    sgd = SGD(lr=0.01, momentum=0.9, decay=0.0, nesterov=True)
+    rms = RMSprop(lr=0.001, rho=0.9, epsilon=1e-08, decay=0.0)
     adadelta = Adadelta(lr=1.0, rho=0.95, epsilon=1e-08, decay=0.0)
     adagrad = Adagrad(lr=0.01, epsilon=1e-08, decay=0.0)
     adam = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
     adamax = Adamax(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
     nadam = Nadam(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=1e-08, schedule_decay=0.004)
 
-    optimizer_map = {'rms': rms, 'adadelta': adadelta, 'adagrad': adagrad, 'adam': adam, 'adamax': adamax, 'nadam': nadam}
+    optimizer_map = {'rms': rms, 'adadelta': adadelta, 'adagrad': adagrad, 'adam': adam, 'adamax': adamax, 'nadam': nadam, 'sgd': sgd}
 
     opt = optimizer_map[optimizer]
     model.compile(loss=contrastive_loss, optimizer=opt)
@@ -216,14 +218,14 @@ def main():
     # compute final accuracy on training and test sets
     tr_pred = model.predict([tr_pairs[:, 0], tr_pairs[:, 1]])
     tr_acc = compute_accuracy(tr_pred, tr_y, distance_threshold)
-    np.savetxt('/tigress/dchouren/thesis/preds/tr_pred_' + identifier, tr_pred)
+    np.savetxt('/tigress/dchouren/thesis/preds/' + identifier + '_tr', tr_pred)
 
     # ipdb.set_trace()
     # print(pred)
 
     val_pred = model.predict([val_pairs[:, 0], val_pairs[:, 1]])
     val_acc = compute_accuracy(val_pred, val_y, distance_threshold)
-    np.savetxt('/tigress/dchouren/thesis/preds/te_pred_' + identifier, val_pred)
+    np.savetxt('/tigress/dchouren/thesis/preds/' + identifier + '_te', val_pred)
 
 
     print('* Accuracy on training set: %0.2f%%' % (100 * tr_acc))
@@ -232,31 +234,12 @@ def main():
     model.save('/tigress/dchouren/thesis/trained_models/' + identifier)
 
     # print(history.history.keys())
-
+    h = history.__dict__
+    h.pop('model', None)
     with open('/tigress/dchouren/thesis/histories/' + identifier + '.pickle', 'wb') as outf:
-        pickle.dump(history.history, outf)
+        pickle.dump(h, outf)
 
-    print('Saved all')
-
-
-    # list all data in history
-    # print(history.history.keys())
-    # # summarize history for accuracy
-    # plt.plot(history.history['acc'])
-    # plt.plot(history.history['val_acc'])
-    # plt.title('model accuracy')
-    # plt.ylabel('accuracy')
-    # plt.xlabel('epoch')
-    # plt.legend(['train', 'test'], loc='upper left')
-    # plt.savefig(join('plots', launch_time + '_acc'))
-    # # summarize history for loss
-    # plt.plot(history.history['loss'])
-    # plt.plot(history.history['val_loss'])
-    # plt.title('model loss')
-    # plt.ylabel('loss')
-    # plt.xlabel('epoch')
-    # plt.legend(['train', 'test'], loc='upper left')
-    # plt.savefig(join('plots', launch_time + '_acc'))
+    print('Total time: {}', time.time() - launch_time)
 
 
 if __name__ == '__main__':
