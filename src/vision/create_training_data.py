@@ -1,11 +1,20 @@
+'''
+Create image training triplets.
+
+Usage: python create_training_data.py year month output_file
+Example: python src/vision/create_training_data.py 2014 01 resources/pairs/2014
+'''
+
+import sys
+from os.path import join
+import os
+import time
+
 import numpy as np
+
 from _KDTree import _KDTree
 import vision_utils as vutils
-from os.path import join
-
 from gen_utils import meter_distance
-
-import time
 
 
 def create_pos_pairs(dist, KDTree):
@@ -15,25 +24,23 @@ def create_neg_pairs(dist, KDTree):
     return KDTree.get_neg_pairs(dist)
 
 
-def create_pairs(year, month, output_dir):
+def create_pairs(year, month, output_dir, sample_size):
     fpath_base_dir = '/tigress/dchouren/thesis/resources/paths'
     image_base_dir = '/scratch/network/dchouren/images'
     data_file = join(fpath_base_dir, year, month)
     image_dir = join(image_base_dir, year, month, month)
 
-    sample_size = 1000
-
     with open(data_file, 'r') as inf:
         data = inf.readlines()
 
-    # ipdb.set_trace()
+    # fpath files are lat, long, ...
     data_array = np.asarray([[float(x.split(',')[0]), float(x.split(',')[1]), *x.split(',')[2:]] for x in data])
 
     sample_data = data_array[np.random.choice(data_array.shape[0], sample_size)]
     K = _KDTree(sample_data)
 
-    pos_dist = 0.000014
-    neg_dist = 0.1838    
+    pos_dist = 0.000014  # roughly 1m
+    neg_dist = 0.1838    # roughly 2000m
     pos_pairs = create_pos_pairs(pos_dist, K)
 
     create_pairs_helper(pos_pairs, data_array, image_dir, output_dir)
@@ -84,7 +91,7 @@ def create_pairs_helper(pos_pairs, all_image_data, image_dir, output_dir):
         #     print(i, time.time() - last_time)
 
         if len(labels) == 1000:
-            output_file = join(output_dir, 'pairs_' + str(count) + '.npy')
+            output_file = join(output_dir, 'pairs_' + str(count).zfill(3) + '.npy')
             print('Saving to {}'.format(output_file))
             print(time.time() - last_time)
             last_time = time.time()
@@ -95,11 +102,25 @@ def create_pairs_helper(pos_pairs, all_image_data, image_dir, output_dir):
             count += 1
 
     pairs = np.squeeze(np.asarray(pairs))
-    np.save(open(join(output_dir, 'pairs_' + str(count) + '.npy'), 'wb'), pairs)
+    np.save(open(join(output_dir, 'pairs_' + str(count).zfill(3) + '.npy'), 'wb'), pairs)
 
 
 
-create_pairs('2014', '01', 'resources/pairs/2014')
+
+if __name__ == '__main__':
+    if len(sys.argv) != 4:
+        print (__doc__)
+        sys.exit(0)
+
+    year = sys.argv[1]
+    month = sys.argv[2]
+    sample_size = int(sys.argv[3])
+
+    output = join('/scratch/network/dchouren/resources/pairs', year, month)
+    if not os.path.exists(output):
+        os.makedirs(output)
+
+    create_pairs(year, month, output, sample_size)
 
 
 

@@ -121,12 +121,9 @@ model = Model(input=[input_a, input_b], output=distance)
 rms = RMSprop()
 model.compile(loss=contrastive_loss, optimizer=rms)
 
-history = model.fit([tr_pairs[:, 0], tr_pairs[:, 1]], tr_y,
-          validation_data=([te_pairs[:, 0], te_pairs[:, 1]], te_y),
-          batch_size=128,
-          nb_epoch=nb_epoch)
+history = model.fit([tr_pairs[:, 0], tr_pairs[:, 1]], tr_y, validation_data=([te_pairs[:, 0], te_pairs[:, 1]], te_y), batch_size=128, nb_epoch=nb_epoch)
 
-# ipdb.set_trace()
+ipdb.set_trace()
 
 # compute final accuracy on training and test sets
 pred = model.predict([tr_pairs[:, 0], tr_pairs[:, 1]])
