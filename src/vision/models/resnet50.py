@@ -19,6 +19,8 @@ from keras.layers import Convolution2D, MaxPooling2D, ZeroPadding2D, AveragePool
 from keras.layers import Dense, Activation, Flatten
 from keras.layers import merge, Input
 from keras.layers.advanced_activations import PReLU
+from keras import regularizers
+from keras import initializations
 from keras.models import Model
 from keras.preprocessing import image
 from keras.utils.data_utils import get_file
@@ -51,18 +53,17 @@ def identity_block(input_tensor, kernel_size, filters, stage, block):
     conv_name_base = 'res' + str(stage) + block + '_branch'
     bn_name_base = 'bn' + str(stage) + block + '_branch'
 
-    x = Convolution2D(nb_filter1, 1, 1, name=conv_name_base + '2a')(input_tensor)
+    x = Convolution2D(nb_filter1, 1, 1, name=conv_name_base + '2a', init=initializations.he_normal)(input_tensor)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2a')(x)
     # x = Activation('relu')(x)
     x = PReLU(init='zero', weights=None)(x)
 
-    x = Convolution2D(nb_filter2, kernel_size, kernel_size,
-                      border_mode='same', name=conv_name_base + '2b')(x)
+    x = Convolution2D(nb_filter2, kernel_size, kernel_size, border_mode='same', name=conv_name_base + '2b', init=initializations.he_normal)(x)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2b')(x)
     # x = Activation('relu')(x)
     x = PReLU(init='zero', weights=None)(x)
 
-    x = Convolution2D(nb_filter3, 1, 1, name=conv_name_base + '2c')(x)
+    x = Convolution2D(nb_filter3, 1, 1, name=conv_name_base + '2c', init=initializations.he_normal)(x)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2c')(x)
 
     x = merge([x, input_tensor], mode='sum')
@@ -92,23 +93,20 @@ def conv_block(input_tensor, kernel_size, filters, stage, block, strides=(2, 2))
     conv_name_base = 'res' + str(stage) + block + '_branch'
     bn_name_base = 'bn' + str(stage) + block + '_branch'
 
-    x = Convolution2D(nb_filter1, 1, 1, subsample=strides,
-                      name=conv_name_base + '2a')(input_tensor)
+    x = Convolution2D(nb_filter1, 1, 1, subsample=strides, name=conv_name_base + '2a', init=initializations.he_normal)(input_tensor)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2a')(x)
     # x = Activation('relu')(x)
     x = PReLU(init='zero', weights=None)(x)
 
-    x = Convolution2D(nb_filter2, kernel_size, kernel_size, border_mode='same',
-                      name=conv_name_base + '2b')(x)
+    x = Convolution2D(nb_filter2, kernel_size, kernel_size, border_mode='same', name=conv_name_base + '2b', init=initializations.he_normal)(x)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2b')(x)
     # x = Activation('relu')(x)
     x = PReLU(init='zero', weights=None)(x)
 
-    x = Convolution2D(nb_filter3, 1, 1, name=conv_name_base + '2c')(x)
+    x = Convolution2D(nb_filter3, 1, 1, name=conv_name_base + '2c', init=initializations.he_normal)(x)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2c')(x)
 
-    shortcut = Convolution2D(nb_filter3, 1, 1, subsample=strides,
-                             name=conv_name_base + '1')(input_tensor)
+    shortcut = Convolution2D(nb_filter3, 1, 1, subsample=strides, name=conv_name_base + '1', init=initializations.he_normal)(input_tensor)
     shortcut = BatchNormalization(axis=bn_axis, name=bn_name_base + '1')(shortcut)
 
     x = merge([x, shortcut], mode='sum')
@@ -201,7 +199,9 @@ def ResNet50(include_top=True, weights='imagenet',
 
     if include_top:
         x = Flatten()(x)
-        x = Dense(2)(x)
+        # x = Dense(512)(x)
+        # x = Dropout(0.2)(x)
+        x = Dense(1024)(x)
 
     model = Model(img_input, x)
 

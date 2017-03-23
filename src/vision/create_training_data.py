@@ -11,6 +11,7 @@ import os
 import time
 
 import numpy as np
+import h5py
 
 from _KDTree import _KDTree
 import vision_utils as vutils
@@ -43,68 +44,82 @@ def create_pairs(year, month, output_dir, sample_size):
     neg_dist = 0.1838    # roughly 2000m
     pos_pairs = create_pos_pairs(pos_dist, K)
 
-    create_pairs_helper(pos_pairs, data_array, image_dir, output_dir)
+    create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
 
     # return pairs, labels
 
 
-def create_pairs_helper(pos_pairs, all_image_data, image_dir, output_dir):
+def create_pairs_helper(pos_pairs, all_image_data, image_dir, year, month, output_dir):
 
     pairs = []
-    labels = []
 
-    # pos_pair_images = []
-    # neg_pair_images = []
+    start_time = time.time()
 
-    # image_dir = '/scratch/network/dchouren/images/2014/01_new/01_new'
+    total_count = 0
+    batch_size = 3200
+    limit = 35200
 
-    last_time = time.time()
+    output_file = join(output_dir, year + '_' + month + '_' + str(limit) + '.h5')
 
-    count = 0
+    print(len(pos_pairs))
 
-    for i, (base_data, pos_data) in enumerate(pos_pairs):
-        base_filename = base_data[2].split('/')[-1]
-        base_image = vutils.load_and_preprocess_image(join(image_dir, base_filename), dataset='imagenet', x_size=224, y_size=224, preprocess=False, rescale=True)
-        pos_filename = pos_data[2].split('/')[-1]
-        pos_image = vutils.load_and_preprocess_image(join(image_dir, pos_filename), dataset='imagenet', x_size=224, y_size=224, preprocess=False, rescale=True)
+    with h5py.File(output_file, 'w') as f:
 
-        possible_neg_image = all_image_data[np.random.choice(all_image_data.shape[0])]
-        while meter_distance(possible_neg_image[:2], base_data[:2]) < 2000:
-            possible_neg_image = all_image_data[np.random.choice(
-                all_image_data.shape[0])]
+        maxshape = (None,) + (2,3,224,224)
+        dset = f.create_dataset('pairs', shape=(batch_size,2,3,224,224), maxshape=maxshape, compression='gzip')
+        row_count = 0
 
-        neg_filename = possible_neg_image[2].split('/')[-1]
-        neg_image = vutils.load_and_preprocess_image(join(image_dir, neg_filename), dataset='imagenet', x_size=224, y_size=224, preprocess=False, rescale=True)
+        for i, (base_data, pos_data) in enumerate(pos_pairs):
+            base_filename = base_data[2].split('/')[-1]
+            base_image = vutils.load_and_preprocess_image(join(image_dir, base_filename), dataset='imagenet', x_size=224, y_size=224, preprocess=False, rescale=True)
+            pos_filename = pos_data[2].split('/')[-1]
+            pos_image = vutils.load_and_preprocess_image(join(image_dir, pos_filename), dataset='imagenet', x_size=224, y_size=224, preprocess=False, rescale=True)
 
-        if base_image is None or pos_image is None or neg_image is None:
-            continue
+            possible_neg_image = all_image_data[np.random.choice(all_image_data.shape[0])]
+            while meter_distance(possible_neg_image[:2], base_data[:2]) < 2000:
+                possible_neg_image = all_image_data[np.random.choice(
+                    all_image_data.shape[0])]
 
-        pos_pair = [base_image, pos_image]
-        neg_pair = [base_image, neg_image]
+            neg_filename = possible_neg_image[2].split('/')[-1]
+            neg_image = vutils.load_and_preprocess_image(join(image_dir, neg_filename), dataset='imagenet', x_size=224, y_size=224, preprocess=False, rescale=True)
 
-        # ipdb.set_trace()
-        pairs += [pos_pair]
-        pairs += [neg_pair]
-        labels += [1,0]
+            if base_image is None or pos_image is None or neg_image is None:
+                continue
 
-        # if i % 1000 == 0:
-        #     print(i, time.time() - last_time)
+            pos_pair = [base_image, pos_image]
+            neg_pair = [base_image, neg_image]
 
-        if len(labels) == 1000:
-            output_file = join(output_dir, 'pairs_' + str(count).zfill(3) + '.npy')
-            print('Saving to {}'.format(output_file))
-            print(time.time() - last_time)
-            last_time = time.time()
-            pairs = np.squeeze(np.asarray(pairs))
-            np.save(open(output_file, 'wb'), pairs)
-            labels = []
-            pairs = []
-            count += 1
+            # ipdb.set_trace()
+            pairs += [pos_pair]
+            pairs += [neg_pair]
 
-    pairs = np.squeeze(np.asarray(pairs))
-    np.save(open(join(output_dir, 'pairs_' + str(count).zfill(3) + '.npy'), 'wb'), pairs)
+            if len(pairs) == batch_size:
+                # output_file = join(output_dir, 'pairs_' + str(count).zfill(3) + '.npz')
+                # print('Saving to {}'.format(output_file))
+                # print(time.time() - last_time)
+                # last_time = time.time()
+                pairs = np.squeeze(np.asarray(pairs))
+                dset[row_count:] = pairs
+                row_count += pairs.shape[0]
+                dset.resize(row_count + pairs.shape[0], axis=0)
+
+                # np.savez_compressed(open(output_file, 'wb'), pairs)
+                labels = []
+                pairs = []
+
+                total_count += batch_size
+                print(dset.shape)
 
 
+            if total_count >= limit:
+                print('ending')
+                dset.resize(limit, axis=0)
+                print(dset.shape)
+                break
+
+
+        f.close()
+        print('{} | Saved to {}'.format(int(time.time() - start_time), output_file))
 
 
 if __name__ == '__main__':
@@ -116,12 +131,11 @@ if __name__ == '__main__':
     month = sys.argv[2]
     sample_size = int(sys.argv[3])
 
-    output = join('/scratch/network/dchouren/resources/pairs', year, month)
+    output = '/tigress/dchouren/thesis/resources/pairs'
     if not os.path.exists(output):
         os.makedirs(output)
 
     create_pairs(year, month, output, sample_size)
-
 
 
 
