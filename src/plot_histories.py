@@ -13,6 +13,9 @@ def plot_history(filename, output):
     with open(filename, 'rb') as inf:
         history = pickle.load(inf)
 
+    if 'history' in history.keys():
+        history = history['history']
+
     val_loss = history['val_loss']
     loss = history['loss']
 

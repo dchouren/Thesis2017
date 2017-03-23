@@ -15,9 +15,10 @@ import numpy as np
 from models.utils import _load_model
 
 from keras.preprocessing.image import ImageDataGenerator
-from keras.models import Sequential
-from keras.layers import Activation, Dropout, Flatten, Dense
-from keras.optimizers import RMSprop, SGD
+from keras.models import load_model
+
+from siamese_network import contrastive_loss
+
 
 import ipdb
 
@@ -42,20 +43,16 @@ im_dir = sys.argv[1]
 output = sys.argv[2] + '.npy'
 model_name = sys.argv[3]
 
-# sub_year_dirs = glob.glob(join(im_dir, '*'))
-model = _load_model(model_name, include_top=False)
+sys.setrecursionlimit(10000)
 
-# for sub_year in sub_year_dirs:
-#     print(sub_year)
+# model = _load_model(model_name, include_top=False)
+model_dir = '/tigress/dchouren/thesis/trained_models'
+model = load_model(join(model_dir, model_name), custom_objects={'contrastive_loss': contrastive_loss})
+
 labels = sorted(os.listdir(im_dir))
 class_sizes = [len(os.listdir(os.path.join(im_dir, label))) for label in labels]
 #ipdb.set_trace()
 nb_samples = sum(class_sizes)
-
-# sub_year_label = sub_year.split('/')[-1]
-# im_dir_label = im_dir.split('/')[-1]
-# output_path = output + '_' + im_dir_label + '.npy'
-# print(output_path)
 
 save_bottleneck_features(model, im_dir, (224, 224), 32, nb_samples, output)
 

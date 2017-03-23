@@ -10,12 +10,19 @@ for mode details).
 Gets to 99.5% test accuracy after 20 epochs.
 3 seconds per epoch on a Titan X GPU
 '''
-# from __future__ import absolute_import
-# from __future__ import print_function
+
+import random
+import time
+import sys
+from os.path import join
+import os
+import pickle
+
+import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score
 import numpy as np
 np.random.seed(1337)  # for reproducibility
 
-import random
 from keras.datasets import mnist
 from keras.models import Sequential, Model
 from keras.layers import Dense, Dropout, Input, Lambda
@@ -28,15 +35,6 @@ from _KDTree import _KDTree
 import vision_utils as vutils
 from models.utils import _load_model
 from gen_utils import meter_distance
-
-import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score
-
-import time
-import sys
-from os.path import join
-import os
-import pickle
 
 
 import ipdb
@@ -196,7 +194,7 @@ def main():
     model = Model(input=[input_a, input_b], output=distance)
 
     # train
-    sgd = SGD(lr=0.01, momentum=0.9, decay=0.0, nesterov=True)
+    sgd = SGD(lr=0.01, momentum=0.9, decay=0.0, nesterov=False)
     rms = RMSprop(lr=0.001, rho=0.9, epsilon=1e-08, decay=0.0)
     adadelta = Adadelta(lr=1.0, rho=0.95, epsilon=1e-08, decay=0.0)
     adagrad = Adagrad(lr=0.01, epsilon=1e-08, decay=0.0)
@@ -211,7 +209,7 @@ def main():
 
     print('Model compiled')
 
-    history = model.fit([tr_pairs[:, 0], tr_pairs[:, 1]], tr_y, validation_data=([val_pairs[:, 0], val_pairs[:, 1]], val_y), batch_size=8, nb_epoch=nb_epoch)
+    history = model.fit([tr_pairs[:, 0], tr_pairs[:, 1]], tr_y, validation_data=([val_pairs[:, 0], val_pairs[:, 1]], val_y), batch_size=16, nb_epoch=nb_epoch)
 
     distance_threshold = 0.5
 
@@ -239,7 +237,7 @@ def main():
     with open('/tigress/dchouren/thesis/histories/' + identifier + '.pickle', 'wb') as outf:
         pickle.dump(h, outf)
 
-    print('Total time: {}', time.time() - launch_time)
+    print('Total time: {}'.format(str(time.time() - float(launch_time))))
 
 
 if __name__ == '__main__':
