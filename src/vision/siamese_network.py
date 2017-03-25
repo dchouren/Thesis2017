@@ -229,7 +229,9 @@ def main():
     print('* Accuracy on training set: %0.2f%%' % (100 * tr_acc))
     print('* Accuracy on test set: %0.2f%%' % (100 * val_acc))
 
-    model.save('/tigress/dchouren/thesis/trained_models/' + identifier)
+    model.save_weights('/tigress/dchouren/thesis/trained_models/' + identifier)
+
+    # model.save_weights('/tigress/dchouren/thesis/trained_models/' )
 
     # print(history.history.keys())
     h = history.__dict__

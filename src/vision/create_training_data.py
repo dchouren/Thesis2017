@@ -44,7 +44,24 @@ def create_pairs(year, month, output_dir, sample_size):
     neg_dist = 0.1838    # roughly 2000m
     pos_pairs = create_pos_pairs(pos_dist, K)
 
-    create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
+    fulfilled = create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
+
+    count = 1
+    while not fulfilled:
+        sample_size *= 2
+        sample_data = data_array[np.random.choice(data_array.shape[0], sample_size)]
+        K = _KDTree(sample_data)
+
+        pos_dist = 0.000014  # roughly 1m
+        neg_dist = 0.1838    # roughly 2000m
+        pos_pairs = create_pos_pairs(pos_dist, K)
+
+        fulfilled = create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
+        count += 1
+
+        if count > 5:
+            print('Failed to create enough pairs')
+            return
 
     # return pairs, labels
 
@@ -118,8 +135,14 @@ def create_pairs_helper(pos_pairs, all_image_data, image_dir, year, month, outpu
                 break
 
 
-        f.close()
-        print('{} | Saved to {}'.format(int(time.time() - start_time), output_file))
+        if dset.shape[0] == limit:
+            f.close()
+            print('{} | Saved to {}'.format(int(time.time() - start_time), output_file))
+            return True
+        else:
+            del dset
+            del f
+            return False
 
 
 if __name__ == '__main__':

@@ -37,6 +37,7 @@ if __name__ == '__main__':
         data = inf.readlines()
     data = np.asarray([[float(x.split(',')[0]), float(x.split(',')[1]), *x.split(',')[2:]] for x in data])
 
+    print(len(data))
 
     sample_data = data[np.random.choice(data.shape[0], sample_size)]
     K = _KDTree(sample_data)
@@ -47,8 +48,10 @@ if __name__ == '__main__':
     neg_dist = 0.1838
     pos_pairs = K.get_pos_pairs(dist)
 
+    print(len(pos_pairs))
+
     # neg_pairs = K.get_neg_pairs(neg_dist)
-    np.save('./{}_test_pairs.npy'.format(sample_size), np.asarray(pos_pairs))
+    # np.save('./{}_test_pairs.npy'.format(sample_size), np.asarray(pos_pairs))
     # np.save('./{}_neg_test_pairs.npy'.format(sample_size), np.asarray(neg_pairs))
     
-    print('{}: {}'.format(sample_size, time.time() - start_time))
+    # print('{}: {}'.format(sample_size, time.time() - start_time))

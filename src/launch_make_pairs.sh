@@ -15,7 +15,7 @@ memory=62GB
 base_job_name="make_pairs"
 sample_size="3000"
 
-years=( "2012" "2013" "2014" )
+years=( "2008" "2009" "2010" "2011" )
 months=( "01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12" )
 for year in "${years[@]}"
 do
