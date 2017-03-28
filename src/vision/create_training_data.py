@@ -116,6 +116,8 @@ def create_pairs_helper(pos_pairs, all_image_data, image_dir, year, month, outpu
             if not neg_image:
                 continue
 
+                
+
 
             pos_pair = [base_image, pos_image]
             neg_pair = [base_image, neg_image]

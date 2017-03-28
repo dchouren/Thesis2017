@@ -4,6 +4,8 @@ import os
 import time
 
 from keras.models import load_model
+from keras import backend as keras
+K.set_image_data_format('channels_first')
 
 from models.utils import _load_model
 from extract_bottlenecks import save_bottleneck_features
