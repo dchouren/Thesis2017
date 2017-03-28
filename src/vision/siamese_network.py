@@ -26,11 +26,14 @@ import h5py
 
 from keras.datasets import mnist
 from keras.models import Sequential, Model
+from keras.models import load_model
 from keras.layers import Dense, Dropout, Input, Lambda
 from keras.layers import Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.optimizers import RMSprop, Adadelta, Adagrad, Nadam, Adam, Adamax, SGD
 from keras import backend as K
+K.set_image_data_format('channels_first')
+from keras.applications.resnet50 import ResNet50
 
 from _KDTree import _KDTree
 import vision_utils as vutils
@@ -142,7 +145,8 @@ def build_siamese_network(model_name, input_shape, optimizer):
     if model_name == 'base':
         base_network = create_base_network(input_shape)
     else:
-        base_network = _load_model(model_name, include_top=True, weights=None)
+        # base_network = _load_model(model_name, include_top=True, weights=None)
+        base_network = ResNet50(include_top=True, weights=None, input_shape=input_shape)
 
     input_a = Input(shape=input_shape)
     input_b = Input(shape=input_shape)
@@ -170,6 +174,13 @@ def _generator(filename, batch_size=32):
         index = index % len(pairs)
         print('Generator return')
 
+def _iter_generator(filename, batch_size=32):
+    f = h5py.File(filename, 'r')
+    pairs = f['pairs']
+    while 1:
+        for i in range(int(len(pairs) / batch_size)):
+            yield [pairs[i:i+2][:,0], pairs[i:i+2][:,1]], [1,0]
+
 
 
 
@@ -188,7 +199,12 @@ def main():
     identifier = model_name + '_' + start_date + '_' + end_date + '_' + str(nb_epoch) + '_' + optimizer_name
 
     sys.setrecursionlimit(10000)
-    model = build_siamese_network(model_name, input_shape, optimizer_name)
+    # model = build_siamese_network(model_name, input_shape, optimizer_name)
+    model = load_model('/tigress/dchouren/thesis/resnet50_siamese.h5', custom_objects={'contrastive_loss': contrastive_loss})
+
+    # model.save('/tigress/dchouren/thesis/resnet50_siamese.h5')
+
+    print('Siamese network built')
 
     training_files = get_training_files(data_dir, start_date, end_date, 35200)
 
@@ -217,9 +233,9 @@ def main():
 
 
     # history = model.fit([tr_pairs[:, 0], tr_pairs[:, 1]], tr_y, validation_data=([val_pairs[:, 0], val_pairs[:, 1]], val_y), batch_size=16, nb_epoch=nb_epoch)
-    generator = _generator('/tigress/dchouren/thesis/resources/pairs/all.h5', batch_size=32)
+    generator = _iter_generator('/tigress/dchouren/thesis/resources/pairs/all.h5', batch_size=32)
     print('Generator constructed')
-    history = model.fit_generator(generator, samples_per_epoch=32, nb_epoch=nb_epoch, validation_data=generator, nb_val_samples=32)
+    history = model.fit_generator(generator, steps_per_epoch=22300, epochs=nb_epoch, validation_data=generator, nb_val_samples=100)
     print('Finished fitting')
 
     distance_threshold = 0.5

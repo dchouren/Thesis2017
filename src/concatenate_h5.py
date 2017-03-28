@@ -1,11 +1,14 @@
+import sys
 from os.path import join
 
 import h5py
 
 pairs_dir = '/tigress/dchouren/thesis/resources/pairs'
-filenames = open(join(pairs_dir, 'train_files.txt'), 'r').readlines()
+filenames = open(join(pairs_dir, 'train_files.txt'), 'r').readlines()[:2]
 
-with h5py.File(join(pairs_dir, 'all.h5'), 'w') as output_file:
+output_file = sys.argv[1]
+
+with h5py.File(join(pairs_dir, output_file), 'w') as output_file:
 
     total_rows = 0
     last_index = 0
