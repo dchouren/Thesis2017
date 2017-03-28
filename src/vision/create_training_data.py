@@ -35,7 +35,7 @@ def create_pairs(year, month, output_dir, sample_size):
         data = inf.readlines()
 
     # fpath files are lat, long, ...
-    data_array = np.asarray([[float(x.split(',')[0]), float(x.split(',')[1]), *x.split(',')[2:]] for x in data])
+    data_array = np.asarray([[float(x.split(',')[0]), float(x.split(',')[1]), *x.split(',')[2:]] for x in data if not x.split(',')[2].endswith('zz=1')])
 
     sample_data = data_array[np.random.choice(data_array.shape[0], sample_size)]
     K = _KDTree(sample_data)
@@ -44,7 +44,27 @@ def create_pairs(year, month, output_dir, sample_size):
     neg_dist = 0.1838    # roughly 2000m
     pos_pairs = create_pos_pairs(pos_dist, K)
 
-    create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
+    fulfilled = create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
+
+    count = 1
+    while not fulfilled:
+        sample_size *= 2
+        sample_data = data_array[np.random.choice(data_array.shape[0], sample_size)]
+        K = _KDTree(sample_data)
+
+        pos_dist = 0.000014  # roughly 1m
+        neg_dist = 0.1838    # roughly 2000m
+        pos_pairs = create_pos_pairs(pos_dist, K)
+        if len(pos_pairs) < 35200:
+            fulfilled = False
+            continue
+
+        fulfilled = create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
+        count += 1
+
+        if count > 5:
+            print('Failed to create enough pairs')
+            return
 
     # return pairs, labels
 
@@ -71,9 +91,18 @@ def create_pairs_helper(pos_pairs, all_image_data, image_dir, year, month, outpu
 
         for i, (base_data, pos_data) in enumerate(pos_pairs):
             base_filename = base_data[2].split('/')[-1]
+            if base_filename.endswith('zz=1'):
+                continue
             base_image = vutils.load_and_preprocess_image(join(image_dir, base_filename), dataset='imagenet', x_size=224, y_size=224, preprocess=False, rescale=True)
+            if not base_image:
+                continue
+
             pos_filename = pos_data[2].split('/')[-1]
+            if pos_filename.endswith('zz=1'):
+                continue
             pos_image = vutils.load_and_preprocess_image(join(image_dir, pos_filename), dataset='imagenet', x_size=224, y_size=224, preprocess=False, rescale=True)
+            if not pos_image:
+                continue
 
             possible_neg_image = all_image_data[np.random.choice(all_image_data.shape[0])]
             while meter_distance(possible_neg_image[:2], base_data[:2]) < 2000:
@@ -81,10 +110,12 @@ def create_pairs_helper(pos_pairs, all_image_data, image_dir, year, month, outpu
                     all_image_data.shape[0])]
 
             neg_filename = possible_neg_image[2].split('/')[-1]
-            neg_image = vutils.load_and_preprocess_image(join(image_dir, neg_filename), dataset='imagenet', x_size=224, y_size=224, preprocess=False, rescale=True)
-
-            if base_image is None or pos_image is None or neg_image is None:
+            if neg_filename.endswith('zz=1'):
                 continue
+            neg_image = vutils.load_and_preprocess_image(join(image_dir, neg_filename), dataset='imagenet', x_size=224, y_size=224, preprocess=False, rescale=True)
+            if not neg_image:
+                continue
+
 
             pos_pair = [base_image, pos_image]
             neg_pair = [base_image, neg_image]
@@ -94,10 +125,6 @@ def create_pairs_helper(pos_pairs, all_image_data, image_dir, year, month, outpu
             pairs += [neg_pair]
 
             if len(pairs) == batch_size:
-                # output_file = join(output_dir, 'pairs_' + str(count).zfill(3) + '.npz')
-                # print('Saving to {}'.format(output_file))
-                # print(time.time() - last_time)
-                # last_time = time.time()
                 pairs = np.squeeze(np.asarray(pairs))
                 dset[row_count:] = pairs
                 row_count += pairs.shape[0]
@@ -118,8 +145,14 @@ def create_pairs_helper(pos_pairs, all_image_data, image_dir, year, month, outpu
                 break
 
 
-        f.close()
-        print('{} | Saved to {}'.format(int(time.time() - start_time), output_file))
+        if dset.shape[0] == limit:
+            f.close()
+            print('{} | Saved to {}'.format(int(time.time() - start_time), output_file))
+            return True
+        else:
+            del dset
+            del f
+            return False
 
 
 if __name__ == '__main__':
