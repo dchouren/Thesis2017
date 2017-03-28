@@ -25,7 +25,10 @@ from format_h5 import load_path_map
 import ipdb
 
 
-def save_bottleneck_features(model, year, month, img_size, batch_size, output_path):
+def save_bottleneck_features(model, year, month, output_path,img_size=(224,224), batch_size=32):
+
+    start_time = time.time() 
+
     datagen = ImageDataGenerator(rescale=1. / 255)
 
     directory = join('/scratch/network/dchouren/images', year, month)
@@ -45,6 +48,11 @@ def save_bottleneck_features(model, year, month, img_size, batch_size, output_pa
     bottleneck_features = model.predict_generator(generator, nb_samples)
 
     path_map = load_path_map(join('/tigress/dchouren/thesis/resources/paths/', year, month.zfill(2)))
+
+    for f in filenames:
+        if f not in path_map:
+            path_map[f] = [''] * 8
+
     dates = [path_map[x][1].encode("ascii", "ignore") for x in filenames]
     lats = [path_map[x][2].encode("ascii", "ignore") for x in filenames]
     lons = [path_map[x][3].encode("ascii", "ignore") for x in filenames]
@@ -53,7 +61,7 @@ def save_bottleneck_features(model, year, month, img_size, batch_size, output_pa
     titles = [path_map[x][6].encode("ascii", "ignore") for x in filenames]
     descriptions = [path_map[x][7].encode("ascii", "ignore") for x in filenames]
 
-    f = h5py.File(output_path + '.h5', 'w')
+    f = h5py.File(output_path, 'w')
     f.create_dataset('bottlenecks', data=bottleneck_features)
     f.create_dataset('filenames', data=filenames)
     f.create_dataset('dates', data=dates)
@@ -64,7 +72,8 @@ def save_bottleneck_features(model, year, month, img_size, batch_size, output_pa
     f.create_dataset('titles', data=titles)
     f.create_dataset('descriptions', data=descriptions)
     f.close()
-    # np.save(open(output_path, 'wb'), bottleneck_features)
+
+    print('{}s | Saved images to {}'.format(int(time.time() - start_time), output_path))
 
 
 def main():
@@ -72,25 +81,19 @@ def main():
         print (__doc__)
         sys.exit(0)
 
-    year = sys.argv[1]
-    month = sys.argv[2]
-    model_name = sys.argv[3]
+    model_name = sys.argv[1]
+    year = sys.argv[2]
+    month = sys.argv[3]
 
     output = join('/tigress/dchouren/thesis/resources/bottlenecks', model_name, year + '_' + month + '.h5')
 
     sys.setrecursionlimit(10000)
 
-    start_time = time.time()
-
-    # model = _load_model(model_name, include_top=False)
-    model_dir = '/tigress/dchouren/thesis/trained_models'
+    model_dir = '/tigress/dchouren/thesis/trained_models/base_cnn'
     model = load_model(join(model_dir, model_name))
-    # model = load_model(join(model_dir, model_name), custom_objects={'contrastive_loss': contrastive_loss})
-    # ipdb.set_trace()
 
-    save_bottleneck_features(model, year, month, (224, 224), 32, output)
+    save_bottleneck_features(model, year, month, output, (224, 224), 32)
 
-    print('{}s | Saved images to {}'.format(int(time.time() - start_time), output))
 
 
 

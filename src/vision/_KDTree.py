@@ -48,6 +48,8 @@ if __name__ == '__main__':
     neg_dist = 0.1838
     pos_pairs = K.get_pos_pairs(dist)
 
+    ipdb.set_trace()
+
     print(len(pos_pairs))
 
     # neg_pairs = K.get_neg_pairs(neg_dist)

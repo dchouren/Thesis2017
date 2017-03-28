@@ -22,6 +22,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
 import numpy as np
 np.random.seed(1337)  # for reproducibility
+import h5py
 
 from keras.datasets import mnist
 from keras.models import Sequential, Model
@@ -54,26 +55,12 @@ def eucl_dist_output_shape(shapes):
     return (shape1[0], 1)
 
 
-
 def contrastive_loss(y_true, y_pred):
     '''Contrastive loss from Hadsell-et-al.'06
     http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
     '''
     margin = 1
     return K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))
-
-
-
-# def create_base_network(input_shape):
-#     '''Base network to be shared (eq. to feature extraction).
-#     '''
-#     seq = Sequential()
-#     seq.add(Dense(128, input_shape=input_shape, activation='relu'))
-#     seq.add(Dropout(0.1))
-#     seq.add(Dense(128, activation='relu'))
-#     seq.add(Dropout(0.1))
-#     seq.add(Dense(128, activation='relu'))
-#     return seq
 
 
 def compute_accuracy(predictions, labels, distance_threshold):
@@ -83,8 +70,6 @@ def compute_accuracy(predictions, labels, distance_threshold):
     return accuracy_score(numeric_preds, labels)
     # return labels[predictions.ravel() < 0.5].mean()
 
-
-# create_pairs('2014', '01', 'resources/pairs/2014')
 
 def create_base_network(input_shape):
     model = Sequential()
@@ -119,34 +104,107 @@ def create_pairs(x, digit_indices):
     return np.array(pairs), np.array(labels)
 
 
+def get_training_files(file_dir, start_date, end_date, size):
+
+    files = sorted(os.listdir(file_dir))
+
+    start_file = start_date + '_' + str(size) + '.h5'
+    end_file = end_date + '_' + str(size) + '.h5'
+    training_files = files[files.index(start_file):files.index(end_file) + 1]
+
+    return training_files
+
+
+def get_optimizer(optimizer='SGD'):
+    if optimizer == 'sgd':
+        opt = SGD(lr=0.01, momentum=0.9, decay=0.0, nesterov=False)
+    elif optimizer == 'rms':
+        opt = RMSprop(lr=0.001, rho=0.9, epsilon=1e-08, decay=0.0)
+    elif optimizer == 'adadelta':
+        opt = Adadelta(lr=1.0, rho=0.95, epsilon=1e-08, decay=0.0)
+    elif optimizer == 'adagrad':
+        opt = Adagrad(lr=0.01, epsilon=1e-08, decay=0.0)
+    elif optimizer == 'adam':
+        opt = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+    elif optimizer == 'adamax':
+        opt = Adamax(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+    elif optimizer == 'nadam':
+        opt = Nadam(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=1e-08, schedule_decay=0.004)
+    else:
+        print('Optimizer not supported, defaulting to SGD')
+        opt = SGD(lr=0.01, momentum=0.9, decay=0.0, nesterov=False)
+
+    return opt
+
+
+def build_siamese_network(model_name, input_shape, optimizer):
+
+    if model_name == 'base':
+        base_network = create_base_network(input_shape)
+    else:
+        base_network = _load_model(model_name, include_top=True, weights=None)
+
+    input_a = Input(shape=input_shape)
+    input_b = Input(shape=input_shape)
+    processed_a = base_network(input_a)
+    processed_b = base_network(input_b)
+
+    distance = Lambda(euclidean_distance, output_shape=eucl_dist_output_shape)([processed_a, processed_b])
+
+    model = Model(input=[input_a, input_b], output=distance)
+
+    opt = get_optimizer(optimizer)
+    model.compile(loss=contrastive_loss, optimizer=opt)
+
+    print('Model compiled')
+    return model
+
+
+def _generator(filename, batch_size=32):
+    f = h5py.File(filename, 'r')
+    pairs = f['pairs']
+    index = 0
+    while 1:
+        yield [pairs[index:index+batch_size][:,0], pairs[index:index+batch_size][:,1]], [1,0]*int(batch_size/2)
+        index += batch_size
+        index = index % len(pairs)
+        print('Generator return')
+
+
+
+
 
 def main():
     launch_time = str(time.time())
 
-    model_name = sys.argv[1]
-    data_dir = sys.argv[2]
+    data_dir = sys.argv[1]
+    model_name = sys.argv[2]
     nb_epoch = int(sys.argv[3])
-    initial_split = int(sys.argv[4])
-    optimizer = sys.argv[5]
-
-    identifier = model_name + '_' + str(nb_epoch) + '_' + str(initial_split) + '_' + optimizer
-
-    sys.setrecursionlimit(10000)
-
-    data_files = sorted(os.listdir(data_dir))[:initial_split]
+    start_date = sys.argv[4]
+    end_date = sys.argv[5]
+    optimizer_name = sys.argv[6]
 
     input_shape = (3, 224, 224)
+    identifier = model_name + '_' + start_date + '_' + end_date + '_' + str(nb_epoch) + '_' + optimizer_name
 
-    lower_slice = 0
-    upper_slice = 1000
-    all_pairs = np.empty((len(data_files) * 1000, 2, *input_shape), dtype=np.float32)
-    for data_file in data_files:
-        new_data = np.squeeze(np.load(join(data_dir, data_file)))
-        upper_slice = lower_slice + len(new_data)
-        pairs = all_pairs[lower_slice:upper_slice]
-        pairs[:] = new_data
+    sys.setrecursionlimit(10000)
+    model = build_siamese_network(model_name, input_shape, optimizer_name)
 
-        lower_slice = upper_slice
+    training_files = get_training_files(data_dir, start_date, end_date, 35200)
+
+    print(join(data_dir, training_files[0]))
+    f = h5py.File(join(data_dir, training_files[0]))
+    all_pairs = f['pairs']
+    # lower_slice = 0
+    # upper_slice = 1000
+    # all_pairs = np.empty((len(data_files) * 1000, 2, *input_shape), dtype=np.float32)
+    # for data_file in data_files:
+    #     new_data = np.squeeze(np.load(join(data_dir, data_file)))
+    #     upper_slice = lower_slice + len(new_data)
+    #     pairs = all_pairs[lower_slice:upper_slice]
+    #     pairs[:] = new_data
+
+    #     lower_slice = upper_slice
 
     # pairs = np.vstack([np.squeeze(np.load(join(data_dir, x))) for x in data_files])
     train_split = int(0.9 * len(all_pairs))
@@ -158,78 +216,34 @@ def main():
     val_y = np.asarray([1,0] * int(len(val_pairs)/2))
 
 
-    # tr_pairs = np.squeeze(np.load('/tigress/dchouren/thesis/resources/pairs/2014/pairs_10.npy'))
-    # nb_epoch = 1
-
-# (X_train, y_train), (X_test, y_test) = mnist.load_data()
-    # X_train = X_train.reshape(60000, 784)
-    # X_test = X_test.reshape(10000, 784)
-    # X_train = X_train.astype('float32')
-    # X_test = X_test.astype('float32')
-    # X_train /= 255
-    # X_test /= 255
-    # input_dim = 784
-    # # create training+test positive and negative pairs
-    # digit_indices = [np.where(y_train == i)[0] for i in range(10)]
-    # tr_pairs, tr_y = create_pairs(X_train, digit_indices)
-
-    # digit_indices = [np.where(y_test == i)[0] for i in range(10)]
-    # te_pairs, te_y = create_pairs(X_test, digit_indices)
-# input_shape = (784,)
-
-    if model_name == 'base':
-        base_network = create_base_network(input_shape)
-    else:
-        base_network = _load_model(model_name, include_top=True, weights=None)
-
-    print('Base network created')
-
-    input_a = Input(shape=input_shape)
-    input_b = Input(shape=input_shape)
-    processed_a = base_network(input_a)
-    processed_b = base_network(input_b)
-
-    distance = Lambda(euclidean_distance, output_shape=eucl_dist_output_shape)([processed_a, processed_b])
-
-    model = Model(input=[input_a, input_b], output=distance)
-
-    # train
-    sgd = SGD(lr=0.01, momentum=0.9, decay=0.0, nesterov=False)
-    rms = RMSprop(lr=0.001, rho=0.9, epsilon=1e-08, decay=0.0)
-    adadelta = Adadelta(lr=1.0, rho=0.95, epsilon=1e-08, decay=0.0)
-    adagrad = Adagrad(lr=0.01, epsilon=1e-08, decay=0.0)
-    adam = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-    adamax = Adamax(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-    nadam = Nadam(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=1e-08, schedule_decay=0.004)
-
-    optimizer_map = {'rms': rms, 'adadelta': adadelta, 'adagrad': adagrad, 'adam': adam, 'adamax': adamax, 'nadam': nadam, 'sgd': sgd}
-
-    opt = optimizer_map[optimizer]
-    model.compile(loss=contrastive_loss, optimizer=opt)
-
-    print('Model compiled')
-
-    history = model.fit([tr_pairs[:, 0], tr_pairs[:, 1]], tr_y, validation_data=([val_pairs[:, 0], val_pairs[:, 1]], val_y), batch_size=16, nb_epoch=nb_epoch)
+    # history = model.fit([tr_pairs[:, 0], tr_pairs[:, 1]], tr_y, validation_data=([val_pairs[:, 0], val_pairs[:, 1]], val_y), batch_size=16, nb_epoch=nb_epoch)
+    generator = _generator('/tigress/dchouren/thesis/resources/pairs/all.h5', batch_size=32)
+    print('Generator constructed')
+    history = model.fit_generator(generator, samples_per_epoch=32, nb_epoch=nb_epoch, validation_data=generator, nb_val_samples=32)
+    print('Finished fitting')
 
     distance_threshold = 0.5
 
     # compute final accuracy on training and test sets
     tr_pred = model.predict([tr_pairs[:, 0], tr_pairs[:, 1]])
     tr_acc = compute_accuracy(tr_pred, tr_y, distance_threshold)
-    np.savetxt('/tigress/dchouren/thesis/preds/' + identifier + '_tr', tr_pred)
-
-    # ipdb.set_trace()
-    # print(pred)
+    np.savetxt('/tigress/dchouren/thesis/preds/tr/' + identifier + '_tr', tr_pred)
 
     val_pred = model.predict([val_pairs[:, 0], val_pairs[:, 1]])
     val_acc = compute_accuracy(val_pred, val_y, distance_threshold)
-    np.savetxt('/tigress/dchouren/thesis/preds/' + identifier + '_te', val_pred)
+    np.savetxt('/tigress/dchouren/thesis/preds/val/' + identifier + '_val', val_pred)
 
 
     print('* Accuracy on training set: %0.2f%%' % (100 * tr_acc))
-    print('* Accuracy on test set: %0.2f%%' % (100 * val_acc))
+    print('* Accuracy on validation set: %0.2f%%' % (100 * val_acc))
 
-    model.save_weights('/tigress/dchouren/thesis/trained_models/' + identifier)
+    model_dir = '/tigress/dchouren/thesis/trained_models'
+    save_weights_path = join(model_dir, identifier + '_weights.h5')
+    model.save_weights(save_weights_path)
+
+    base_cnn = _load_model(model_name, include_top=True, weights=None)
+    base_cnn.load_weights(save_weights_path, by_name=True)
+    base_cnn.save(join(model_dir, 'base_cnn', identifier +'.h5'))
 
     # model.save_weights('/tigress/dchouren/thesis/trained_models/' )
 
