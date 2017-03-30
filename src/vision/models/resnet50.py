@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 """ResNet50 model for Keras.
+
 # Reference:
+
 - [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
+
 Adapted from code contributed by BigMoyan.
 """
 from __future__ import print_function
@@ -21,6 +24,8 @@ from keras.layers import AveragePooling2D
 from keras.layers import GlobalAveragePooling2D
 from keras.layers import GlobalMaxPooling2D
 from keras.layers import BatchNormalization
+from keras.layers.advanced_activations import PReLU
+from keras import initializers
 from keras.models import Model
 from keras import backend as K
 from keras.engine.topology import get_source_inputs
@@ -37,12 +42,14 @@ WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/releases
 
 def identity_block(input_tensor, kernel_size, filters, stage, block):
     """The identity block is the block that has no conv layer at shortcut.
+
     # Arguments
         input_tensor: input tensor
         kernel_size: defualt 3, the kernel size of middle conv layer at main path
         filters: list of integers, the filterss of 3 conv layer at main path
         stage: integer, current stage label, used for generating layer names
-        block: 'a','b'keras.., current block label, used for generating layer names
+        block: 'a','b'..., current block label, used for generating layer names
+
     # Returns
         Output tensor for the block.
     """
@@ -54,33 +61,38 @@ def identity_block(input_tensor, kernel_size, filters, stage, block):
     conv_name_base = 'res' + str(stage) + block + '_branch'
     bn_name_base = 'bn' + str(stage) + block + '_branch'
 
-    x = Conv2D(filters1, (1, 1), name=conv_name_base + '2a')(input_tensor)
+    x = Conv2D(filters1, (1, 1), name=conv_name_base + '2a', kernel_initializer=initializers.he_normal())(input_tensor)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2a')(x)
-    x = Activation('relu')(x)
+    # x = Activation('relu')(x)
+    x = PReLU(weights=None, alpha_initializer='zero')(x)
 
-    x = Conv2D(filters2, kernel_size,
-               padding='same', name=conv_name_base + '2b')(x)
+    x = Conv2D(filters2, kernel_size, padding='same', name=conv_name_base + '2b', kernel_initializer=initializers.he_normal())(x)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2b')(x)
-    x = Activation('relu')(x)
+    # x = Activation('relu')(x)
+    x = PReLU(weights=None, alpha_initializer='zero')(x)
 
-    x = Conv2D(filters3, (1, 1), name=conv_name_base + '2c')(x)
+    x = Conv2D(filters3, (1, 1), name=conv_name_base + '2c', kernel_initializer=initializers.he_normal())(x)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2c')(x)
 
     x = layers.add([x, input_tensor])
-    x = Activation('relu')(x)
+    # x = Activation('relu')(x)
+    x = PReLU(weights=None, alpha_initializer='zero')(x)
     return x
 
 
 def conv_block(input_tensor, kernel_size, filters, stage, block, strides=(2, 2)):
     """conv_block is the block that has a conv layer at shortcut
+
     # Arguments
         input_tensor: input tensor
         kernel_size: defualt 3, the kernel size of middle conv layer at main path
         filters: list of integers, the filterss of 3 conv layer at main path
         stage: integer, current stage label, used for generating layer names
-        block: 'a','b'keras.., current block label, used for generating layer names
+        block: 'a','b'..., current block label, used for generating layer names
+
     # Returns
         Output tensor for the block.
+
     Note that from stage 3, the first conv layer at main path is with strides=(2,2)
     And the shortcut should have strides=(2,2) as well
     """
@@ -92,25 +104,25 @@ def conv_block(input_tensor, kernel_size, filters, stage, block, strides=(2, 2))
     conv_name_base = 'res' + str(stage) + block + '_branch'
     bn_name_base = 'bn' + str(stage) + block + '_branch'
 
-    x = Conv2D(filters1, (1, 1), strides=strides,
-               name=conv_name_base + '2a')(input_tensor)
+    x = Conv2D(filters1, (1, 1), strides=strides, name=conv_name_base + '2a', kernel_initializer=initializers.he_normal())(input_tensor)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2a')(x)
-    x = Activation('relu')(x)
+    # x = Activation('relu')(x)
+    x = PReLU(weights=None, alpha_initializer='zero')(x)
 
-    x = Conv2D(filters2, kernel_size, padding='same',
-               name=conv_name_base + '2b')(x)
+    x = Conv2D(filters2, kernel_size, padding='same', name=conv_name_base + '2b', kernel_initializer=initializers.he_normal())(x)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2b')(x)
-    x = Activation('relu')(x)
+    # x = Activation('relu')(x)
+    x = PReLU(weights=None, alpha_initializer='zero')(x)
 
-    x = Conv2D(filters3, (1, 1), name=conv_name_base + '2c')(x)
+    x = Conv2D(filters3, (1, 1), name=conv_name_base + '2c', kernel_initializer=initializers.he_normal())(x)
     x = BatchNormalization(axis=bn_axis, name=bn_name_base + '2c')(x)
 
-    shortcut = Conv2D(filters3, (1, 1), strides=strides,
-                      name=conv_name_base + '1')(input_tensor)
+    shortcut = Conv2D(filters3, (1, 1), strides=strides, name=conv_name_base + '1', kernel_initializer=initializers.he_normal())(input_tensor)
     shortcut = BatchNormalization(axis=bn_axis, name=bn_name_base + '1')(shortcut)
 
     x = layers.add([x, shortcut])
-    x = Activation('relu')(x)
+    # x = Activation('relu')(x)
+    x = PReLU(weights=None, alpha_initializer='zero')(x)
     return x
 
 
@@ -119,15 +131,18 @@ def ResNet50(include_top=True, weights='imagenet',
              pooling=None,
              classes=1000):
     """Instantiates the ResNet50 architecture.
+
     Optionally loads weights pre-trained
     on ImageNet. Note that when using TensorFlow,
     for best performance you should set
     `image_data_format="channels_last"` in your Keras config
     at ~/.keras/keras.json.
+
     The model and the weights are compatible with both
     TensorFlow and Theano. The data format
     convention used by the model is the one
     specified in your Keras config file.
+
     # Arguments
         include_top: whether to include the fully-connected
             layer at the top of the network.
@@ -156,8 +171,10 @@ def ResNet50(include_top=True, weights='imagenet',
         classes: optional number of classes to classify images
             into, only to be specified if `include_top` is True, and
             if no `weights` argument is specified.
+
     # Returns
         A Keras model instance.
+
     # Raises
         ValueError: in case of invalid argument for `weights`,
             or invalid input shape.
@@ -191,9 +208,11 @@ def ResNet50(include_top=True, weights='imagenet',
         bn_axis = 1
 
     x = ZeroPadding2D((3, 3))(img_input)
-    x = Conv2D(64, (7, 7), strides=(2, 2), name='conv1')(x)
+    # print('here')
+    x = Conv2D(64, (7, 7), strides=(2, 2), name='conv1', kernel_initializer=initializers.he_normal())(x)
     x = BatchNormalization(axis=bn_axis, name='bn_conv1')(x)
-    x = Activation('relu')(x)
+    # x = Activation('relu')(x)
+    x = PReLU(weights=None, alpha_initializer='zero')(x)
     x = MaxPooling2D((3, 3), strides=(2, 2))(x)
 
     x = conv_block(x, 3, [64, 64, 256], stage=2, block='a', strides=(1, 1))
@@ -220,7 +239,8 @@ def ResNet50(include_top=True, weights='imagenet',
 
     if include_top:
         x = Flatten()(x)
-        x = Dense(classes, activation='softmax', name='fc1000')(x)
+        #x = Dense(classes, activation='softmax', name='fc1000')(x)
+        x = Dense(1024, name='embedding')(x)
     else:
         if pooling == 'avg':
             x = GlobalAveragePooling2D()(x)
@@ -269,17 +289,3 @@ def ResNet50(include_top=True, weights='imagenet',
                               'your Keras config '
                               'at ~/.keras/keras.json.')
     return model
-
-
-if __name__ == '__main__':
-    model = ResNet50(include_top=True, weights='imagenet')
-
-    img_path = 'elephant.jpg'
-    img = image.load_img(img_path, target_size=(224, 224))
-    x = image.img_to_array(img)
-    x = np.expand_dims(x, axis=0)
-    x = preprocess_input(x)
-    print('Input image shape:', x.shape)
-
-    preds = model.predict(x)
-    # print('Predicted:', decode_predictions(preds))
