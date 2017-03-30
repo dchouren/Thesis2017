@@ -14,6 +14,8 @@ def rank_of_match(preds, index):
 
     # ipdb.set_trace()
 
+    sorted_dists = sorted(dist_to_index, key=lambda x: x[1])
+
     sorted_dist_to_index = sorted(dist_to_index, key=lambda x: x[1])
 
     rank = [x[0] for x in sorted_dist_to_index[::3]].index(index+1) - 1
@@ -37,4 +39,10 @@ ranks = [rank_of_match(eval_preds, i) for i in range(0, len(eval_preds-3))]
 print(sum(ranks))
 
 ipdb.set_trace()
+# ranks = [rank_of_match(eval_preds, i) for i in range(0, len(eval_preds-3))]
+
+# print(sum(ranks))
+
+# ipdb.set_trace()
+>>>>>>> 443feb688a883f1c977ff58909dc40ae22b03852
 print(sum(accuracy) / len(accuracy))

@@ -76,6 +76,12 @@ def save_bottleneck_features(model, year, month, output_path,img_size=(224,224),
     print('{}s | Saved images to {}'.format(int(time.time() - start_time), output_path))
 
 
+def extract_bottlenecks(model, image_array, output):
+
+    bottlenecks = model.predict(image_array)
+    np.save(output, bottlenecks)
+
+
 def main():
     if len(sys.argv) != 4:
         print (__doc__)
