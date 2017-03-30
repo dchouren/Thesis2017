@@ -4,6 +4,7 @@ import os
 import time
 
 import h5py
+import numpy as np
 
 from keras.models import load_model
 from keras import backend as K
@@ -11,40 +12,45 @@ K.set_image_data_format('channels_first')
 
 from models.utils import _load_model
 from extract_bottlenecks import save_bottleneck_features
-from siamese_network import compute_accuracy
+from siamese_network import compute_accuracy, build_siamese_network
 
 import ipdb
 
 
 model_name = sys.argv[1]
-year = sys.argv[2]
-month = sys.argv[3]
+optimizer_name = sys.argv[2]
+weights = sys.argv[3]
+
+identifier = weights.split('.')[0]
+
 
 img_size = (224,224)
 batch_size = 32
 
+input_shape = (3,224,224)
 model_dir = '/tigress/dchouren/thesis/trained_models/'
-pred_dir = join('/tigress/dchouren/thesis/preds/test', model_name)
-if not os.path.exists(pred_dir):
-    os.makedirs(pred_dir)
-pred_output = join(pred_dir, year + '_' + month + '.h5')
+
+weights_path = join(model_dir, weights)
+
+model = build_siamese_network(model_name, input_shape, optimizer_name)
+model.load_weights(weights_path, by_name=True)
 
 start_time = time.time()
-model = load_model(join(model_dir, model_name))
 
 with h5py.File('/tigress/dchouren/thesis/evaluation/images.h5', 'r') as eval_file:
     pairs = eval_file['pairs']
     # preds = save_bottleneck_features(model, year, month, pred_output)
-    preds = model.predict(pairs)
+    preds = model.predict([np.swapaxes(pairs[:,0], 1, 3), np.swapaxes(pairs[:,1], 1, 3)])
     labels = [1,0] * int(len(pairs)/2)
-    print(compute_accuracy(preds, labels, 0.5))
+    print('Accuracy: {}'.format(compute_accuracy(preds, labels, 0.5)))
 
+preds = np.array(preds)
+np.save('/tigress/dchouren/thesis/evaluation/{}.npy'.format(identifier), preds)
 
 
 # print('Predictions: {}'.format(pred_output))
 print('{} seconds'.format(int(time.time() - start_time)))
 
-ipdb.set_trace()
 
 
 

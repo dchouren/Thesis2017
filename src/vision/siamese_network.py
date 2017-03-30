@@ -32,7 +32,7 @@ from keras.layers import Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.optimizers import RMSprop, Adadelta, Adagrad, Nadam, Adam, Adamax, SGD
 from keras import backend as K
-K.set_image_data_format('channels_first')
+# K.set_image_data_format('channels_first')
 from keras.applications.resnet50 import ResNet50
 
 from _KDTree import _KDTree
@@ -63,10 +63,11 @@ def contrastive_loss(y_true, y_pred):
     http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
     '''
     margin = 1
-    return K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))
+    loss = K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))
+    return loss
 
 
-def compute_accuracy(predictions, labels, distance_threshold):
+def compute_accuracy(predictions, labels, distance_threshold=0.5):
     '''Compute classification accuracy with a fixed threshold on distances.
     '''
     numeric_preds = 1 * [predictions.ravel() < distance_threshold][0]
@@ -81,10 +82,10 @@ def create_base_network(input_shape):
     model.add(MaxPooling2D((3, 3), strides=(2, 2)))
     model.add(Dropout(0.1))
     model.add(Flatten())
-    model.add(Dense(128))
+    model.add(Dense(512))
     model.add(Activation('relu'))
     model.add(Dropout(0.1))
-    model.add(Dense(2))
+    model.add(Dense(128))
     return model
 
 
@@ -155,7 +156,7 @@ def build_siamese_network(model_name, input_shape, optimizer):
 
     distance = Lambda(euclidean_distance, output_shape=eucl_dist_output_shape)([processed_a, processed_b])
 
-    model = Model(input=[input_a, input_b], output=distance)
+    model = Model(inputs=[input_a, input_b], outputs=distance)
 
     opt = get_optimizer(optimizer)
     model.compile(loss=contrastive_loss, optimizer=opt)
@@ -164,15 +165,16 @@ def build_siamese_network(model_name, input_shape, optimizer):
     return model
 
 
-def _generator(filename, batch_size=32):
+def _generator(filename, batch_size=32, index=0):
     f = h5py.File(filename, 'r')
     pairs = f['pairs']
-    index = 0
     while 1:
         yield [pairs[index:index+batch_size][:,0], pairs[index:index+batch_size][:,1]], [1,0]*int(batch_size/2)
         index += batch_size
         index = index % len(pairs)
-        print('Generator return')
+
+    f.close()
+
 
 def _iter_generator(filename, batch_size=32):
     f = h5py.File(filename, 'r')
@@ -180,6 +182,8 @@ def _iter_generator(filename, batch_size=32):
     while 1:
         for i in range(int(len(pairs) / batch_size)):
             yield [pairs[i:i+2][:,0], pairs[i:i+2][:,1]], [1,0]
+
+    f.close()
 
 
 
@@ -195,12 +199,14 @@ def main():
     end_date = sys.argv[5]
     optimizer_name = sys.argv[6]
 
+    batch_size = 16
+
     input_shape = (3, 224, 224)
     identifier = model_name + '_' + start_date + '_' + end_date + '_' + str(nb_epoch) + '_' + optimizer_name
 
     sys.setrecursionlimit(10000)
-    # model = build_siamese_network(model_name, input_shape, optimizer_name)
-    model = load_model('/tigress/dchouren/thesis/resnet50_siamese.h5', custom_objects={'contrastive_loss': contrastive_loss})
+    model = build_siamese_network(model_name, input_shape, optimizer_name)
+    # model = load_model('/tigress/dchouren/thesis/resnet50_siamese.h5', custom_objects={'contrastive_loss': contrastive_loss})
 
     # model.save('/tigress/dchouren/thesis/resnet50_siamese.h5')
 
@@ -210,7 +216,8 @@ def main():
 
     print(join(data_dir, training_files[0]))
     f = h5py.File(join(data_dir, training_files[0]))
-    all_pairs = f['pairs']
+    all_pairs = np.array(f['pairs'])
+    # all_pairs.swap_axes(1,3)
     # lower_slice = 0
     # upper_slice = 1000
     # all_pairs = np.empty((len(data_files) * 1000, 2, *input_shape), dtype=np.float32)
@@ -232,10 +239,12 @@ def main():
     val_y = np.asarray([1,0] * int(len(val_pairs)/2))
 
 
-    # history = model.fit([tr_pairs[:, 0], tr_pairs[:, 1]], tr_y, validation_data=([val_pairs[:, 0], val_pairs[:, 1]], val_y), batch_size=16, nb_epoch=nb_epoch)
-    generator = _iter_generator('/tigress/dchouren/thesis/resources/pairs/all.h5', batch_size=32)
+    # history = model.fit([tr_pairs[:, 0], tr_pairs[:, 1]], tr_y, validation_data=([val_pairs[:, 0], val_pairs[:, 1]], val_y), batch_size=batch_size, epochs=nb_epoch)
+    generator = _generator('/tigress/dchouren/thesis/resources/pairs/all.h5', batch_size=batch_size)
+    gen_step_end = 20000
+    val_generator = _generator('/tigress/dchouren/thesis/resources/pairs/all.h5', batch_size=batch_size, index=gen_step_end*batch_size)
     print('Generator constructed')
-    history = model.fit_generator(generator, steps_per_epoch=22300, epochs=nb_epoch, validation_data=generator, nb_val_samples=100)
+    history = model.fit_generator(generator, steps_per_epoch=gen_step_end, epochs=nb_epoch, validation_data=val_generator, nb_val_samples=2300)
     print('Finished fitting')
 
     distance_threshold = 0.5
@@ -257,7 +266,9 @@ def main():
     save_weights_path = join(model_dir, identifier + '_weights.h5')
     model.save_weights(save_weights_path)
 
-    base_cnn = _load_model(model_name, include_top=True, weights=None)
+    # base_cnn = _load_model(model_name, include_top=True, weights=None)
+    base_cnn = ResNet50(include_top=True, weights=None, input_shape=input_shape)
+
     base_cnn.load_weights(save_weights_path, by_name=True)
     base_cnn.save(join(model_dir, 'base_cnn', identifier +'.h5'))
 

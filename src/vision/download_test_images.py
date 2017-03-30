@@ -12,6 +12,10 @@ from keras.preprocessing import image
 import ipdb
 
 
+def grayscale_to_rbg(im):
+    im = np.repeat(im, 3, 2)
+    return im
+
 
 def grouper(iterable, n, fillvalue=None):
     args = [iter(iterable)] * n
@@ -22,11 +26,14 @@ def download_url(url, img_size, rescale=False):
     im = Image.open(requests.get(url, stream=True).raw)
     im = im.resize(img_size)
     im = image.img_to_array(im)
-    im = np.expand_dims(im, axis=0)
+
+    if im.shape[-1] != 3:
+        im = grayscale_to_rbg(im)
+    # im = np.expand_dims(im, axis=0)
     if rescale:
         im *= 1./255
 
-    return im
+    return np.array(im)
 
 
 test_file = sys.argv[1]
@@ -41,16 +48,25 @@ img_size = (224,224)
 test_pairs = []
 categories = []
 
-for category, base_url, pos_url, neg_url in test_urls:
-    print(category)
+for i, (category, base_url, pos_url, neg_url) in enumerate(test_urls):
+    category = category.strip()
+    print(i, category)
     base_image = download_url(base_url, img_size, rescale=True)
     pos_image = download_url(pos_url, img_size, rescale=True)
     neg_image = download_url(neg_url, img_size, rescale=True)
 
+    # if i == 22:
+    #     ipdb.set_trace()
+
     test_pairs += [[base_image, pos_image]]
     test_pairs += [[base_image, neg_image]]
 
-    categories += [category]
+    categories += [category.encode('utf8')] * 2
+
+# ipdb.set_trace()
+
+test_pairs = np.array(test_pairs)
+categories = np.array(categories)
 
 with h5py.File(output, 'w') as outf:
     outf.create_dataset('pairs', data=test_pairs)
@@ -61,4 +77,15 @@ with h5py.File(output, 'w') as outf:
 
 
 # im = Image.open(requests.get(url, stream=True).raw)
+
+
+
+
+
+
+
+
+
+
+
 

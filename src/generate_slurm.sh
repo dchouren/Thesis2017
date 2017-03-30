@@ -55,7 +55,7 @@ echo "DONE WITH EVERYTHING"
 echo "************************************************************"
 
 
-watch -n 0.2 squeue -u dchouren
+watch -n 2 squeue -u dchouren
 
 
 
