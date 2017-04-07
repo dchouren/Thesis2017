@@ -80,17 +80,14 @@ print(wrong)
 
 print(sum(accuracy) / len(accuracy))
 
+ranks = [rank_of_match(eval_preds, i) for i in range(0, len(eval_preds-3))]
+
+print(sum(ranks))
+
+ipdb.set_trace()
 # ranks = [rank_of_match(eval_preds, i) for i in range(0, len(eval_preds-3))]
 
 # print(sum(ranks))
 
-
-
-
-
-
-
-
-
-
-
+# ipdb.set_trace()
+print(sum(accuracy) / len(accuracy))

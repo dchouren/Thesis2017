@@ -52,11 +52,27 @@ with h5py.File('/tigress/dchouren/thesis/evaluation/images.h5', 'r') as eval_fil
 
 np.save('/tigress/dchouren/thesis/evaluation/resnet50_preds.npy', preds)
 
+<<<<<<< HEAD
+with h5py.File('/tigress/dchouren/thesis/evaluation/images.h5', 'r') as eval_file:
+    pairs = eval_file['pairs']
+    # preds = save_bottleneck_features(model, year, month, pred_output)
+    preds = model.predict(pairs)
+    labels = [1,0] * int(len(pairs)/2)
+    print(compute_accuracy(preds, labels, 0.5))
+
+
+
+# print('Predictions: {}'.format(pred_output))
+print('{} seconds'.format(int(time.time() - start_time)))
+
+ipdb.set_trace()
+=======
 
 # print('Predictions: {}'.format(pred_output))
 print('{} seconds'.format(int(time.time() - start_time)))
 
 # ipdb.set_trace()
+>>>>>>> 443feb688a883f1c977ff58909dc40ae22b03852
 
 
 
