@@ -17,11 +17,27 @@ def load_and_preprocess_image(im_path, dataset='imagenet', x_size=224, y_size=22
         img = image.load_img(im_path, target_size=(x_size, y_size))
     except:
         print('failure opening: {}'.format(im_path))
-        return False
+        return None
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
+    # if data_format is None:
+    data_format = K.image_data_format()
     if preprocess:
-        x = preprocess_input(x, dataset=dataset)
+        # x = preprocess_input(x, dataset=dataset)
+        if data_format == 'channels_first':
+            # 'RGB'->'BGR'
+            # x = x[:, ::-1, :, :]
+            # Zero-center by mean pixel
+            x[:, 0, :, :] -= 94.78833771
+            x[:, 1, :, :] -= 91.02941132
+            x[:, 2, :, :] -= 88.50362396
+        else:
+            # 'RGB'->'BGR'
+            # x = x[:, :, :, ::-1]
+            # Zero-center by mean pixel
+            x[:, :, :, 0] -= 94.78833771
+            x[:, :, :, 1] -= 91.02941132
+            x[:, :, :, 2] -= 88.50362396
     if rescale:
         x *= 1./255
     return x
@@ -45,6 +61,10 @@ def preprocess_input(x, dataset='imagenet', dim_ordering='default'):
         r_val = 104.113
         g_val = 112.812
         b_val = 117.230
+    elif dataset == 'flickr':
+        r_val = 94.78833771
+        g_val = 91.02941132
+        b_val = 88.50362396
 
     if dim_ordering == 'th':
         x[:, 0, :, :] -= r_val
