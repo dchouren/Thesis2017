@@ -83,12 +83,7 @@ def create_pairs(data_file, output_file, sample_size):
     output_dir = '/tigress/dchouren/thesis/resources/pairs'
 
     fulfilled = create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
-
-    count = 1
-    while not fulfilled:
-        sample_size *= 2
-        sample_data = data_array[np.random.choice(data_array.shape[0], sample_size)]
-        K = _KDTree(sample_data)
+    ipdb.set_trace()
 
         pos_dist = 0.000014  # roughly 1m
         neg_dist = 0.1838    # roughly 2000m
@@ -98,12 +93,28 @@ def create_pairs(data_file, output_file, sample_size):
             fulfilled = False
             continue
 
-        fulfilled = create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
-        count += 1
+    # fulfilled = create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
 
-        if count > 5:
-            print('Failed to create enough pairs')
-            return
+    # count = 1
+    # while not fulfilled:
+    #     sample_size *= 2
+    #     sample_data = data_array[np.random.choice(data_array.shape[0], sample_size)]
+    #     K = _KDTree(sample_data)
+
+    #     pos_dist = 0.000014  # roughly 1m
+    #     neg_dist = 0.1838    # roughly 2000m
+    #     pos_pairs = create_pos_pairs(pos_dist, K)
+    #     # possible_neg_pairs = create_pos_pairs(possible_neg_dist, K)
+    #     if len(pos_pairs) < 35200:
+    #         fulfilled = False
+    #         continue
+
+    #     fulfilled = create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
+    #     count += 1
+
+    #     if count > 5:
+    #         print('Failed to create enough pairs')
+    #         return
 
     # return pairs, labels
 

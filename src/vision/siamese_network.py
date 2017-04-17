@@ -172,6 +172,7 @@ def _generator(filename, batch_size=32, index=0, augment=False):
     f = h5py.File(filename, 'r')
     pairs = f['pairs']
     idg = ImageDataGenerator(rotation_range=20, horizontal_flip=True, vertical_flip=True, zoom_range=0.05)
+    print('initialized')
     while 1:
         data = pairs[index:index+batch_size]
         if augment:
@@ -179,7 +180,6 @@ def _generator(filename, batch_size=32, index=0, augment=False):
         yield [data[:,0], data[:,1]], [1,0]*int(batch_size/2)
         index += batch_size
         index = index % len(pairs)
-        # print(index)
 
     f.close()
 
@@ -211,8 +211,7 @@ def main():
 
     input_shape = (3, 224, 224)
     identifier = model_name + '_' + str(nb_epoch) + '_' + str(n_batch) + '_' + optimizer_name + '_' + identifier
-
-
+    
     sys.setrecursionlimit(10000)
     model = build_siamese_network(model_name, input_shape, optimizer_name)
 

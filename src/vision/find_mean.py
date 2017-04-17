@@ -18,7 +18,6 @@ def _generator(filename, batch_size=32, index=0):
 
 
 filename = '/tigress/dchouren/thesis/resources/pairs/2015_all.h5'
-
 batch_size = 3200
 generator = _generator(filename, batch_size=batch_size, index=0)
 
