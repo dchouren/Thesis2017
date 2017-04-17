@@ -16,9 +16,11 @@ import h5py
 
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import load_model
+from keras.applications.resnet50 import ResNet50
+
 
 from models.utils import _load_model
-from siamese_network import contrastive_loss
+from siamese_network import contrastive_loss, _generator
 from format_h5 import load_path_map
 
 
@@ -76,29 +78,40 @@ def save_bottleneck_features(model, year, month, output_path,img_size=(224,224),
     print('{}s | Saved images to {}'.format(int(time.time() - start_time), output_path))
 
 
-def extract_bottlenecks(model, image_array, output):
 
-    bottlenecks = model.predict(image_array)
+def extract_bottlenecks(model, pairs_file, output):
+
+    batch_size = 32
+    with h5py.File(pairs_file) as inf:
+        total_pairs = inf['pairs'].shape[0]
+    generator = _generator(pairs_file)
+    bottlenecks = model.predict_generator(generator, steps=int(total_pairs/batch_size))
     np.save(output, bottlenecks)
 
 
 def main():
-    if len(sys.argv) != 4:
-        print (__doc__)
-        sys.exit(0)
+    # if len(sys.argv) != 4:
+    #     print (__doc__)
+    #     sys.exit(0)
 
-    model_name = sys.argv[1]
-    year = sys.argv[2]
-    month = sys.argv[3]
+    # model_name = sys.argv[1]
+    # year = sys.argv[2]
+    # month = sys.argv[3]
 
-    output = join('/tigress/dchouren/thesis/resources/bottlenecks', model_name, year + '_' + month + '.h5')
+    # output = join('/tigress/dchouren/thesis/resources/bottlenecks', model_name, year + '_' + month + '.h5')
 
-    sys.setrecursionlimit(10000)
+    # sys.setrecursionlimit(10000)
 
-    model_dir = '/tigress/dchouren/thesis/trained_models/base_cnn'
-    model = load_model(join(model_dir, model_name))
+    # model_dir = '/tigress/dchouren/thesis/trained_models/base_cnn'
+    # model = load_model(join(model_dir, model_name))
 
-    save_bottleneck_features(model, year, month, output, (224, 224), 32)
+    # save_bottleneck_features(model, year, month, output, (224, 224), 32)
+
+    model = ResNet50(weights='imagenet')
+    pairs_file = sys.argv[1]
+    output_file = sys.argv[2]
+
+    extract_bottlenecks(model, pairs_file, output_file)
 
 
 

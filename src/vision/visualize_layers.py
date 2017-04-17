@@ -80,7 +80,7 @@ for filter_index in range(0, 200):
     step = 1.
 
     # we start from a gray image with some random noise
-    if K.image_dim_ordering() == 'th':
+    if K.image_data_format() == 'channels_first':
         input_img_data = np.random.random((1, 3, img_width, img_height))
     else:
         input_img_data = np.random.random((1, img_width, img_height, 3))
@@ -127,3 +127,19 @@ for i in range(n):
 
 # save the result to disk
 imsave(image_output, stitched_filters)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -32,8 +32,11 @@ from keras.layers import Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.optimizers import RMSprop, Adadelta, Adagrad, Nadam, Adam, Adamax, SGD
 from keras import backend as K
-# K.set_image_data_format('channels_first')
+K.set_image_data_format('channels_first')
 from keras.applications.resnet50 import ResNet50
+from keras.utils.io_utils import HDF5Matrix
+from keras.callbacks import ModelCheckpoint
+from keras.preprocessing.image import ImageDataGenerator
 
 from _KDTree import _KDTree
 import vision_utils as vutils
@@ -109,7 +112,6 @@ def create_pairs(x, digit_indices):
 
 
 def get_training_files(file_dir, start_date, end_date, size):
-
     files = sorted(os.listdir(file_dir))
 
     start_file = start_date + '_' + str(size) + '.h5'
@@ -120,23 +122,24 @@ def get_training_files(file_dir, start_date, end_date, size):
 
 
 def get_optimizer(optimizer='SGD'):
+    clipnorm = 1
     if optimizer == 'sgd':
-        opt = SGD(lr=0.01, momentum=0.9, decay=0.0, nesterov=False)
+        opt = SGD(lr=0.0001, momentum=0.9, decay=0.0, nesterov=False, clipnorm=clipnorm)
     elif optimizer == 'rms':
-        opt = RMSprop(lr=0.001, rho=0.9, epsilon=1e-08, decay=0.0)
+        opt = RMSprop(lr=0.001, rho=0.9, epsilon=1e-08, decay=0.0, clipnorm=clipnorm)
     elif optimizer == 'adadelta':
-        opt = Adadelta(lr=1.0, rho=0.95, epsilon=1e-08, decay=0.0)
+        opt = Adadelta(lr=1.0, rho=0.95, epsilon=1e-08, decay=0.0, clipnorm=clipnorm)
     elif optimizer == 'adagrad':
-        opt = Adagrad(lr=0.01, epsilon=1e-08, decay=0.0)
+        opt = Adagrad(lr=0.01, epsilon=1e-08, decay=0.0, clipnorm=clipnorm)
     elif optimizer == 'adam':
-        opt = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+        opt = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0, clipnorm=clipnorm)
     elif optimizer == 'adamax':
-        opt = Adamax(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+        opt = Adamax(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0, clipnorm=clipnorm)
     elif optimizer == 'nadam':
-        opt = Nadam(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=1e-08, schedule_decay=0.004)
+        opt = Nadam(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=1e-08, schedule_decay=0.004, clipnorm=clipnorm)
     else:
         print('Optimizer not supported, defaulting to SGD')
-        opt = SGD(lr=0.01, momentum=0.9, decay=0.0, nesterov=False)
+        opt = SGD(lr=0.01, momentum=0.9, decay=0.0, nesterov=False, clipnorm=clipnorm)
 
     return opt
 
@@ -165,13 +168,18 @@ def build_siamese_network(model_name, input_shape, optimizer):
     return model
 
 
-def _generator(filename, batch_size=32, index=0):
+def _generator(filename, batch_size=32, index=0, augment=False):
     f = h5py.File(filename, 'r')
     pairs = f['pairs']
+    idg = ImageDataGenerator(rotation_range=20, horizontal_flip=True, vertical_flip=True, zoom_range=0.05)
     while 1:
-        yield [pairs[index:index+batch_size][:,0], pairs[index:index+batch_size][:,1]], [1,0]*int(batch_size/2)
+        data = pairs[index:index+batch_size]
+        if augment:
+            data = np.array([[idg.random_transform(x[0]), idg.random_transform(x[1])] for x in data])
+        yield [data[:,0], data[:,1]], [1,0]*int(batch_size/2)
         index += batch_size
         index = index % len(pairs)
+        # print(index)
 
     f.close()
 
@@ -187,90 +195,94 @@ def _iter_generator(filename, batch_size=32):
 
 
 
-
-
 def main():
     launch_time = str(time.time())
 
-    data_dir = sys.argv[1]
-    model_name = sys.argv[2]
+    model_name = sys.argv[1]
+    optimizer_name = sys.argv[2]
     nb_epoch = int(sys.argv[3])
-    start_date = sys.argv[4]
-    end_date = sys.argv[5]
-    optimizer_name = sys.argv[6]
+    n_batch = int(sys.argv[4])
+    identifier = sys.argv[5]
+    pairs_file = sys.argv[6]
 
-    batch_size = 16
+    weights_file = None
+    if len(sys.argv) > 7:
+        weights_file = sys.argv[7]
 
     input_shape = (3, 224, 224)
-    identifier = model_name + '_' + start_date + '_' + end_date + '_' + str(nb_epoch) + '_' + optimizer_name
+    identifier = model_name + '_' + str(nb_epoch) + '_' + str(n_batch) + '_' + optimizer_name + '_' + identifier
+
 
     sys.setrecursionlimit(10000)
     model = build_siamese_network(model_name, input_shape, optimizer_name)
-    # model = load_model('/tigress/dchouren/thesis/resnet50_siamese.h5', custom_objects={'contrastive_loss': contrastive_loss})
 
-    # model.save('/tigress/dchouren/thesis/resnet50_siamese.h5')
+    # # model = load_model('/tigress/dchouren/thesis/resnet50_siamese.h5', custom_objects={'contrastive_loss': contrastive_loss})
+
+    # # model.save('/tigress/dchouren/thesis/resnet50_siamese.h5')
 
     print('Siamese network built')
 
-    training_files = get_training_files(data_dir, start_date, end_date, 35200)
+    # training_files = get_training_files(data_dir, start_date, end_date, 35200)
 
-    print(join(data_dir, training_files[0]))
-    f = h5py.File(join(data_dir, training_files[0]))
-    all_pairs = np.array(f['pairs'])
-    # all_pairs.swap_axes(1,3)
-    # lower_slice = 0
-    # upper_slice = 1000
-    # all_pairs = np.empty((len(data_files) * 1000, 2, *input_shape), dtype=np.float32)
-    # for data_file in data_files:
-    #     new_data = np.squeeze(np.load(join(data_dir, data_file)))
-    #     upper_slice = lower_slice + len(new_data)
-    #     pairs = all_pairs[lower_slice:upper_slice]
-    #     pairs[:] = new_data
+    # print(join(data_dir, training_files[0]))
+    # f = h5py.File(join(data_dir, training_files[0]))
+    # all_pairs = np.array(f['pairs'])
+    # # all_pairs.swap_axes(1,3)
+    # # lower_slice = 0
+    # # upper_slice = 1000
+    # # all_pairs = np.empty((len(data_files) * 1000, 2, *input_shape), dtype=np.float32)
+    # # for data_file in data_files:
+    # #     new_data = np.squeeze(np.load(join(data_dir, data_file)))
+    # #     upper_slice = lower_slice + len(new_data)
+    # #     pairs = all_pairs[lower_slice:upper_slice]
+    # #     pairs[:] = new_data
 
-    #     lower_slice = upper_slice
+    # #     lower_slice = upper_slice
 
-    # pairs = np.vstack([np.squeeze(np.load(join(data_dir, x))) for x in data_files])
-    train_split = int(0.9 * len(all_pairs))
-    if train_split % 2 == 1:
-        train_split += 1
-    tr_pairs = all_pairs[:train_split]
-    val_pairs = all_pairs[train_split:]
-    tr_y = np.asarray([1,0] * int(len(tr_pairs)/2))
-    val_y = np.asarray([1,0] * int(len(val_pairs)/2))
+    # # pairs = np.vstack([np.squeeze(np.load(join(data_dir, x))) for x in data_files])
+    # train_split = int(0.9 * len(all_pairs))
+    # if train_split % 2 == 1:
+    #     train_split += 1
+    # tr_pairs = all_pairs[:train_split]
+    # val_pairs = all_pairs[train_split:]
+    # tr_y = np.asarray([1,0] * int(len(tr_pairs)/2))
+    # val_y = np.asarray([1,0] * int(len(val_pairs)/2))
 
 
     # history = model.fit([tr_pairs[:, 0], tr_pairs[:, 1]], tr_y, validation_data=([val_pairs[:, 0], val_pairs[:, 1]], val_y), batch_size=batch_size, epochs=nb_epoch)
-    generator = _generator('/tigress/dchouren/thesis/resources/pairs/all.h5', batch_size=batch_size)
-    gen_step_end = 20000
-    val_generator = _generator('/tigress/dchouren/thesis/resources/pairs/all.h5', batch_size=batch_size, index=gen_step_end*batch_size)
+    # left = HDF5Matrix('/tigress/dchouren/thesis/resources/pairs/2014_01_35200.h5', 'left')
+    # right = HDF5Matrix('/tigress/dchouren/thesis/resources/pairs/2014_01_35200.h5', 'left')
+    # history = model.fit([left, right], [1,0]*int(left.shape[0]/2), validation_split=0.1)
+    batch_size = 32
+
+
+    model_dir = '/tigress/dchouren/thesis/trained_models'
+
+    if weights_file:
+        model.load_weights(join(model_dir, weights_file))
+
+    save_weights_path = join(model_dir, identifier + '_weights.{epoch:02d}-{val_loss:.2f}.h5')
+    checkpointer = ModelCheckpoint(filepath=save_weights_path, verbose=1, save_best_only=True)
+
+    n_train_batch = int(n_batch / 10 * 9)
+
+    pairs_file = join('/tigress/dchouren/thesis/resources/pairs/', pairs_file)
+    generator = _generator(pairs_file, batch_size=batch_size)
+    val_generator = _generator(pairs_file, batch_size=batch_size, index=n_train_batch*batch_size)
     print('Generator constructed')
-    history = model.fit_generator(generator, steps_per_epoch=gen_step_end, epochs=nb_epoch, validation_data=val_generator, nb_val_samples=2300)
+    history = model.fit_generator(generator, steps_per_epoch=n_train_batch, epochs=nb_epoch, validation_data=val_generator, validation_steps=n_batch-n_train_batch, callbacks=[checkpointer])
     print('Finished fitting')
 
     distance_threshold = 0.5
 
-    # compute final accuracy on training and test sets
-    tr_pred = model.predict([tr_pairs[:, 0], tr_pairs[:, 1]])
-    tr_acc = compute_accuracy(tr_pred, tr_y, distance_threshold)
-    np.savetxt('/tigress/dchouren/thesis/preds/tr/' + identifier + '_tr', tr_pred)
-
-    val_pred = model.predict([val_pairs[:, 0], val_pairs[:, 1]])
-    val_acc = compute_accuracy(val_pred, val_y, distance_threshold)
-    np.savetxt('/tigress/dchouren/thesis/preds/val/' + identifier + '_val', val_pred)
-
-
-    print('* Accuracy on training set: %0.2f%%' % (100 * tr_acc))
-    print('* Accuracy on validation set: %0.2f%%' % (100 * val_acc))
-
-    model_dir = '/tigress/dchouren/thesis/trained_models'
-    save_weights_path = join(model_dir, identifier + '_weights.h5')
-    model.save_weights(save_weights_path)
+    model_save_path = join(model_dir, identifier + '.h5')
+    model.save_weights(model_save_path)
 
     # base_cnn = _load_model(model_name, include_top=True, weights=None)
-    base_cnn = ResNet50(include_top=True, weights=None, input_shape=input_shape)
+    # base_cnn = ResNet50(include_top=True, weights=None, input_shape=input_shape)
 
-    base_cnn.load_weights(save_weights_path, by_name=True)
-    base_cnn.save(join(model_dir, 'base_cnn', identifier +'.h5'))
+    # base_cnn.load_weights(save_weights_path, by_name=True)
+    # base_cnn.save(join(model_dir, 'base_cnn', identifier +'.h5'))
 
     # model.save_weights('/tigress/dchouren/thesis/trained_models/' )
 
@@ -279,6 +291,25 @@ def main():
     h.pop('model', None)
     with open('/tigress/dchouren/thesis/histories/' + identifier + '.pickle', 'wb') as outf:
         pickle.dump(h, outf)
+
+    print('Saved')
+
+
+    # compute final accuracy on training and test sets
+    # tr_pred = model.predict([tr_pairs[:, 0], tr_pairs[:, 1]])
+    # tr_acc = compute_accuracy(tr_pred, tr_y, distance_threshold)
+    # np.savetxt('/tigress/dchouren/thesis/preds/tr/' + identifier + '_tr', tr_pred)
+    f = h5py.File('/tigress/dchouren/thesis/resources/pairs/2013_08_35200.h5')
+    val_pairs = f['pairs'][:10000]
+    val_y = [1,0] * int(len(val_pairs)/2)
+
+    val_pred = model.predict([val_pairs[:, 0], val_pairs[:, 1]])
+    val_acc = compute_accuracy(val_pred, val_y, distance_threshold)
+    np.savetxt('/tigress/dchouren/thesis/preds/val/' + identifier + '_val', val_pred)
+
+    # print('* Accuracy on training set: %0.2f%%' % (100 * tr_acc))
+    print('* Accuracy on validation set: %0.2f%%' % (100 * val_acc))
+
 
     print('Total time: {}'.format(str(time.time() - float(launch_time))))
 

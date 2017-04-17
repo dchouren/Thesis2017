@@ -21,7 +21,7 @@ model_name = sys.argv[1]
 optimizer_name = sys.argv[2]
 weights = sys.argv[3]
 
-identifier = weights.split('.')[0]
+# identifier = weights.split('.')[0]
 
 
 img_size = (224,224)
@@ -37,15 +37,21 @@ model.load_weights(weights_path, by_name=True)
 
 start_time = time.time()
 
-with h5py.File('/tigress/dchouren/thesis/evaluation/images.h5', 'r') as eval_file:
+with h5py.File('/tigress/dchouren/thesis/evaluation/pairs.h5', 'r') as eval_file:
     pairs = eval_file['pairs']
     # preds = save_bottleneck_features(model, year, month, pred_output)
-    preds = model.predict([np.swapaxes(pairs[:,0], 1, 3), np.swapaxes(pairs[:,1], 1, 3)])
+    # preds = model.predict([np.swapaxes(pairs[:,0], 1, 3), np.swapaxes(pairs[:,1], 1, 3)])
+    preds = model.predict([pairs[:,0], pairs[:,1]])
     labels = [1,0] * int(len(pairs)/2)
     print('Accuracy: {}'.format(compute_accuracy(preds, labels, 0.5)))
 
+eval_preds = preds.ravel()
+pair_preds = zip(eval_preds[::2], eval_preds[1::2])
+accuracy = [1 if pair_pred[0] < pair_pred[1] else 0 for pair_pred in pair_preds]
+print(sum(accuracy) / len(accuracy))
+
 preds = np.array(preds)
-np.save('/tigress/dchouren/thesis/evaluation/{}.npy'.format(identifier), preds)
+np.save('/tigress/dchouren/thesis/evaluation/preds/{}.npy'.format(weights), preds)
 
 
 # print('Predictions: {}'.format(pred_output))
