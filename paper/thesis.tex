@@ -25,6 +25,7 @@
 \usepackage{amssymb}
 \usepackage{afterpage}
 \usepackage{relsize}
+\usepackage{tabularx}
 
 %\mathbb{set}
 
@@ -53,7 +54,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{\bf A Deep Representation for Images Through Weakly Supervised Learning\\[2ex] 
+\title{\bf A Fine-Grained Embedding for Image Similarity Through Weakly Supervised Learning\\[2ex] 
        \rm\normalsize 2017}
 \date{\today}
 \author{\bf Daway Chou-Ren}
@@ -76,6 +77,10 @@ Learning visual representations for images has been important for a variety of t
 The popularization of large scale image datasets such as ImageNet, which contains 14,197,122 images belonging to 1000 classes\cite{deng2009imagenet}, the MIT Places dataset which contains 7 million images for scene classification\cite{zhou2014learning}, the SUN scene classification database\cite{xiao2010sun}, and the Microsoft COCO dataset of 2.5 million images for common objects in context\cite{lin2014microsoft} have allowed researchers to build models highly adept at basic image classification tasks\cite{russakovsky2013detecting}. In a review of deep learning models trained on these massive datasets with many basic image classes (ImageNet contains classes for many animals and plants and items such as 'tennis ball', 'fountain pen', and 'tricycle') Russakovsky et al. concluded that deep learning techniques were able to transfer learning from these dataset classes to other generic classes, such as distinguishing dogs from airplanes.\cite{russakovsky2013detecting} However, more fine-grained image classification, such as between species of flowers, or of dogs of different ages, required learning different image embeddings.\\
 
 After the deep learning revolution, a major direction of image understanding research has been to develop more fine-grained datasets for the training of models for highly specific tasks. A quick search for image datasets published in 2016 returns ones for irises, ultrasounds, weather property, tumors, light fields, and food calories.\cite{bowyer2016nd}\cite{cortes2016ultrasound}\cite{chu2016image2weather}\cite{shi2016stacked}\cite{paudyal2016smart}\cite{pouladzadeh2015foodd}. Yet, although we have been able to train more and more specific models for finer and finer grained image classification, this research still relies on the gathering of accurately labeled data. It is infeasible to gather large quantities of data for every possible image understanding task.\\
+
+Fine-grained similarity also pushes against a fundamental tenant of machine vision: the desire for algorithms to capture various types of invariance--rotation, translation, scaling, illumination, color, etc. The importance of invariance to the field of machine vision is enshrined in the seminal technique of using scale-invariant feature transformations. Krishevsky et al. note also that their scheme "approximately captures an important property of natural images, namely, that object identity is invariant to changes in the intensity and color fo the illumination."\cite{krizhevsky2012imagenet} Standard augmentation techniques in deep learning include flipping images horizontally and vertically, rotation images, extracting random crops and zoom, and jittering color and intensity channels with random noise, all with the purpose of forcing models to learn these types of invariants. These techniques make sense for many types of contemporary vision-related tasks such as object recognition, bounding box detecting, and scene classification, since a red car and blue car are still both cars, and the presence of either might inform an algorithm that a scene depicts a highway. Yet, for fine-grained image similarity purposes where we are attempting to determine which two images are most similar out of a red car, blue car, and red car, we do not want our model to learn color invariance. Similar considerations for rotational, translational, and other types of invariance must also be made.\\
+
+Thus, the challenge in the task attempted is evident: we seek to 1) learn to detect image structures useful for embedding them in a similarity space, 2) learn to do so using a weakly labeled dataset, and 3) learn to distinguish images on a very fine-grained level, which may require learning an embedding that ignores invariants that might make task 1) easier.
 
 \subsection*{Noisy Supervised Training}
 
@@ -117,7 +122,7 @@ Various forms of ReLU have been proposed, notably the parametric ReLU (pReLU), w
 
 Since convolutional layers only produce feature maps on local scales, fully connected layers at the end of a CNN allow for high level features to be learned. These layers have full connections to all activated neurons from previous layers, which allow for global mixing of activated feature maps. To complete our discussion of the CNN, the loss layer specifies how a network should penalize incorrect predictions. Typically sigmoid cross-entropy loss is used. Regularization is also used, typically in the form of L1 or L2 weight decay. Dropout layers, which deactivate a random subset of a layer's neurons in each iteration of training, have also proved highly effective for neural network regularization.\cite{srivastava2014dropout}\\
 
-The term deep CNN refers to a CNN that has many layers. This definition is highly variable: the popular VGG16 model has 16 layers\cite{simonyan2014very} and versions of ResNet contain 50, 101, and 152 layers\cite{he2016deep}.\\
+The term deep CNN refers to a CNN that has many layers. This definition is highly variable: the popular VGG16 model has 16 layers\cite{simonyan2014very} and popular versions of ResNet contain 34, 50, 101, and 152 layers\cite{he2016deep}.\\
 
 We can more precisely define a CNN as a function $f$ that takes parameters $\theta$ and an input image $I$ to produce an image embedding $x$ and a loss $L$.
 
@@ -129,11 +134,11 @@ We can more precisely define a CNN as a function $f$ that takes parameters $\the
 
 
 \subsection{Weakly Supervised Learning with Fuzzy Data}
-The problems with relying on supervised learning are many. It is difficult and time consuming to create large datasets, and even when these are created, such as for ImageNet, they are often specific to a certain task and do not necessarily extend to novel concepts. As Russakowsky et al. discussed\cite{russakovsky2013detecting}, pretrained models were only good at segmenting images into basic classes, and demonstrated that they were better tuned for classification of natural classes such as animals than they were for man-made objects. In recent years, a proliferation of intra-class datasets, such as for hundreds of species of flowers or birds, have allowed deep learning techniques to tackle everything from differentiating species of flowers\cite{angelova2013image}, leaves\cite{rejeb2013vantage}, and birds\cite{berg2014birdsnap}, but the limitations of a class-based formulation of image similarity remain apparent. More and more specific class formulas will need to be created, and this is higly reliant on how explicit human annotations are. Labeling an image as a dog rather than as a labrador will create problems if attempting to apply this data to a fine-grained image similarity task.\\
+The problems with relying on supervised learning are many. It is difficult and time consuming to create large datasets, and even when these are created, such as for ImageNet, they are often specific to a certain task and do not necessarily extend to novel concepts. As Russakowsky et al. discussed\cite{russakovsky2013detecting}, models pretrained on general datsets like Imagenet were only good at segmenting images into basic classes. Russakowsky et al. also demonstrated that these models were better tuned for classification of natural classes such as animals than they were for man-made objects, suggesting that even an expansive 12 million image-large dataset like ImageNet still had flaws for general classification training. In recent years, a proliferation of intra-class datasets, such as for hundreds of species of flowers or birds, have allowed deep learning techniques to tackle everything from differentiating species of flowers\cite{angelova2013image}, leaves\cite{rejeb2013vantage}, and birds\cite{berg2014birdsnap}, but the limitations of a class-based formulation of image similarity remain apparent. More and more specific class formulas will need to be created, and this is higly reliant on how explicit human annotations are. For example, labeling an image as a dog, which might be reasonable for an animal differentiation task, will create problems if this data is ever used for a more fine-grained image similarity task, such as one that requires differentiation of labradors from golden retrievers.\\
 
 Much work on using weakly supervised learning has focused on using web images as a source of easily and quickly obtainable weakly labeled dataset.\cite{bergamo2010exploiting}\cite{fergus2010learning}\cite{li2010optimol}\cite{schroff2011harvesting}. While on the whole successful, researchers note that web created classes suffer from polysemy and noise problems. A search for penguin images will not necessarily return only penguins because of the way images and surrounding text are indexed, and a search for screens might return both door screens and computer screen. In the field of object segmentations, Rubinstein et al achieved better than state of the art benchmark results training on a web gathered corpus, yet also noted difficulty with certain classes because of the low quality of some images.\cite{rubinstein2013unsupervised}
 
-Krause et al use fuzzy web-based data to remarkable effectiveness, successfully training classification for over 14,000 image classes, achieving close to human accuracy on the CUB Caltech bird species dataset, and beating state of the art results for CUB and the Stanford dog dataset\cite{krause2016unreasonable}. They quantify the fuzziness (incorrectly labeled images) in their images classes to be an average of 16\%, demonstrating that a certain amount of fuzziness is still able to be overcome in training. 
+Krause et al. use fuzzy web-based data to remarkable effectiveness, successfully training classification for over 14,000 image classes, achieving close to human accuracy on the CUB Caltech bird species dataset, and beating state of the art results for CUB and the Stanford dog dataset\cite{krause2016unreasonable}. They quantify the fuzziness (incorrectly labeled images) in their images classes to be an average of 16\%, demonstrating that a certain amount of fuzziness is still able to be overcome in training. 
 
 
 \subsection{Siamese Neural Networks}
@@ -248,7 +253,7 @@ To deal with the duplicated photos, we use aggressive duplication removal when s
 Though the existence of semantic clusters provides the basis for our model's learnability, we never explicitely create these clusters or segment our images in any way beyond creating 1 meter and 2000 meter balls for positive and negative image pair selection. In a similar paper which trained a CNN to geolocate Flickr images on a global scale, Weyand et al look at the geographic density of their photos and divide the earth into variable size latitude longitude bounding boxes which they use as image classes.\cite{weyand2016planet} The existence of classes allows Weyand et al to frame geolocalization as a standard classification problem to which a CNN is easily applied. We do not explicitly apply this sort of segmentation and we do not seek to predict a class but rather to find an image embedding.
 
 \subsection{Proprocessing}
-We downsample all images to size (224,224), a common size proven useful for feature represenation for the ImageNet classification task by the ResNet architectures.\cite{He2015} Because we expect the time of day a photo is taken to have a significant effect on its representation in an image embedding, we wish to keep the color channel for our images. However, many photos uploaded to Flickr are in grayscale, so we remove these using an entropy metric. We apply mean pixel subtraction to center our data.
+We downsample all images to size (224,224), a common size proven useful for feature representation for the ImageNet classification task by the ResNet architectures.\cite{He2015} We do not grayscale our images or perform any other color manipulation because we expect the time of day a photo is taken to have a significant effect on its representation in our image embedding. However, many photos uploaded to Flickr are in grayscale, so we remove these using an entropy metric. We first apply a Laplacian filter to each image and then find the Shannon entropy, pruning images with an entropy below a threshold. For some experiments, we apply mean pixel subtraction to center our data by subtracting the color channel means for our entire dataset from each training image. This is to bound each input image's pixel values to roughly the same range so that when we share gradients in the backpropagation phase of our CNN training, we don't have weights of varying magnitudes. We find that our use of batch normalization layers is able to share gradients effectively, negating the usefulness of mean pixel subtraction, so we do not use this technique for all experiments.
 
 \subsection{Quantifying the Amount of Fuzziness}
 
@@ -264,10 +269,89 @@ Placeholder figure
 
 We use the parametric ReLU activation unit introduced by He et al.\cite{he2016deep} We add an L2 regularization term to our loss function $\dfrac{\lambda}{2}||W||_2^2$, where $W$ are our networks weights, $\lambda$ is a regularization parameter. 
 
-
 \section{Experiments}
+We have three main experimental goals:
+\begin{enumerate}
+\item Prove it is possible to train a weakly supervised model to learn an image embedding function from our scraped Flickr data that is useful for general vision tasks
+\item Investigate, and quantify if possible, the effects of the fuzziness of our data on learning rates and generalizability
+\item Investigate how the presence of certain invariants in our datasets affect model generalizability
+\end{enumerate}
+
+\subsection{Model Training}
+
+\subsubsection{ResNet-50}
+We did very little experimentation with network architectures, opting to use a 50 layer ResNet architecture. Though the ResNet family of architectures won first place in the ImageNet classification, ImageNet detection, ImageNet localization, COCO detection, and COCO segmentation competitions in 2015, ResNet-50 is no longer considered a cutting edge architecture, as it has been surpassed by the third generation of Inception architectures as well as by Inception-ResNet hybrid architectures.\cite{He2015}\cite{szegedy2016inception} Using the ResNet family offers the advantage of being able to use deeper and more discriminating models on image data preprocessed in the same way. Inception architectures are tuned to make use of a different preprocessing pipeline, so swapping out deeper architectures in order to trade training speed with presumed model accuracy would not be as easy.  The preformance gap between ResNet and cutting edge architectures is slight enough, as shown in Table \ref{table:cnn_benchmarks}, that we choose to stick with the ResNet family for this flexibility in improved accuracy or faster training time, should we require it. Ultimately, we found that ResNet-50 represented a good trade off between model depth and accuracy and training speed.\\
+
+\begin{center}
+ \begin{tabular}{||c c c c c||} 
+ \hline
+ Network & Layers & Top-1 error & Top-5 error & Speed (ms) \\ [0.5ex] 
+ \hline\hline
+ Inception V3 & 48 & 21.2 & 5.6 & NA \\ 
+ \hline
+ Inception-ResNet-2 & NA & 19.6 & 4.7 & NA \\ 
+ \hline
+ ResNet-18 & 18 & 30.43 & 10.76 & 31.54 \\ 
+ \hline
+ ResNet-34 & 34 & 26.73 & 8.74 & 51.59 \\ 
+ \hline
+  ResNet-50 & 50 & 24.01 & 7.02 & 103.58 \\ 
+ \hline
+  ResNet-101 & 101 & 22.44 & 6.21 & 156.44 \\ 
+ \hline
+  ResNet-152 & 152 & 22.16 & 6.16 & 217.91 \\ 
+ \hline
+  ResNet-200 & 200 & 21.66 & 5.79 & 296.51 \\[1ex] 
+ \hline
+\end{tabular}
+\label{table:cnn_benchmarks}
+\end{center}
+
+Our implementation modifies ResNet-50 by changing its standard weight initializations, changing the activation functions, and by specifying a 1024-dimensional output for our image embedding. The choice of 1024 for our image embedding dimension is somewhat arbitrary. We desire to keep our dimension around the same magnitude as the outputs for ImageNet and Places365--1000 and 365 respectively.\\
+
+\subsubsection{He Normal weight initialization}
+We use the He Normal weight initialization, which assumes a truncated normal distribution with zero mean and a standard deviation equivalent to $\sqrt{2 / f}$, where $f$ is the number of input connections in a layer's weight tensor. Usually, CNNs are initialized with weights drawn from Gaussian distributions. Glorot and Bengio argue that we would like the variance of a layer $l_{n+1}$ to be equivalent to the variance of our output of the previous layer $l_{n}$ so that our weights neither shrink to 0 nor explode as an input is passed through a deep network.\cite{glorot2010understanding} Their Xavier-Glorot initialization preserves the magnitude of weights for both the forward and backwards passes. This necessitates choosing a weight initialization, $W$, such that $Var(W_i) = \dfrac{2}{n_{in}+n_{out}}$, where $n_{in}$ and $n_{out}$ refer to the number of input and output connections for an $i$-indexed neuron. He et al. find that this initialization leads to a stall in training for very deep architectures with more than 30 layers and propose the He Normal initialization which requires instead that $Var(W_i) = \dfrac{2}{n_{in}}$.\cite{he2015delving}\\
+
+\subsubsection{Parametric ReLU activation}
+Activation layers are used to control which nodes in a layer send output to the next layer. The standard activation currently used in deep learning is the rectified linear activation unit (ReLU), which takes the form
+\begin{equation}
+	f(x) = \begin{cases}
+	   x & x > 0 \\
+	   0 & x\leq 0 \\
+     \end{cases}
+\end{equation}
+Various forms of ReLU have been proposed, notably the parametric ReLU (pReLU), which adds a learnable parameter, $\alpha$, to control a slope for the negative activation domain and which was used by He et al. to achieve better than human performance for ImageNet classification.\cite{he2016deep}
+\begin{equation}
+	f(x) = \begin{cases}
+	   x & x > 0 \\
+	   \alpha x & x \leq 0 \\
+     \end{cases}
+\end{equation} 
+
+Because we are training on a fairly large and very noisy dataset, we seek to mitigate the possibility of 'dying' ReLU activations by using parametric ReLU activations. ReLU units can 'die' when a large gradient causes the weights to update in such a way that the unit never again activates for the rest of the dataset, causing it to output 0. Since the unit never contributes to the model prediction, it is never updated, and is therefore a dead end in the model. Experimentally, up to 40\% of network ReLU units can die. We expect it will be important to mitigate this since our dataset spans a wide variety of images, from all white to all black, and therefore we likely have a higher chance of killing ReLU units than normal.
 
 \section{Results}
+
+Our test set, which we will refer to as the Wang set, consists of 5033 triplets compiled by Wang et al.\cite{wang2014learning} The dataset was curated by sampling triplets of images, $(Q, A, B)$ from the top 50 search results for 1000 popular text queries using the Google image search engine. Most text queries are thus represented multiple times. Human raters were given four choices in ranking the similarity of images in the triplets: 1) both $A$ and $B$ were similar to $Q$; 2) both $A$ and $B$ were dissimilar to $Q$; 3) $A$ was more similar to $Q$ than $B$; 4) $B$ was more similar to $Q$ than $A$. Each triplet was rated by three different humans. If all three ratings were the same, the triplet was included in the dataset.\\
+
+The Wang set contains an extremely wide variety of images due to its creation through sampling popular Google image searches. A random sampling of the image categories returns $\texttt{Lynda Carter, Paris skyline, Empire State building, brunette, Bob Marley, \\Angora Rabbit, Jeep Liberty, 2 Fast 2 Furious, Shemar Moore, \\soccer ball, motorbike racing, Brittany Murphy}$. A plurality of classes refer to people.\\
+
+We display in Table \ref{table:random_triplets} a random sampling of triplets, in a few examples demonstrating the relatively narrow margin between similar and dissimilar pairs, and in  a few examples demonstrating the necessity of learning a general image invariants.
+
+\begin{table}
+\begin{tabular}{*{4}{c}}
+\toprule
+\bfseries Image Query & \bfseries Base Image ($p$) & \bfseries Similar Image ($p_+$) & \bfseries Dissimilar Image ($p_-$) \\
+\midrule
+\centering New York City & \includegraphics[width=1.5in]{images/nyc_base.jpeg} & \includegraphics[width=1.5in]{images/nyc_pos.jpeg} & \includegraphics[width=1.5in]{images/nyc_neg.jpeg}\\
+Column1b & Column2b & Column3b & \\
+Column1c & Column2c & Column3c & \\
+Column1d & Column2d & Column3d & \\
+\bottomrule
+\end{tabular}
+\caption{My table}
+\label{table:random_triplets}
+\end{table}
 
 \section{Conclusion}
 

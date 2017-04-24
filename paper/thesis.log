@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  6 MAR 2017 00:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  23 APR 2017 04:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -832,20 +832,30 @@ Package: afterpage 2014/10/28 v1.08 After-Page Package (DPC)
 (/usr/local/texlive/2015/texmf-dist/tex/latex/relsize/relsize.sty
 Package: relsize 2013/03/29 ver 4.1
 )
+(/usr/local/texlive/2015/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2014/10/28 v2.10 `tabularx' package (DPC)
+\TX@col@width=\dimen160
+\TX@old@table=\dimen161
+\TX@old@col=\dimen162
+\TX@target=\dimen163
+\TX@delta=\dimen164
+\TX@cols=\count133
+\TX@ftn=\toks35
+)
 (/usr/local/texlive/2015/texmf-dist/tex/latex/mathtools/mathtools.sty
 Package: mathtools 2015/05/11 v1.16 mathematical typesetting tools
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count133
-\calc@Bcount=\count134
-\calc@Adimen=\dimen160
-\calc@Bdimen=\dimen161
+\calc@Acount=\count134
+\calc@Bcount=\count135
+\calc@Adimen=\dimen165
+\calc@Bdimen=\dimen166
 \calc@Askip=\skip70
 \calc@Bskip=\skip71
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count135
+\calc@Ccount=\count136
 \calc@Cskip=\skip72
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/mathtools/mhsetup.sty
@@ -855,63 +865,63 @@ LaTeX Info: Thecontrolsequence`\('isalreadyrobust on input line 129.
 LaTeX Info: Thecontrolsequence`\)'isalreadyrobust on input line 129.
 LaTeX Info: Thecontrolsequence`\['isalreadyrobust on input line 129.
 LaTeX Info: Thecontrolsequence`\]'isalreadyrobust on input line 129.
-\g_MT_multlinerow_int=\count136
-\l_MT_multwidth_dim=\dimen162
+\g_MT_multlinerow_int=\count137
+\l_MT_multwidth_dim=\dimen167
 \origjot=\skip73
-\l_MT_shortvdotswithinadjustabove_dim=\dimen163
-\l_MT_shortvdotswithinadjustbelow_dim=\dimen164
-\l_MT_above_intertext_sep=\dimen165
-\l_MT_below_intertext_sep=\dimen166
-\l_MT_above_shortintertext_sep=\dimen167
-\l_MT_below_shortintertext_sep=\dimen168
+\l_MT_shortvdotswithinadjustabove_dim=\dimen168
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen169
+\l_MT_above_intertext_sep=\dimen170
+\l_MT_below_intertext_sep=\dimen171
+\l_MT_above_shortintertext_sep=\dimen172
+\l_MT_below_shortintertext_sep=\dimen173
 )
 \tindent=\skip74
 
 (./thesis.aux)
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 62.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 62.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 63.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 63.
  (/usr/local/texlive/2015/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 62.
+LaTeX Font Info:    ... okay on input line 63.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 63.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 )
 (/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count137
-\scratchdimen=\dimen169
+\scratchcounter=\count138
+\scratchdimen=\dimen174
 \scratchbox=\box37
-\nofMPsegments=\count138
-\nofMParguments=\count139
-\everyMPshowfont=\toks35
-\MPscratchCnt=\count140
-\MPscratchDim=\dimen170
-\MPnumerator=\count141
-\makeMPintoPDFobject=\count142
-\everyMPtoPDFconversion=\toks36
+\nofMPsegments=\count139
+\nofMParguments=\count140
+\everyMPshowfont=\toks36
+\MPscratchCnt=\count141
+\MPscratchDim=\dimen175
+\MPnumerator=\count142
+\makeMPintoPDFobject=\count143
+\everyMPtoPDFconversion=\toks37
 )
-LaTeX Info: Redefining \microtypecontext on input line 62.
+LaTeX Info: Redefining \microtypecontext on input line 63.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -979,7 +989,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box38
-Package hyperref Info: Link coloring ON on input line 62.
+Package hyperref Info: Link coloring ON on input line 63.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -987,11 +997,11 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count143
+\c@section@level=\count144
 )
-LaTeX Info: Redefining \ref on input line 62.
-LaTeX Info: Redefining \pageref on input line 62.
-LaTeX Info: Redefining \nameref on input line 62.
+LaTeX Info: Redefining \ref on input line 63.
+LaTeX Info: Redefining \pageref on input line 63.
+LaTeX Info: Redefining \nameref on input line 63.
 
 (./thesis.out) (./thesis.out)
 \@outlinefile=\write3
@@ -1002,8 +1012,8 @@ Option `squaren' provided!
  Command \squaren defined by SIunits package!
 
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 64.
-LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 64
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 65.
+LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 65
 .
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1ztmcm.fd
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
@@ -1012,35 +1022,35 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             `ztmcm' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 64
+LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 65
 .
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/omlztmcm.fd
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 64
+LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 65
 .
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/omsztmcm.fd
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 64
+LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 65
 .
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/omxztmcm.fd
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 64.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 65.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 64.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 65.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 64.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 65.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 64.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 65.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/mt-eur.cfg
 File: mt-eur.cfg 2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)
@@ -1052,309 +1062,389 @@ File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 64.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 65.
 
-Underfull \hbox (badness 10000) in paragraph at lines 72--73
+Underfull \hbox (badness 10000) in paragraph at lines 73--74
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 74--75
+Underfull \hbox (badness 10000) in paragraph at lines 75--76
 
  []
 
 [1
 
 {/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 76--77
+Underfull \hbox (badness 10000) in paragraph at lines 77--78
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 78--79
+Underfull \hbox (badness 10000) in paragraph at lines 79--80
 
  []
 
 [2]
+Underfull \hbox (badness 10000) in paragraph at lines 81--82
+
+ []
+
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 80.
-
-Underfull \hbox (badness 10000) in paragraph at lines 82--83
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 85--86
-
- []
-
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 85.
 
 Underfull \hbox (badness 10000) in paragraph at lines 87--88
 
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 89--90
+Underfull \hbox (badness 10000) in paragraph at lines 90--91
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 96--97
+Underfull \hbox (badness 10000) in paragraph at lines 92--93
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 94--95
 
  []
 
 [4]
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 101.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 101.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 101.
-
 Underfull \hbox (badness 10000) in paragraph at lines 101--102
 
  []
 
 [5]
-Underfull \hbox (badness 10000) in paragraph at lines 118--119
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 106.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 106.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 106.
 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 120--121
+Underfull \hbox (badness 10000) in paragraph at lines 106--107
 
  []
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 132--133
-
- []
-
-[7]
-Underfull \hbox (badness 10000) in paragraph at lines 141--142
+Underfull \hbox (badness 10000) in paragraph at lines 123--124
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 143--144
+Underfull \hbox (badness 10000) in paragraph at lines 125--126
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 137--138
+
+ []
+
+[7] [8]
+Underfull \hbox (badness 10000) in paragraph at lines 146--147
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 148--149
 
  []
 
 
 </Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configurations.jpg, 
-id=201, 2457.18pt x 3276.24pt>
+id=222, 2457.18pt x 3276.24pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configurations.
 jpg Graphic file (type jpg)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configurations.j
 pg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/siam
-ese_configurations.jpg used on input line 150.
+ese_configurations.jpg used on input line 155.
 (pdftex.def)             Requested size: 469.75499pt x 626.34142pt.
-LaTeX Font Info:    Try loading font information for T1+phv on input line 151.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 156.
  (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 9.99591pt on input line 151.
+(Font)              scaled to size 9.99591pt on input line 156.
 Package microtype Info: Loading generic settings for font family
 (microtype)             `phv' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 151.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 156.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 9.99591pt on input line 151.
- [8]
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 160.
+(Font)              scaled to size 9.99591pt on input line 156.
+ [9] [10 </Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configurati
+ons.jpg>]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 165.
 
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 160.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 165.
 
-Underfull \hbox (badness 10000) in paragraph at lines 159--161
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 166--168
+Underfull \hbox (badness 10000) in paragraph at lines 164--166
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 172--173
-
- []
-
-[9] [10 </Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configuratio
-ns.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 181--182
+Underfull \hbox (badness 10000) in paragraph at lines 171--173
 
  []
 
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png, id=229,
+Underfull \hbox (badness 10000) in paragraph at lines 177--178
+
+ []
+
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 186--187
+
+ []
+
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png, id=250,
  769.87625pt x 761.84625pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png Gra
 phic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/newy
-ork_density.png used on input line 187.
+ork_density.png used on input line 192.
 (pdftex.def)             Requested size: 187.89912pt x 185.93904pt.
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png, id=23
-1, 505.89pt x 505.89pt>
+</Users/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png, id=25
+2, 505.89pt x 505.89pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png G
 raphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/manh
-attan_density.png used on input line 192.
+attan_density.png used on input line 197.
 (pdftex.def)             Requested size: 187.89912pt x 187.90196pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 197--198
+Underfull \hbox (badness 10000) in paragraph at lines 202--203
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 199--200
+Underfull \hbox (badness 10000) in paragraph at lines 204--205
 
  []
 
-[11]
+[12]
 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram.png,
- id=237, 462.528pt x 346.896pt>
+ id=258, 462.528pt x 346.896pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram
 .png Graphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram.
 png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/2014
-_distance_histogram.png used on input line 205.
+_distance_histogram.png used on input line 210.
 (pdftex.def)             Requested size: 234.87749pt x 176.15768pt.
 
 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_5000_histogram
-.png, id=238, 462.528pt x 346.896pt>
+.png, id=259, 462.528pt x 346.896pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_5000_hist
 ogram.png Graphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_5000_histo
 gram.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/2014
-_distance_5000_histogram.png used on input line 211.
+_distance_5000_histogram.png used on input line 216.
 (pdftex.def)             Requested size: 234.87749pt x 176.15768pt.
 
 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_2000_histogram
-.png, id=239, 462.528pt x 346.896pt>
+.png, id=260, 462.528pt x 346.896pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_2000_hist
 ogram.png Graphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_2000_histo
 gram.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/2014
-_distance_2000_histogram.png used on input line 217.
+_distance_2000_histogram.png used on input line 222.
 (pdftex.def)             Requested size: 234.87749pt x 176.15768pt.
 
 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_200_histogram.
-png, id=240, 462.528pt x 346.896pt>
+png, id=261, 462.528pt x 346.896pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_200_histo
 gram.png Graphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_200_histog
 ram.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/2014
-_distance_200_histogram.png used on input line 223.
+_distance_200_histogram.png used on input line 228.
 (pdftex.def)             Requested size: 234.87749pt x 176.15768pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 203--227
+Underfull \hbox (badness 10000) in paragraph at lines 208--232
 [][]$[]$
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 230--231
+Underfull \hbox (badness 10000) in paragraph at lines 235--236
 
  []
 
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/brooklynbridge.jpg, id=241, 
+</Users/daway/Documents/Princeton/Thesis2017/plots/brooklynbridge.jpg, id=262, 
 2764.3275pt x 1449.415pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/brooklynbridge.jpg Grap
 hic file (type jpg)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/brooklynbridge.jpg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/broo
-klynbridge.jpg used on input line 234.
+klynbridge.jpg used on input line 239.
 (pdftex.def)             Requested size: 469.75499pt x 246.28671pt.
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg, id=242, 2788.4175pt
+</Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg, id=263, 2788.4175pt
  x 1168.365pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg Graphic file (t
 ype jpg)
  <use /Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/met.
-jpg used on input line 241.
+jpg used on input line 246.
 (pdftex.def)             Requested size: 469.75499pt x 196.81882pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 246--247
+Underfull \hbox (badness 10000) in paragraph at lines 251--252
 
  []
 
-[12 </Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png> </U
+[13 </Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png> </U
 sers/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png>]
-[13 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram.
+[14 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram.
 png> </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_5000_hist
 ogram.png> </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_200
 0_histogram.png> </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distan
-ce_200_histogram.png>] [14 </Users/daway/Documents/Princeton/Thesis2017/plots/b
+ce_200_histogram.png>] [15 </Users/daway/Documents/Princeton/Thesis2017/plots/b
 rooklynbridge.jpg> </Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg>]
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/pipeline.jpg, id=269, 2457.1
+</Users/daway/Documents/Princeton/Thesis2017/plots/pipeline.jpg, id=290, 2457.1
 8pt x 3276.24pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/pipeline.jpg Graphic fi
 le (type jpg)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/pipeline.jpg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/pipe
-line.jpg used on input line 259.
+line.jpg used on input line 264.
 (pdftex.def)             Requested size: 469.75499pt x 626.34142pt.
- [15]
-[16 </Users/daway/Documents/Princeton/Thesis2017/plots/pipeline.jpg>]
-(./thesis.bbl [17])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 280.
- [18]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 280.
+ [16]
+[17 </Users/daway/Documents/Princeton/Thesis2017/plots/pipeline.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 283--284
+
+ []
+
+[18]
+Underfull \hbox (badness 10000) in paragraph at lines 310--311
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 313--314
+
+ []
+
+[19]
+Underfull \hbox (badness 10000) in paragraph at lines 335--336
+
+ []
+
+[20]
+LaTeX Font Info:    Try loading font information for T1+pcrs on input line 337.
+
+ (/usr/local/texlive/2015/texmf-dist/tex/latex/courier-scaled/t1pcrs.fd
+File: t1pcrs.fd 2004/07/09 scalable font definitions for T1/pcrs.
+)
+LaTeX Font Info:    Font shape `T1/pcrs/m/n' will be
+(Font)              scaled to size 10.5pt on input line 337.
+Package microtype Info: Loading generic settings for font family
+(microtype)             `pcrs' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+
+Overfull \hbox (658.78555pt too wide) in paragraph at lines 337--338
+[]$\T1/ptm/m/n/12 (-20) .
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 337--338
+
+ []
+
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg, id=332
+, 259.97125pt x 194.7275pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg Gr
+aphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/nyc_base.jpeg used on input line 346.
+(pdftex.def)             Requested size: 108.405pt x 81.19963pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg, id=333,
+ 276.03125pt x 184.69pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg Gra
+phic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/nyc_pos.jpeg used on input line 346.
+(pdftex.def)             Requested size: 108.405pt x 72.53325pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg, id=334,
+ 259.97125pt x 194.7275pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg Gra
+phic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/nyc_neg.jpeg used on input line 346.
+(pdftex.def)             Requested size: 108.405pt x 81.19963pt.
+
+[21 </Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg> </
+Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg> </Users/d
+away/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg>] (./thesis.bbl
+[22])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 364.
+ [23]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 364.
  (./thesis.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 280.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 280.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 364.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 364.
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 30EF4130F012851BFA5B129BA744C265;2355.
+(rerunfilecheck)             Checksum: 5B3CAECA6AA9082D3A65DEF636A803E9;3035.
  ) 
 Here is how much of TeX's memory you used:
- 16428 strings out of 493089
- 241632 string characters out of 6134842
- 366935 words of memory out of 5000000
- 19283 multiletter control sequences out of 15000+600000
- 72913 words of font info for 270 fonts, out of 8000000 for 9000
+ 16571 strings out of 493089
+ 244534 string characters out of 6134842
+ 368228 words of memory out of 5000000
+ 19392 multiletter control sequences out of 15000+600000
+ 74178 words of font info for 274 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 48i,8n,40p,1716b,502s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,13n,40p,1716b,502s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
 xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/tex
 live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texli
 ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texliv
-e/2015/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2015/
-texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2015/texmf-dist/
-fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type
-1/urw/times/utmr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/time
-s/utmri8a.pfb>
-Output written on thesis.pdf (18 pages, 8648064 bytes).
+e/2015/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2015/t
+exmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2015/texmf-di
+st/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2015/texmf-dist/fonts/ty
+pe1/urw/times/utmb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/ti
+mes/utmr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8
+a.pfb>
+Output written on thesis.pdf (23 pages, 8714767 bytes).
 PDF statistics:
- 343 PDF objects out of 1000 (max. 8388607)
- 295 compressed objects within 3 object streams
- 93 named destinations out of 1000 (max. 500000)
- 33963 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 410 PDF objects out of 1000 (max. 8388607)
+ 352 compressed objects within 4 object streams
+ 111 named destinations out of 1000 (max. 500000)
+ 35546 words of extra memory for PDF output out of 35830 (max. 10000000)
 

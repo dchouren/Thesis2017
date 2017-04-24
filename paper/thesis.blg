@@ -18,45 +18,45 @@ I'm skipping whatever remains of this entry
 ** Sorting version - not for normal IEEE work.
 
 Done.
-You've used 47 entries,
+You've used 50 entries,
             4498 wiz_defined-function locations,
-            1132 strings with 17109 characters,
-and the built_in function-call counts, 50303 in all, are:
-= -- 4355
-> -- 1590
-< -- 415
-+ -- 844
-- -- 384
-* -- 2594
-:= -- 7075
-add.period$ -- 109
-call.type$ -- 47
-change.case$ -- 333
-chr.to.int$ -- 1038
-cite$ -- 47
-duplicate$ -- 3057
-empty$ -- 3688
-format.name$ -- 429
-if$ -- 11485
+            1145 strings with 17642 characters,
+and the built_in function-call counts, 53128 in all, are:
+= -- 4601
+> -- 1674
+< -- 436
++ -- 888
+- -- 404
+* -- 2734
+:= -- 7476
+add.period$ -- 115
+call.type$ -- 50
+change.case$ -- 352
+chr.to.int$ -- 1092
+cite$ -- 50
+duplicate$ -- 3234
+empty$ -- 3906
+format.name$ -- 452
+if$ -- 12131
 int.to.chr$ -- 0
-int.to.str$ -- 47
-missing$ -- 509
-newline$ -- 164
-num.names$ -- 94
-pop$ -- 1436
+int.to.str$ -- 50
+missing$ -- 538
+newline$ -- 173
+num.names$ -- 100
+pop$ -- 1520
 preamble$ -- 1
-purify$ -- 286
+purify$ -- 302
 quote$ -- 2
-skip$ -- 3671
+skip$ -- 3884
 stack$ -- 0
-substring$ -- 2714
-swap$ -- 2524
-text.length$ -- 69
+substring$ -- 2858
+swap$ -- 2660
+text.length$ -- 72
 text.prefix$ -- 0
 top$ -- 6
-type$ -- 517
+type$ -- 550
 warning$ -- 0
-while$ -- 256
-width$ -- 49
-write$ -- 468
+while$ -- 270
+width$ -- 52
+write$ -- 495
 (There was 1 error message)

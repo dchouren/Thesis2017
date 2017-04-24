@@ -12,6 +12,25 @@ CLASS_INDEX_PATH = 'https://s3.amazonaws.com/deep-learning-models/image-models/i
 hybrid_map_file = 'resources/json/hybrid_class_index.json'
 
 
+def mean_center(x, data_format='channels_first'):
+    if data_format == 'channels_first':
+        # 'RGB'->'BGR'
+        # x = x[:, ::-1, :, :]
+        # Zero-center by mean pixel
+        x[:, 0, :, :] -= 94.78833771
+        x[:, 1, :, :] -= 91.02941132
+        x[:, 2, :, :] -= 88.50362396
+    else:
+        # 'RGB'->'BGR'
+        # x = x[:, :, :, ::-1]
+        # Zero-center by mean pixel
+        x[:, :, :, 0] -= 94.78833771
+        x[:, :, :, 1] -= 91.02941132
+        x[:, :, :, 2] -= 88.50362396
+
+    return x
+
+
 def load_and_preprocess_image(im_path, dataset='imagenet', x_size=224, y_size=224, preprocess=True, rescale=False):
     try:
         img = image.load_img(im_path, target_size=(x_size, y_size))
@@ -24,20 +43,7 @@ def load_and_preprocess_image(im_path, dataset='imagenet', x_size=224, y_size=22
     data_format = K.image_data_format()
     if preprocess:
         # x = preprocess_input(x, dataset=dataset)
-        if data_format == 'channels_first':
-            # 'RGB'->'BGR'
-            # x = x[:, ::-1, :, :]
-            # Zero-center by mean pixel
-            x[:, 0, :, :] -= 94.78833771
-            x[:, 1, :, :] -= 91.02941132
-            x[:, 2, :, :] -= 88.50362396
-        else:
-            # 'RGB'->'BGR'
-            # x = x[:, :, :, ::-1]
-            # Zero-center by mean pixel
-            x[:, :, :, 0] -= 94.78833771
-            x[:, :, :, 1] -= 91.02941132
-            x[:, :, :, 2] -= 88.50362396
+        x = mean_center(x, data_format)
     if rescale:
         x *= 1./255
     return x

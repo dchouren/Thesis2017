@@ -9,9 +9,11 @@ import sys
 from os.path import join
 import os
 import time
+from datetime import datetime
 
 import numpy as np
 import h5py
+import pickle
 
 from _KDTree import _KDTree
 import vision_utils as vutils
@@ -33,7 +35,7 @@ def pos_pairs_same_user(pos_pairs):
 
 def create_pairs(data_file, output_file, sample_size):
     fpath_base_dir = '/tigress/dchouren/thesis/resources/paths'
-    image_base_dir = '/scratch/network/dchouren/images'
+    image_base_dir = '/scratch/network/dchouren/images/'
     data_file = join(fpath_base_dir, data_file)
     # image_dir = join(image_base_dir, year, month, month)
 
@@ -47,45 +49,61 @@ def create_pairs(data_file, output_file, sample_size):
     K = _KDTree(sample_data)
 
     pos_dist = 0.000014  # roughly 1m
-    pos_dist = 0.0002 # roughly 10m
+    pos_dist = 0.0001 # roughly 10m
     neg_dist = 0.01838    # roughly 2000m
     possible_neg_dist = 0.001 # roughly 111 meters
 
     pos_pairs = create_pos_pairs(pos_dist, K)
 
-    diff_user = np.array([x for x in pos_pairs if x[0][5] != x[1][5]])
-    same_user = np.array([x for x in pos_pairs if x[0][5] == x[1][5]][:diff_user.shape[0]])
+    # diff_user = np.array([x for x in pos_pairs if x[0][5] != x[1][5]])
+    # same_user = np.array([x for x in pos_pairs if x[0][5] == x[1][5] and '66430340@N07' not in x[0][5]][:diff_user.shape[0]])
+
+    # same_dates = [(datetime.strptime(x[0][3],'%Y-%m-%d %H:%M:%S'),datetime.strptime(x[1][3], '%Y-%m-%d %H:%M:%S')) for x in same_user]
+    # diff_dates = [(datetime.strptime(x[0][3],'%Y-%m-%d %H:%M:%S'),datetime.strptime(x[1][3], '%Y-%m-%d %H:%M:%S')) for x in diff_user]
+
+    # same_diffs = [abs(x[0] - x[1]) for x in same_dates]
+    # diff_diffs = [abs(x[0] - x[1]) for x in diff_dates]
+
+    # with open('/tigress/dchouren/thesis/same_diffs.pickle', 'wb') as outf:
+    #     pickle.dump(same_diffs, outf)
+    # with open('/tigress/dchouren/thesis/diff_diffs.pickle', 'wb') as outf:
+    #     pickle.dump(diff_diffs, outf)   
+
+    # ipdb.set_trace()
 
 
-    load_pairs(same_user, diff_user, image_base_dir, output_file)
+    # load_pairs(same_user, diff_user, image_base_dir, output_file)
 
-
-    ipdb.set_trace()
 
     # possible_neg_pairs = create_pos_pairs(possible_neg_dist, K)
 
-    # fulfilled = create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
+    image_dir = '/scratch/network/dchouren/images/2014/01/01'
+    year = '2014'
+    month = '01'
+    output_dir = '/tigress/dchouren/thesis/resources/pairs'
 
-    # count = 1
-    # while not fulfilled:
-    #     sample_size *= 2
-    #     sample_data = data_array[np.random.choice(data_array.shape[0], sample_size)]
-    #     K = _KDTree(sample_data)
+    fulfilled = create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
 
-    #     pos_dist = 0.000014  # roughly 1m
-    #     neg_dist = 0.1838    # roughly 2000m
-    #     pos_pairs = create_pos_pairs(pos_dist, K)
-    #     # possible_neg_pairs = create_pos_pairs(possible_neg_dist, K)
-    #     if len(pos_pairs) < 35200:
-    #         fulfilled = False
-    #         continue
+    count = 1
+    while not fulfilled:
+        sample_size *= 2
+        sample_data = data_array[np.random.choice(data_array.shape[0], sample_size)]
+        K = _KDTree(sample_data)
 
-    #     fulfilled = create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
-    #     count += 1
+        pos_dist = 0.000014  # roughly 1m
+        neg_dist = 0.1838    # roughly 2000m
+        pos_pairs = create_pos_pairs(pos_dist, K)
+        # possible_neg_pairs = create_pos_pairs(possible_neg_dist, K)
+        if len(pos_pairs) < 35200:
+            fulfilled = False
+            continue
 
-    #     if count > 5:
-    #         print('Failed to create enough pairs')
-    #         return
+        fulfilled = create_pairs_helper(pos_pairs, data_array, image_dir, year, month, output_dir)
+        count += 1
+
+        if count > 5:
+            print('Failed to create enough pairs')
+            return
 
     # return pairs, labels
 
@@ -101,20 +119,24 @@ def load_pairs(same_pairs, diff_pairs, image_dir, output_file):
     with h5py.File(output_file, 'w') as f:
         maxshape = (None,) + (2,3,224,224)
         dset = f.create_dataset('pairs', shape=(batch_size,2,3,224,224), maxshape=maxshape)
+        labels_dset = f.create_dataset('labels', shape=(batch_size,1), maxshape=(None, 1))
 
         row_count = 0
 
-        for i, (base_data, pair_data) in enumerate(zip(same_pairs, diff_pairs)):
+        for i, (base_data, pair_data) in enumerate(np.vstack(zip(same_pairs, diff_pairs))):
+            # ipdb.set_trace()
             base_filename = base_data[2].split('/')[-1]
             year, month = base_data[3].split('-')[0], base_data[3].split('-')[1]
-            base_image = vutils.load_and_preprocess_image(join(image_dir, year, month, month, base_filename), dataset='flickr', x_size=224, y_size=224, preprocess=True, rescale=True)
+            base_image = vutils.load_and_preprocess_image(join(image_dir, year, month, month, base_filename), dataset='flickr', x_size=224, y_size=224, preprocess=False, rescale=True)
             if base_image is None:
+                print(i)
                 continue
 
             pair_filename = pair_data[2].split('/')[-1]
             year, month = pair_data[3].split('-')[0], pair_data[3].split('-')[1]
-            pair_image = vutils.load_and_preprocess_image(join(image_dir, year, month, month, pair_filename), dataset='flickr', x_size=224, y_size=224, preprocess=True, rescale=True)
+            pair_image = vutils.load_and_preprocess_image(join(image_dir, year, month, month, pair_filename), dataset='flickr', x_size=224, y_size=224, preprocess=False, rescale=True)
             if pair_image is None:
+                print(i)
                 continue
 
             pair = [base_image, pair_image]
@@ -129,15 +151,17 @@ def load_pairs(same_pairs, diff_pairs, image_dir, output_file):
             if len(pairs) == batch_size:
                 pairs = np.squeeze(np.asarray(pairs))
                 dset[row_count:] = pairs
+                labels = np.array(labels)
+                labels_dset[row_count:] = np.reshape(labels, (labels.shape[0], 1))
                 row_count += pairs.shape[0]
                 dset.resize(row_count + pairs.shape[0], axis=0)
+                labels_dset.resize(row_count + pairs.shape[0], axis=0)
 
                 labels = []
                 pairs = []
 
                 total_count += batch_size
 
-    f.close()
     print('{} | Saved to {}'.format(int(time.time() - start_time), output_file))
 
 
@@ -151,7 +175,7 @@ def create_pairs_helper(pos_pairs, all_image_data, image_dir, year, month, outpu
     start_time = time.time()
 
     total_count = 0
-    batch_size = 3200
+    batch_size = 1600
     limit = 35200
 
     output_file = join(output_dir, year + '_' + month + '_' + str(limit) + '_new.h5')
@@ -183,10 +207,10 @@ def create_pairs_helper(pos_pairs, all_image_data, image_dir, year, month, outpu
 
             # ipdb.set_trace()
             distance = meter_distance(possible_neg_image[:2], base_data[:2])
-            print('finding negative')
+            # print('finding negative')
             i = 0
-            while distance < 10 or distance > 100:
-                print(distance)
+            while distance < 2000:
+                # print(distance)
                 possible_neg_image = all_image_data[np.random.choice(
                     all_image_data.shape[0])]
                 distance = meter_distance(possible_neg_image[:2], base_data[:2])
@@ -207,20 +231,25 @@ def create_pairs_helper(pos_pairs, all_image_data, image_dir, year, month, outpu
             pairs += [pos_pair]
             pairs += [neg_pair]
 
-            print('{}: {}'.format(len(pairs), int(time.time() - start_time)))
+            # print('{}: {}'.format(len(pairs), int(time.time() - start_time)))
 
             if len(pairs) == batch_size:
+                # print('here')
+                # ipdb.set_trace()
                 pairs = np.squeeze(np.asarray(pairs))
+                # print('squeezed pairs')
                 dset[row_count:] = pairs
+                # print('assigned dset')
                 row_count += pairs.shape[0]
                 dset.resize(row_count + pairs.shape[0], axis=0)
+                # print('resized dset')
 
                 # np.savez_compressed(open(output_file, 'wb'), pairs)
                 labels = []
                 pairs = []
 
                 total_count += batch_size
-                # print(dset.shape)
+                print(dset.shape)
 
             if total_count >= limit:
                 # print('ending')
@@ -235,6 +264,7 @@ def create_pairs_helper(pos_pairs, all_image_data, image_dir, year, month, outpu
         else:
             del dset
             del f
+            print('False')
             return False
 
 

@@ -2,6 +2,7 @@ import sys
 from os.path import join
 import os
 import time
+import copy
 
 import h5py
 import numpy as np
@@ -14,65 +15,51 @@ from keras.applications.vgg16 import VGG16
 
 from models.utils import _load_model
 from extract_bottlenecks import save_bottleneck_features
-from siamese_network import compute_accuracy
+from siamese_network import compute_accuracy, euclidean_distance
+from vision_utils import mean_center
  
 import ipdb 
  
 
 model_name = sys.argv[1]
-year = sys.argv[2]
-month = sys.argv[3]
 
-img_size = (224,224)
-batch_size = 32
-input_shape = (224,224,3)
-
-model_dir = '/tigress/dchouren/thesis/trained_models/'
-pred_dir = join('/tigress/dchouren/thesis/preds/test', model_name)
-if not os.path.exists(pred_dir):
-    os.makedirs(pred_dir)
-pred_output = join(pred_dir, year + '_' + month + '.h5')
+model_dir = '/tigress/dchouren/thesis/trained_models/base_cnn'
 
 start_time = time.time() 
-K.set_image_data_format('channels_last')
-print(K.image_data_format())    
-# model = load_model(join(model_dir, model_name))
-model = ResNet50(include_top=False, input_shape=input_shape)
-
+K.set_image_data_format('channels_first')
+# model = load_model(join(model_dir, model_name) + '.h5')
+model = ResNet50(weights='imagenet', include_top=False, input_shape=(3,224,224), pooling='avg')
 
 with h5py.File('/tigress/dchouren/thesis/evaluation/images.h5', 'r') as eval_file:
     images = eval_file['images']
     # preds = save_bottleneck_features(model, year, month, pred_output)
-    images = np.array(images)
-    images = images.swapaxes(1, 3)
+    # images = np.array(images)
+    # ipdb.set_trace()
+    # images = np.array(map(mean_center, images))
+    # images = images.swapaxes(1, 3)
     print('Image shape: {}'.format(images.shape))
     preds = model.predict(images)
     # labels = [1,0] * int(len(pairs)/2)
     # print(compute_accuracy(preds, labels, 0.5))
 
-np.save('/tigress/dchouren/thesis/evaluation/resnet50_preds.npy', preds)
+# eval_preds = preds.ravel()
+triplet_preds = zip(preds[::3], preds[1::3], preds[2::3])
+print(len(list(copy.deepcopy(triplet_preds))))
+dist_preds = [1 if np.linalg.norm(pred[0] - pred[1]) < np.linalg.norm(pred[0] - pred[2]) else 0 for pred in triplet_preds]
+print(len(dist_preds))
 
-<<<<<<< HEAD
-with h5py.File('/tigress/dchouren/thesis/evaluation/images.h5', 'r') as eval_file:
-    pairs = eval_file['pairs']
-    # preds = save_bottleneck_features(model, year, month, pred_output)
-    preds = model.predict(pairs)
-    labels = [1,0] * int(len(pairs)/2)
-    print(compute_accuracy(preds, labels, 0.5))
+print(sum(dist_preds) / len(dist_preds))
 
+np.save('/tigress/dchouren/thesis/evaluation/preds/{}_preds.npy'.format(model_name), dist_preds)
 
-
-# print('Predictions: {}'.format(pred_output))
 print('{} seconds'.format(int(time.time() - start_time)))
 
-ipdb.set_trace()
-=======
 
-# print('Predictions: {}'.format(pred_output))
-print('{} seconds'.format(int(time.time() - start_time)))
 
-# ipdb.set_trace()
->>>>>>> 443feb688a883f1c977ff58909dc40ae22b03852
+
+
+
+
 
 
 

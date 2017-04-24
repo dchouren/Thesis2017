@@ -56,6 +56,7 @@ images = []
 seen_categories = {}
 
 for i, (category, base_url, pos_url, neg_url) in enumerate(test_urls):
+    category = category.strip()
     print(i, category)
     if category in seen_categories:
         category = category + '_' + str(seen_categories[category])
