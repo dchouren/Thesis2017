@@ -1,0 +1,353 @@
+\documentclass[11pt, notitlepage]{report}
+%^ hack for subfiles
+
+\usepackage{enumerate}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{natbib}
+\usepackage[usenames]{color}
+%\usepackage[dvips]{graphicx}
+%\usepackage{bm}
+
+\usepackage{smile}
+\usepackage{natbib}
+\usepackage{multirow}
+\usepackage{listings}
+% \usepackage{geometry}
+\usepackage{pdflscape}
+\usepackage{rotating}
+\usepackage{todonotes}
+%\usepackage{subfigure}
+%\usepackage{makecell}
+\usepackage[colorlinks = false,
+            % linkcolor=red,
+            % anchorcolor=blue,
+            % citecolor=blue
+            ]{hyperref}
+            
+\def\reals{{\mathbb R}}
+\def\P{{\mathbb P}}
+\def\E{{\mathbb E}}
+\def\B{{\mathbb B}}
+\def\htheta{\widehat \btheta}
+\def\ttheta{\widetilde \btheta}
+\def\hSigma{\w
+idehat \bSigma}
+\def\hS{\widehat S}
+\def\hR{\widehat \Rb}
+\def\hu{\widehat \bu}
+\def\hK{\hat \Kb}
+\def\beps{\bm{\epsilon}}
+
+\def\argmin{\mathop{\text{\rm arg\,min}}}
+\def\argmax{\mathop{\text{\rm arg\,max}}}
+\def\given{{\,|\,}}
+\def\ds{\displaystyle}
+\def\bs{\backslash}
+\def\R{{\mathcal{R}}}
+\def\sign{\mathrm{sign}}
+
+\def\card{\mathop{\text{card}}}
+\def\rank{\mathrm{rank}}
+\def\skeptic{{\sc skeptic}}
+\def\NPN{\mbox{\it NPN}}
+\def\vec{\mathop{\text{vec}}}
+\def\tr{\mathrm{Tr}}
+\def\trc{\mathop{\text{TRC}}}
+
+\newcommand*{\Sc}{\cS^{\perp}}
+\newcommand*{\Ac}{\cA^{\perp}}
+\newcommand*{\supp}{\mathrm{supp}}
+
+\newcommand{\cGS}{\mathcal{GS}}
+
+\allowdisplaybreaks
+
+\def\given{\,|\,}
+\def\biggiven{\,\big{|}\,}
+\def\tr{\mathop{\text{tr}}\kern.2ex}
+\def\tZ{{\tilde Z}}
+\def\tX{{\tilde X}}
+\def\tR{{\tilde r}}
+\def\tU{{\tilde U}}
+\def\P{{\mathbb P}}
+\def\E{{\mathbb E}}
+\def\B{{\mathbb B}}
+
+\def\sign{\mathop{\text{sign}}}
+\def\supp{\mathop{\text{supp}}}
+\def\card{\mathop{\text{card}}}
+\def\rank{\mathrm{rank}}
+\long\def\comment#1{}
+\def\skeptic{{\sc skeptic}}
+\def\NPN{\bPiox{\it NPN}}
+\def\vec{\mathop{\text{vec}}}
+\def\tr{\mathop{\text{Tr}}}
+\def\trc{\mathop{\text{TRC}}}
+\def\cS{{\mathcal{S}}}
+\def\dr{\displaystyle \rm}
+\def\skeptic{{\sc skeptic}}
+\providecommand{\bnorm}[1]{\Big\vvvert#1\Big\vvvert}
+\providecommand{\norm}[1]{\vvvert#1\vvvert}
+
+\newcommand{\bel}{\begin{eqnarray}\label}
+\newcommand{\eel}{\end{eqnarray}}
+\newcommand{\bes}{\begin{eqnarray*}}
+\newcommand{\ees}{\end{eqnarray*}}
+\def\bess{\bes\small }
+\def\Shat{{\widehat S}}
+\def\lam{\rho}
+\def\real{{\mathbb{R}}}
+\def\R{{\real}}
+\def\Ti{T_{\rm init}}
+\def\Tm{T_{\rm main}}
+\def\bcdot{{\bm \cdot}}
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\cIs}{\cI_{\hat{s}}}
+
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+\newcommand{\op}{o_{\raisemath{-1.5pt}\PP}}
+\newcommand{\Op}{O_{\raisemath{-1.5pt}\PP}}
+
+\usepackage{mathrsfs}
+
+\usepackage{fullpage}
+\renewcommand{\baselinestretch}{1.0}
+
+\def\sep{\;\big|\;}
+\newcommand{\chz}[1]{{\textcolor{red}{[CHZ: #1]}}}
+\newcommand{\hf}[1]{{\textcolor{red}{[FH: #1]}}}
+\def \trunc{\mathop{\text{trunc}}}
+\def \obs {{\rm obs}}
+\def \mis {{\rm mis}}
+\def \hbSigma {\widehat{\bSigma}}
+\def \bbSigma {\bar{\bSigma}}
+
+\usepackage{hyperref}
+%\usepackage[protrusion=false,expansion=true]{microtype}
+%\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+\usepackage[    protrusion=true,
+            expansion=true,
+            final,
+            babel
+                ]{microtype}
+\usepackage{setspace}
+\usepackage{enumitem}
+
+% \usepackage{parskip}
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+
+%% Thesis requirements for binding
+\usepackage[top=1in, bottom=1in, left=1.5in, right=1in]{geometry}
+
+%% modular files
+\usepackage{subfiles}
+
+%% chapter-fixing
+\newcommand{\mychapter}[2]{
+    \setcounter{chapter}{#1}
+    \setcounter{section}{0}
+    \chapter*{#2}
+    \addcontentsline{toc}{chapter}{#2}
+}
+
+%% landscaping
+\usepackage{rotating}
+\usepackage{pdflscape}
+
+%% indicator function
+\usepackage{bbm}
+
+%% make C++ look pretty
+\newcommand{\CPP}
+{C\nolinebreak[4]\hspace{-.05em}\raisebox{.22ex}{\footnotesize\bf ++}\hspace{.3em}}
+
+%% reset sub-counts for figures within chapters
+\usepackage{chngcntr}
+% \counterwithout{figure}{chapter}
+\counterwithin{figure}{chapter}
+
+\begin{document}
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{.8\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+\renewenvironment{abstract}
+ {\small
+  \begin{center}
+  \bfseries \abstractname\vspace{-.5em}\vspace{0pt}
+  \end{center}
+  \list{}{
+    \setlength{\leftmargin}{.5cm}%
+    \setlength{\rightmargin}{\leftmargin}%
+  }%
+  \item\relax}
+ {\endlist}
+
+
+\center % Center everything on the page
+
+%----------------------------------------------------------------------------------------
+%   HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Princeton University}\\[0.5cm] % Name of your university/college
+\textsc{\large Operations Research and Financial Engineering}\\[0.5cm] % Major heading such as course name
+
+\vspace{2em}
+%----------------------------------------------------------------------------------------
+%   TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.2cm]
+{\Large \bfseries Nested Models and Nonparametric LSTMs\\
+in Vision-Based Autonomous Driving\\
+and Developing an R Package\\
+for Bayesian-Optimized Deep Learning\\
+\par}
+% { \LARGE \bfseries Applying Nested Statistical Models\\
+% for Temporal Affordance Learning\\
+% in Vision-Based Autonomous Driving\par}
+\HRule \\[1.5cm]
+ 
+\vspace{2em}
+%----------------------------------------------------------------------------------------
+%   AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+Eddie \textsc{Zhou} % Your name
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Advisor:} \\
+Professor Han \textsc{Liu} % Supervisor's Name
+\end{flushright}
+\end{minipage}\\[1cm]
+
+\vspace{2em}
+%----------------------------------------------------------------------------------------
+%   LOGO SECTION
+%----------------------------------------------------------------------------------------
+\begin{figure}[H]
+\centering
+\includegraphics[width=30mm]{figs/princeton_shield}
+\end{figure}
+
+\vspace{4em}
+ 
+%----------------------------------------------------------------------------------------
+\textsc{
+Submitted in partial fulfillment\\
+of the requirements for the degree of\\
+Bachelor of Science in Engineering\\
+Department of Operations Research and Financial Engineering\\
+Princeton University
+}\\[0.5cm]
+
+\vspace{2em}
+%----------------------------------------------------------------------------------------
+%   DATE SECTION
+%----------------------------------------------------------------------------------------
+
+\textsc{\large April 2016}\\[5mm] % Date, change the \today to a set date if you want to be precise
+\pagestyle{empty}
+
+%----------------------------------------------------------------------------------------
+% Statements
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{\textwidth}
+\begin{flushleft} \large
+\textsc{I hereby declare that I am the sole author of this thesis.}\par
+\vspace{1em}
+\textsc{I authorize Princeton University to lend this thesis to other institutions or individuals for
+the purpose of scholarly research.}
+\vspace{6em}
+\end{flushleft}
+\begin{flushright}
+\noindent\begin{tabular}{ll}
+\makebox[2.5in]{\hrulefill}{\hrulefill}\\
+\textsc{Eddie Zhou}\\
+\end{tabular}
+\end{flushright}
+\vspace{6em}
+\begin{flushleft} \large
+\textsc{I further authorize Princeton University to reproduce this thesis by photocopying or by
+other means, in total or in part, at the request of other institutions or individuals for the
+purpose of scholarly research.}
+\vspace{6em}
+\end{flushleft}
+\begin{flushright}
+\noindent\begin{tabular}{ll}
+\makebox[2.5in]{\hrulefill}{\hrulefill}\\
+\textsc{Eddie Zhou}\\
+\end{tabular}
+\end{flushright}
+\end{minipage}
+
+\pagestyle{empty}
+\newpage
+%----------------------------------------------------------------------------------------
+% Acknowledgements
+%----------------------------------------------------------------------------------------
+\begin{minipage}{\textwidth}
+{ \LARGE \bfseries Acknowledgements\par}
+\parskip=\baselineskip \advance\parskip by 0pt plus 2pt
+First, I would like to thank my advisor, Professor Han Liu.  He has been an amazing teacher and constant guiding hand as an advisor.  His dedication to furthering the fields of statistics and machine learning has inspired my academic and professional pursuits.  He has also helped me understand the importance of brevity alongside statistical parsimony, and is the reason you are reading 34 and not 84 pages.  Additionally, I would like to thank Chenyi Chen, the original DeepDriver, for answering my countless questions about this project and others.
+
+I would also like to thank my family.  To Mom and Dad -- you have both set inspiring examples for how to live your lives as students, professionals, and people.  I am eternally grateful for your work in building the springboard that launched my collegiate and professional life.  Steve -- it's immeasurably easier to walk a road paved by someone else, and I am forever indebted to you for that.
+
+To all my friends at Princeton -- I thank each and every one of you for bringing out a different side of me, and helping me understand myself and grow.  Wollack, Katz, Dingus, Ploppy, Daway, Eric, Bee and many others -- you've helped define this place for me.
+
+Finally, to Sarah -- we did it.  Here's to the next chapter.
+\end{minipage}
+
+\end{titlepage}
+
+\tableofcontents
+\thispagestyle{empty}
+\cleardoublepage
+% \pagestyle{headings}
+\pagenumbering{arabic}
+\mychapter{0}{Preface}
+This thesis is divided into three parts, each representing a project completed during the course of my senior year.  It is divided as such because each project was assigned successively, conditional on completion of the previous.  The first part, \textit{Nested Statistical Models}, was assigned by Professor Liu to be a full senior thesis, but I was able to complete it earlier than expected.  I sought to complete more statistics and machine learning research over the year, and Professor Liu generously offered me related work in the form of \textit{Nonparametric LSTMs}, and later, \textit{deepbayes}.\par
+\textit{Nested Statistical Models} is presented as a standalone scientific paper suitable for publication, written in a succinct 13 pages.  \textit{Nonparametric LSTMs} assumes knowledge of the former, and is a logical extension completed in conjunction with Chenyi Chen, ORFE GS.  \textit{deepbayes} is less closely tied to the problem of autonomous driving, and may also function as a standalone piece.  All three parts are written with brevity in mind, departing from the tradition of the Princeton undergraduate thesis.\par
+All implementation, analysis, and visualization code is available for examination and reproduction in a \href{https://github.com/edz504/thesis}{Github repository} located at \url{https://github.com/edz504/thesis}.
+\mychapter{1}{Nested Statistical Models}
+\subfile{part1}
+\mychapter{2}{Nonparametric Long Short-Term Memory Neural Networks}
+\cleardoublepage 
+\subfile{part2}
+\mychapter{3}{deepbayes: An R Package for Deep Learning and Bayesian Optimization}
+\cleardoublepage  
+\subfile{part3}
+\setlength{\bibsep}{1pt}
+{
+\bibliographystyle{ims}
+\bibliography{RefDatBas}
+}
+\end{document} 

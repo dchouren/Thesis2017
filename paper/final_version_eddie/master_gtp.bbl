@@ -1,0 +1,151 @@
+\begin{thebibliography}{23}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+
+\bibitem[{Aiello et~al.(2015)Aiello, Kraljevic and Maj}]{h2o}
+\textsc{Aiello, S.}, \textsc{Kraljevic, T.} and \textsc{Maj, P.} (2015).
+\newblock \textit{Package h2o}.
+
+\bibitem[{Bergstra et~al.(2010)Bergstra, Breuleux, Bastien, Lamblin, Pascanu,
+  Desjardins, Turian, Warde-Farley and Bengio}]{theano}
+\textsc{Bergstra, J.}, \textsc{Breuleux, O.}, \textsc{Bastien, F.},
+  \textsc{Lamblin, P.}, \textsc{Pascanu, R.}, \textsc{Desjardins, G.},
+  \textsc{Turian, J.}, \textsc{Warde-Farley, D.} and \textsc{Bengio, Y.}
+  (2010).
+\newblock Theano: a {CPU} and {GPU} math expression compiler.
+\newblock In \textit{Proceedings of the Python for Scientific Computing
+  Conference ({SciPy})}.
+\newblock Oral Presentation.
+
+\bibitem[{Burnham and Anderson(2004)}]{aic_bic1}
+\textsc{Burnham, K.~P.} and \textsc{Anderson, D.~R.} (2004).
+\newblock Multimodel inference: Understanding aic and bic in model selection.
+\newblock \textit{Sociologal Methods and Research} \textbf{33} 261--304.
+
+\bibitem[{Chen(2016)}]{chenyi_phd}
+\textsc{Chen, C.} (2016).
+\newblock \textit{Algorithmic Approaches to Extracting Cognition out of Images
+  for the Purpose of Autonomous Driving}.
+\newblock Ph.D. thesis, Princeton University.
+
+\bibitem[{Chen et~al.(2015)Chen, Seff, Kornhauser and Xiao.}]{deepdriving}
+\textsc{Chen, C.}, \textsc{Seff, A.}, \textsc{Kornhauser, A.} and
+  \textsc{Xiao., J.} (2015).
+\newblock Deepdriving: Learning affordance for direct perception in autonomous
+  driving.
+\newblock In \textit{Proceedings of 15th IEEE International Conference on
+  Computer Vision}.
+
+\bibitem[{Dieleman et~al.(2012)Dieleman, Raffel, Olson, Schlüter and
+  Sønderby}]{lasagne}
+\textsc{Dieleman, S.}, \textsc{Raffel, C.}, \textsc{Olson, E.},
+  \textsc{Schlüter, J.} and \textsc{Sønderby, S.~K.} (2012).
+\newblock lasagne.
+\newblock \url{https://github.com/Lasagne/Lasagne}.
+
+\bibitem[{Donahue et~al.(2015)Donahue, Hendricks, Guadarrama, Rohrbach,
+  Venugopalan, Saenko and Darrell}]{lrcn2014}
+\textsc{Donahue, J.}, \textsc{Hendricks, L.~A.}, \textsc{Guadarrama, S.},
+  \textsc{Rohrbach, M.}, \textsc{Venugopalan, S.}, \textsc{Saenko, K.} and
+  \textsc{Darrell, T.} (2015).
+\newblock Long-term recurrent convolutional networks for visual recognition and
+  description.
+\newblock In \textit{CVPR}.
+
+\bibitem[{Eddelbuettel and Fran\c{c}ois(2011)}]{rcpp}
+\textsc{Eddelbuettel, D.} and \textsc{Fran\c{c}ois, R.} (2011).
+\newblock {Rcpp}: Seamless {R} and {C++} integration.
+\newblock \textit{Journal of Statistical Software} \textbf{40} 1--18.
+\newline\urlprefix\url{http://www.jstatsoft.org/v40/i08/}
+
+\bibitem[{Friedman(1991)}]{mars}
+\textsc{Friedman, J.~H.} (1991).
+\newblock Multivariate adaptive regression splines.
+\newblock \textit{The Annals of Statistics} \textbf{19} 1--67.
+
+\bibitem[{Friedman(1993)}]{fastmars}
+\textsc{Friedman, J.~H.} (1993).
+\newblock Fast mars.
+\newblock Tech. rep., Department of Statistics, Stanford University.
+
+\bibitem[{Hochreiter(1991)}]{hochreiter_analysis}
+\textsc{Hochreiter, J.} (1991).
+\newblock \textit{Untersuchungen zu dynamischen neuronalen Netzen}.
+\newblock Ph.D. thesis, Institut fur Informatik Technische Universit¨at
+  Munchen.
+
+\bibitem[{Hochreiter and Schmidhuber(1997)}]{lstm_hochreiter}
+\textsc{Hochreiter, S.} and \textsc{Schmidhuber, J.} (1997).
+\newblock Long short-term memory.
+\newblock \textit{Neural Computation} \textbf{9} 1735--1780.
+
+\bibitem[{Jia et~al.(2014)Jia, Shelhamer, Donahue, Karayev, Long, Girshick,
+  Guadarrama and Darrell}]{jia2014caffe}
+\textsc{Jia, Y.}, \textsc{Shelhamer, E.}, \textsc{Donahue, J.},
+  \textsc{Karayev, S.}, \textsc{Long, J.}, \textsc{Girshick, R.},
+  \textsc{Guadarrama, S.} and \textsc{Darrell, T.} (2014).
+\newblock Caffe: Convolutional architecture for fast feature embedding.
+\newblock \textit{arXiv preprint arXiv:1408.5093} .
+
+\bibitem[{Kuha(2004)}]{aic_bic2}
+\textsc{Kuha, J.} (2004).
+\newblock Aic and bic: Comparisons of assumptions and performance.
+\newblock \textit{Sociologal Methods and Research} \textbf{33} 188--229.
+
+\bibitem[{LeCun et~al.(1998)LeCun, Bottou, Bengio and Haffner}]{lenet}
+\textsc{LeCun, Y.}, \textsc{Bottou, L.}, \textsc{Bengio, Y.} and
+  \textsc{Haffner, P.} (1998).
+\newblock Gradient-based learning applied to document recognition.
+\newblock In \textit{Proceedings of the IEEE}.
+
+\bibitem[{Liew(2004)}]{liew}
+\textsc{Liew, V.~K.} (2004).
+\newblock Which lag length selection criteria should we employ.
+\newblock \textit{Economics Bulletin} \textbf{3} 1--9.
+
+\bibitem[{Martinez-Cantin(2015)}]{bayesopt}
+\textsc{Martinez-Cantin, R.} (2015).
+\newblock Bayesopt.
+\newblock \url{https://github.com/rmcantin/bayesopt}.
+
+\bibitem[{Milborrow(2016)}]{earth}
+\textsc{Milborrow, S.} (2016).
+\newblock \textit{Package ‘earth’}.
+
+\bibitem[{Nouri(2012)}]{nolearn}
+\textsc{Nouri, D.} (2012).
+\newblock nolearn.
+\newblock \url{https://github.com/dnouri/nolearn}.
+
+\bibitem[{Pedregosa et~al.(2011)Pedregosa, Varoquaux, Gramfort, Michel,
+  Thirion, Grisel, Blondel, Prettenhofer, Weiss, Dubourg, Vanderplas, Passos,
+  Cournapeau, Brucher, Perrot and Duchesnay}]{scikit-learn}
+\textsc{Pedregosa, F.}, \textsc{Varoquaux, G.}, \textsc{Gramfort, A.},
+  \textsc{Michel, V.}, \textsc{Thirion, B.}, \textsc{Grisel, O.},
+  \textsc{Blondel, M.}, \textsc{Prettenhofer, P.}, \textsc{Weiss, R.},
+  \textsc{Dubourg, V.}, \textsc{Vanderplas, J.}, \textsc{Passos, A.},
+  \textsc{Cournapeau, D.}, \textsc{Brucher, M.}, \textsc{Perrot, M.} and
+  \textsc{Duchesnay, E.} (2011).
+\newblock Scikit-learn: Machine learning in {P}ython.
+\newblock \textit{Journal of Machine Learning Research} \textbf{12} 2825--2830.
+
+\bibitem[{Perktold et~al.(2009)Perktold, Seabold and Taylor}]{statsmodels}
+\textsc{Perktold, J.}, \textsc{Seabold, S.} and \textsc{Taylor, J.} (2009).
+\newblock statsmodels.
+\newblock \url{http://www.statsmodels.org/stable/index.html}.
+
+\bibitem[{Rudy(2013)}]{py-earth}
+\textsc{Rudy, J.} (2013).
+\newblock py-earth.
+\newblock \url{https://github.com/scikit-learn-contrib/py-earth}.
+
+\bibitem[{Shahriari et~al.(2015)Shahriari, Swersky, Wang, Adams and
+  de~Freitas}]{bayesopt_paper}
+\textsc{Shahriari, B.}, \textsc{Swersky, K.}, \textsc{Wang, Z.}, \textsc{Adams,
+  R.~P.} and \textsc{de~Freitas, N.} (2015).
+\newblock Taking the human out of the loop: A review of bayesian optimization.
+\newblock IEEE.
+
+\end{thebibliography}

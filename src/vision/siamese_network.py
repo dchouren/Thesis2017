@@ -207,7 +207,6 @@ def _generator(filename, batch_size=32, index=0, augment=False):
         if augment:
             data = np.array([[idg.random_transform(x[0]), idg.random_transform(x[1])] for x in data])
         yield [data[:,0], data[:,1]], [1,0]*int(batch_size/2)
-
     f.close()
 
 
@@ -266,7 +265,7 @@ def main():
     pairs_file = join('/tigress/dchouren/thesis/resources/pairs/', pairs_file)
     generator = _generator(pairs_file, batch_size=batch_size, augment=False)
     val_generator = _generator(pairs_file, batch_size=batch_size, index=n_train_batch*batch_size, augment=False)
-    print('Generator constructed')
+   print('Generator constructed')
     history = model.fit_generator(generator, steps_per_epoch=n_train_batch, epochs=nb_epoch, validation_data=val_generator, validation_steps=n_batch-n_train_batch, callbacks=[checkpointer])
     print('Finished fitting')
 

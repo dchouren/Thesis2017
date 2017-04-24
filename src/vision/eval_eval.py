@@ -68,7 +68,6 @@ pair_preds = zip(eval_preds[::2], eval_preds[1::2])
 
 accuracy = [1 if pair_pred[0] < pair_pred[1] else 0 for pair_pred in pair_preds]
 mask = np.array(accuracy).astype('bool')
-
 # ipdb.set_trace()
 correct = list(categories[::2][mask])
 wrong = list(categories[::2][np.invert(mask)])
@@ -80,14 +79,17 @@ print(wrong)
 
 print(sum(accuracy) / len(accuracy))
 
-ranks = [rank_of_match(eval_preds, i) for i in range(0, len(eval_preds-3))]
-
-print(sum(ranks))
-
-ipdb.set_trace()
 # ranks = [rank_of_match(eval_preds, i) for i in range(0, len(eval_preds-3))]
 
 # print(sum(ranks))
 
-# ipdb.set_trace()
-print(sum(accuracy) / len(accuracy))
+
+
+
+
+
+
+
+
+
+

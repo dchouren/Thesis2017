@@ -1,0 +1,87 @@
+
+\section{Related Work}
+
+\subsection{Effectiveness of Deep Learning}
+The field of image similarity relies on learning a useful model for embedding images into a feature space. Recent years have seen some groundbreaking advancements in the application of machine learning for vision tasks, especially in the field of deep learning. Convolutional neural networks\cite{lecun1989backpropagation} are capable of learning low, medium, and high level features, using nonlinear transformations to abstract high level features into more and more basic ones. Krizhevsky et al's momentous performance in the 2012 ILSVRC ImageNet classification competition provided the first demonstration of the effeciveness of deep learning.\cite{krizhevsky2012imagenet} Recent research has shown that deeper models can perform even better at a variety of image tasks.\cite{szegedy2015going} Much work on different activation functions has allowed CNNs to become much more sparse, and combined with work exploring deep network depths\cite{simonyan2014very}\cite{szegedy2015going} as well as with work allowing models to regulate their own depth\cite{he2016deep}, deep CNNs have proven extremely effective at learning a variety of useful image representations. Athiwaratkun and Kang show that just the image representation extracted by deep CNNs can be combined with simpler classifiers such as SVMs and random forests to achieve high accuracies for clustering tasks.\cite{athiwaratkun2015feature} In recent years, some deep learning models have even achieved classification accuracies surpassing even human performance. In 2015, He et al. achieved a 4.94\% top-5 test error on the ImageNet 2012 dataset, surpassing the human error performance of 5.1\%\cite{he2016deep}.
+
+Importantly, deep learning methods do not require the manual crafting of features based on domain-level knowledge. Instead, deep learning models learn to abstract patterns from data automatically. This approach stands in contrast to the majority of work done in the 1990s and 2000s, which made extensive use of manually defined image feature extraction techniques, such as Gabor filters, scale-invariant feature transforms (SIFT), and histograms of oriented gradients (HOG).\cite{jain1997object}\cite{lowe1999object}\cite{dalal2005histograms} In the latter half of the 2000s, hierarchical feature representations such as spatial pyramids, which transform images into segmentations, each of which is locally orderless, proved effective in a variety of image tasks as well\cite{yang2009linear}\cite{girshick2014rich}\cite{lazebnik2006beyond}. In the field of content-based image retrieval, spatial envelopes and transformed histograms where used to attempt to capture global scene properties\cite{oliva2001modeling}\cite{wu2011centrist}. Features extracted using these methods were then used with rigid distance functions such as Euclidean or cosine similarity distances to determine an overall image similarity. Much work has been done on designing better similarity measures for these low-level features. Notably, Jegou et al.\cite{jegou2012aggregating} adapt the Fisher kernel for use in aggregating local image descriptors into a reduced dimension vector while preserving the bulk of relative distance information. 
+
+\subsection{Deep Convolutional Neural Networks}
+Convolutional neural networks have become the de-facto standard in image tasks, as stacked convolutional layers are well suited for learning image descriptors.\cite{karpathy2014large}\cite{krizhevsky2012imagenet}\cite{szegedy2015going} Besides convolutional layers, CNNs typically consist of pooling layers, activation layers, fully connected layers, and a loss layer. A convolutional layer consists of a set of kernels $K$, each of which typically has width and height dimensions smaller than the dimensions of an inputted image, but with a depth matching the depth of the input. During the forward pass of network training, each filter is convolved with a sliding patch across the input's width and height, producing a feature map associated with that kernel. Each feature map codes the activation of the kernel along with the spatial location of that activation. Because the dimensions of $K$ are smaller than the input, convolutional layers only have local connectivity.
+
+Pooling layers, usually in the form of max-pooling, down sample the feature maps produced by the convolutional layers. Max pooling will output the maximum value in each part of a segmentation of a feature map. Pooling layers drastically reduce the computation required to train a network. Activation layers are used to control which nodes in a layer send output to the next layer. The standard activation currently used is the rectified linear activation unit (ReLU), which takes the form
+\begin{equation}
+	f(x) = \begin{cases}
+	   x & x > 0 \\
+	   0 & x\leq 0 \\
+     \end{cases}
+\end{equation}
+Various forms of ReLU have been proposed, notably the parametric ReLU (pReLU), which adds a learnable parameter, $\alpha$, to control a slope for the negative activation domain and which was used by He et al. to achieve better than human performance for ImageNet classification.\cite{he2016deep}
+\begin{equation}
+	f(x) = \begin{cases}
+	   x & x > 0 \\
+	   \alpha x & x \leq 0 \\
+     \end{cases}
+\end{equation}
+
+Since convolutional layers only produce feature maps on local scales, fully connected layers at the end of a CNN allow for high level features to be learned. These layers have full connections to all activated neurons from previous layers, which allow for global mixing of activated feature maps. To complete our discussion of the CNN, the loss layer specifies how a network should penalize incorrect predictions. Typically sigmoid cross-entropy loss is used. Regularization is also used, typically in the form of L1 or L2 weight decay. Dropout layers, which deactivate a random subset of a layer's neurons in each iteration of training, have also proved highly effective for neural network regularization.\cite{srivastava2014dropout}
+
+The term deep CNN refers to a CNN that has many layers. This definition is highly variable: the popular VGG16 model has 16 layers\cite{simonyan2014very} and popular versions of ResNet contain 34, 50, 101, and 152 layers\cite{he2016deep}.
+
+We can more precisely define a CNN as a function $f$ that takes parameters $\theta$ and an input image $I$ to produce an image embedding $x$ and a loss $L$.
+
+
+% \subsection{Image Embedding as Used for Image Similarity}
+%
+% With the effectiveness of deep learned image features to tasks like classification, detection, and segmentation, the application of deep learned image features to image similarity is immediate: if a highly accurate ImageNet-trained model predicts two images to belong to the same class, they can be considered more similar than two images belonging to different classes. Distance functions applied to the 1000-class softmax probability outputs of such a model can be used to retrieve a more fine-grained image similarity score than this same-category categorical comparison.
+
+
+
+\subsection{Weakly Supervised Learning with Fuzzy Data}
+The problems with relying on supervised learning are many. It is difficult and time consuming to create large datasets, and even when these are created, such as for ImageNet, they are often specific to a certain task and do not necessarily extend to novel concepts. As Russakowsky et al. discussed\cite{russakovsky2013detecting}, models pretrained on general datsets like Imagenet were only good at segmenting images into basic classes. Russakowsky et al. also demonstrated that these models were better tuned for classification of natural classes such as animals than they were for man-made objects, suggesting that even an expansive 12 million image-large dataset like ImageNet still had flaws for general classification training. In recent years, a proliferation of intra-class datasets, such as for hundreds of species of flowers or birds, have allowed deep learning techniques to tackle everything from differentiating species of flowers\cite{angelova2013image}, leaves\cite{rejeb2013vantage}, and birds\cite{berg2014birdsnap}, but the limitations of a class-based formulation of image similarity remain apparent. More and more specific class formulas will need to be created, and this is higly reliant on how explicit human annotations are. For example, labeling an image as a dog, which might be reasonable for an animal differentiation task, will create problems if this data is ever used for a more fine-grained image similarity task, such as one that requires differentiation of labradors from golden retrievers.
+
+Much work on using weakly supervised learning has focused on using web images as a source of easily and quickly obtainable weakly labeled dataset.\cite{bergamo2010exploiting}\cite{fergus2010learning}\cite{li2010optimol}\cite{schroff2011harvesting}. While on the whole successful, researchers note that web created classes suffer from polysemy and noise problems. A search for penguin images will not necessarily return only penguins because of the way images and surrounding text are indexed, and a search for screens might return both door screens and computer screen. In the field of object segmentations, Rubinstein et al achieved better than state of the art benchmark results training on a web gathered corpus, yet also noted difficulty with certain classes because of the low quality of some images.\cite{rubinstein2013unsupervised}
+
+Krause et al. use fuzzy web-based data to remarkable effectiveness, successfully training classification for over 14,000 image classes, achieving close to human accuracy on the CUB Caltech bird species dataset, and beating state of the art results for CUB and the Stanford dog dataset\cite{krause2016unreasonable}. They quantify the fuzziness (incorrectly labeled images) in their images classes to be an average of 16\%, demonstrating that a certain amount of fuzziness is still able to be overcome in training. 
+
+
+\subsection{Siamese Neural Networks}
+
+As noted by Wang et al\cite{wang2014learning}, the network structures that are effective at classifying images into object classes are not necessarily well-designed for detecting image similarity, especially when image similar is defined not just as whether two objects are in the same class, but when our desired similar metric must be fine enough to rank similarities within classes. For example, a red book should be judged more similar to a maroon book and should a light green one. The Siamese architecture, first proposed by Bromley et al. in 1994\cite{bromley1993signature} for the purposes of verifying signatures, is well suited for this task. Siamese networks have since been used in a variety of similarity tasks, such as ground-to-aerial geolocalization\cite{lin2015learning}, matching visual similarity for product design\cite{bell2015learning}, comparing image patches\cite{zagoruyko2015learning}, and one-shot image classification\cite{koch2015siamese}.
+
+A Siamese net is a formulation of two copies of a CNN that share parameters and hyperparameters as well as a loss layer and thus weight updates. If we represent a Siamese net as $f$, then $f$ takes $\theta$, two images $I_1, I_2$ as well as an indicator variable $p$ to indicate if these images form a positive (similar) or negative (dissimilar) pair, produces two embeddings $x_1, x_2$ and one loss $L$. We wish to find a locally optimal $\theta$ such that for a triplet of embeddings $x_1, x_2, x_3$ produced by $f$, if $|x_1 - x_2|_2^2 < |x_1 - x_3|_2^2$, then we expect $I_1$ and $I_2$ to be much more semantically similar than $I_1$ and $I_3$.
+
+As discussed by Bell and Bala\cite{bell2015learning}, Siamese networks can be tweaked in various ways to produce both an embedding and a classification for each pair of images. The output from the CNN layer can regularized either for the embedding predictions or the class predictions or both. If there are multiple output from the CNN layer, multiple loss layers can be used as well.
+
+\begin{figure}[!htbp]
+  \label{fig:siamese_configurations}
+  \centering
+  \includegraphics[width=\textwidth]{siamese_configurations.jpg}
+  \caption{Some configurations from Bell and Bala}
+\end{figure}
+
+
+\section{Distance Metric for Siamese Network}
+The similarity of two images, $S(A,B)$, can be defined as the Euclidean distance of their feature embedded vectors, $f(A)$ and $f(B)$:
+\begin{equation}
+	S(A,B) = ||f(A) - f(B)||_2^2
+\end{equation}
+A cosine similarity $\dfrac{f(A) \cdot f(B)}{||f(A)||||f(B)||}$ can also be used but is less common. Here $f(\cdot)$ might be a feature embedding such as the weight representation of the final convolutional block in a convolutional neural network pretrained on ImageNet, or a CNN trained from scratch.
+
+A contrastive loss function proposed by Hadsell et al and followed by Lin et al. for pairs of images is as follows:
+
+\begin{equation}
+	L(l, p_1, p_2) = \dfrac{1}{2}lS(p_1, p_2) + \dfrac{1}{2}(1-l)\text{max}(0, (g-S(p_1,p_2)))
+\end{equation}
+where $l$ is an indicator variable equal to 1 if the pair is similar and 0 if not, and $g$ is a regulator for the margin between unmatched pairs.\cite{hadsell2006dimensionality}\cite{lin2015learning} This loss function assigns a low loss to similar pairs and a high loss for dissimilar pairs. 
+
+We use pairwise comparisons of images, grouping sets of three images, $p_i, p_i^+,$ and $p_i^-,$ into two pairs, $(p_i, p_i^+)$ and $(p_i, p_i^-)$. We can extend this pair loss function into a hinge loss for triplets as follows\cite{wang2014learning}:
+\begin{equation}
+	l(p_i, p_i^+, p_i^-) = \text{max}\{0, g + ||f(p_i) - f(p_i^+)||_2^2 - ||f(p_i)-f(p_i^-)||_2^2\}
+\end{equation}
+
+We can add L2 regularization so that our objective function is
+\begin{equation}
+	\dfrac{\lambda}{2}||\mathbf{W}||_2^2 \text{max}\{0, g + ||f(p_i) - f(p_i^+)||_2^2 - ||f(p_i)-f(p_i^-)||_2^2\}
+\end{equation}
+where $\lambda$ is a regularization parameter and $\mathbf{W}$ is our weight parameter matrix.

@@ -47,13 +47,11 @@ triplet_preds = zip(preds[::3], preds[1::3], preds[2::3])
 print(len(list(copy.deepcopy(triplet_preds))))
 dist_preds = [1 if np.linalg.norm(pred[0] - pred[1]) < np.linalg.norm(pred[0] - pred[2]) else 0 for pred in triplet_preds]
 print(len(dist_preds))
-
 print(sum(dist_preds) / len(dist_preds))
 
 np.save('/tigress/dchouren/thesis/evaluation/preds/{}_preds.npy'.format(model_name), dist_preds)
 
 print('{} seconds'.format(int(time.time() - start_time)))
-
 
 
 

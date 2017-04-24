@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: master_gtp.aux
+The style file: ims.bst
+Database file #1: RefDatBas.bib
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Warning--empty booktitle in bayesopt_paper
+You've used 23 entries,
+            3063 wiz_defined-function locations,
+            750 strings with 8340 characters,
+and the built_in function-call counts, 13285 in all, are:
+= -- 1004
+> -- 686
+< -- 13
++ -- 263
+- -- 240
+* -- 1101
+:= -- 2175
+add.period$ -- 68
+call.type$ -- 23
+change.case$ -- 201
+chr.to.int$ -- 23
+cite$ -- 24
+duplicate$ -- 947
+empty$ -- 923
+format.name$ -- 295
+if$ -- 2495
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 189
+newline$ -- 122
+num.names$ -- 92
+pop$ -- 406
+preamble$ -- 1
+purify$ -- 172
+quote$ -- 0
+skip$ -- 316
+stack$ -- 0
+substring$ -- 408
+swap$ -- 515
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 207
+warning$ -- 1
+while$ -- 82
+width$ -- 0
+write$ -- 291
+(There was 1 warning)

@@ -35,4 +35,3 @@ for i in range(0,int(713600 / batch_size)):
 np.save('/tigress/dchouren/thesis/resources/pairs/2015_channel_values.npy', np.array(all_channel_values))
 
 print(np.mean(np.array(all_channel_values), axis=0))
-# ipdb.set_trace()

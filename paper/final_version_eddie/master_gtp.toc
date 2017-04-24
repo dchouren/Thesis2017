@@ -1,0 +1,47 @@
+\contentsline {chapter}{Preface}{1}{chapter*.2}
+\contentsline {chapter}{Nested Statistical Models}{2}{chapter*.3}
+\contentsline {section}{\numberline {1.1}Introduction}{3}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}Related Works}{4}{subsection.1.1.1}
+\contentsline {subsection}{\numberline {1.1.2}Paper Organization}{4}{subsection.1.1.2}
+\contentsline {section}{\numberline {1.2}Data Wrangling and Tools}{5}{section.1.2}
+\contentsline {subsection}{\numberline {1.2.1}Data Pipeline}{5}{subsection.1.2.1}
+\contentsline {subsection}{\numberline {1.2.2}Feature Extraction}{5}{subsection.1.2.2}
+\contentsline {subsection}{\numberline {1.2.3}Training and Testing}{5}{subsection.1.2.3}
+\contentsline {section}{\numberline {1.3}Single History Inclusion}{6}{section.1.3}
+\contentsline {section}{\numberline {1.4}Lag Order Selection}{6}{section.1.4}
+\contentsline {section}{\numberline {1.5}Nonlinear Models}{8}{section.1.5}
+\contentsline {subsection}{\numberline {1.5.1}Basis Expansion}{8}{subsection.1.5.1}
+\contentsline {subsection}{\numberline {1.5.2}Multivariate Adaptive Regressive Splines}{8}{subsection.1.5.2}
+\contentsline {section}{\numberline {1.6}Results}{9}{section.1.6}
+\contentsline {subsection}{\numberline {1.6.1}History Inclusion}{9}{subsection.1.6.1}
+\contentsline {subsection}{\numberline {1.6.2}Lag Order Selection}{12}{subsection.1.6.2}
+\contentsline {subsection}{\numberline {1.6.3}Nonlinear Models}{13}{subsection.1.6.3}
+\contentsline {subsubsection}{Basis Expansion}{13}{section*.4}
+\contentsline {subsubsection}{MARS}{13}{section*.5}
+\contentsline {section}{\numberline {1.7}Discussion}{15}{section.1.7}
+\contentsline {chapter}{Nonparametric Long Short-Term Memory Neural Networks}{16}{chapter*.6}
+\contentsline {section}{\numberline {2.1}Introduction}{17}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}TORCS, Direct Perception, and Recurrency}{17}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}LSTM in Caffe}{17}{subsection.2.1.2}
+\contentsline {section}{\numberline {2.2}Methods}{19}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Nonparametric ReLU}{19}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Parametric Initialization}{19}{subsection.2.2.2}
+\contentsline {section}{\numberline {2.3}Results}{20}{section.2.3}
+\contentsline {section}{\numberline {2.4}Discussion}{22}{section.2.4}
+\contentsline {chapter}{deepbayes: An R Package for Deep Learning and Bayesian Optimization}{23}{chapter*.7}
+\contentsline {section}{\numberline {3.1}Introduction}{24}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Bayesian Optimization}{24}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Technical Choices}{25}{subsection.3.1.2}
+\contentsline {subsubsection}{\lstinline {Rcpp}}{25}{section*.8}
+\contentsline {subsubsection}{\lstinline {Caffe}}{25}{section*.9}
+\contentsline {subsubsection}{BayesOpt}{25}{section*.10}
+\contentsline {section}{\numberline {3.2}Package Usage}{25}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Data}{26}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Creating Network and Solver Protocol Buffers}{26}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Optimizing}{26}{subsection.3.2.3}
+\contentsline {subsection}{\numberline {3.2.4}Other Examples}{26}{subsection.3.2.4}
+\contentsline {section}{\numberline {3.3}Discussion and Future Work}{27}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}External vs. Internal Libraries}{27}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Abstraction of Protocol Buffer Creation}{27}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.3}Bayesian Optimization Parameters}{27}{subsection.3.3.3}
+\contentsline {section}{\numberline {3.4}Conclusion}{27}{section.3.4}

@@ -1,0 +1,25 @@
+
+\section{Results}
+
+Our test set, which we will refer to as the Wang set, consists of 5033 triplets compiled by Wang et al.\cite{wang2014learning} The dataset was curated by sampling triplets of images, $(Q, A, B)$ from the top 50 search results for 1000 popular text queries using the Google image search engine. Most text queries are thus represented multiple times. Human raters were given four choices in ranking the similarity of images in the triplets: 1) both $A$ and $B$ were similar to $Q$; 2) both $A$ and $B$ were dissimilar to $Q$; 3) $A$ was more similar to $Q$ than $B$; 4) $B$ was more similar to $Q$ than $A$. Each triplet was rated by three different humans. If all three ratings were the same, the triplet was included in the dataset.
+
+The Wang set contains an extremely wide variety of images due to its creation through sampling popular Google image searches. A random sampling of the image categories returns \texttt{\justify Lynda Carter, Paris skyline, Empire State building, brunette, Bob Marley, Angora Rabbit, Jeep Liberty, 2 Fast 2 Furious, Shemar Moore, soccer ball, motorbike racing, Brittany Murphy}. A plurality of classes refer to people.
+
+We display in Table \ref{table:random_triplets} a random sampling of triplets, in a few examples demonstrating the relatively narrow margin between similar and dissimilar pairs, and in  a few examples demonstrating the necessity of learning a general image invariants.
+
+\begin{table}
+\begin{tabular}{*{4}{c}}
+\toprule
+\bfseries Image Query & \bfseries Base Image ($p$) & \bfseries Similar Image ($p_+$) & \bfseries Dissimilar Image ($p_-$) \\
+\midrule
+\centering New York City & \includegraphics[width=1.4in]{images/nyc_base.jpeg} & \includegraphics[width=1.4in]{images/nyc_pos.jpeg} & \includegraphics[width=1.4in]{images/nyc_neg.jpeg}\\
+Column1b & Column2b & Column3b & \\
+Column1c & Column2c & Column3c & \\
+Column1d & Column2d & Column3d & \\
+\bottomrule
+\end{tabular}
+\caption{My table}
+\label{table:random_triplets}
+\end{table}
+
+\section{Conclusion}

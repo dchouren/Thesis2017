@@ -1,0 +1,100 @@
+
+\section{Flickr Data}
+Our data consists of all geo-tagged images uploaded to Flickr between 00:00:00 (GMT) January 1, 2006 to 00:00:00 January 1, 2017 with latitude and longitude inside the [lower left, upper right] bounding box [(-74.052544, 40.525070), (-73.740685, 40.889249)]. This bounding box roughly corresponds to the city limits of New York, New York. There are over 6 million images in the dataset, with roughly 500,000 each for the years from 2009-2016. In addition to the latitude and longitude, each image was downloaded with an associated timestamp, Flickr user identifier, title, and description (user uploaded caption). The vast majority of photos are from Manhattan, and distinct clusters can be seen around typical tourist attractions such as the World Trade Center, the Brooklyn Bridge, the Metropolitan Museum of Art, the Rockefeller Center, and up and down Broadway Avenue. To give an idea of the image densities shown, there are 6745 images with latitude beginning with 40.779 and longitude beginning with -73.963, which corresponds to 100 square meters around Metropolitan Museum of Art from from 2014 only.
+
+
+\begin{figure}[!htbp]
+	\centering
+	\begin{tabular}{cc}
+		  \includegraphics[width=0.4\textwidth]{newyork_density.png} &   \includegraphics[width=0.4\textwidth]{manhattan_density.png} \\
+		(a) All images & (b) Closer view of highest image density \\[6pt]
+	\end{tabular}
+\label{fig:densities}
+\end{figure}
+
+With 6 million images, there are roughly $1.8\times 10^{13}$ possible image pairs, which is infeasible to train a CNN on, so we develop a heuristic for sampling positive and negative image pairs for efficient training, which we explain in Section \ref{sec:pair_sampling}.
+
+We examine the pairwise distances of our images. Roughly 0.6\% of our image pairs have an image distance of one meter or less.
+
+\begin{figure}[!htbp]
+	\centering
+	\begin{tabular}{cc}
+		\includegraphics[width=0.4\textwidth]{2014_distance_histogram.png}  &       \includegraphics[width=0.4\textwidth]{2014_distance_5000_histogram.png}  \\
+		(a) All sampled pairwise distances & (b) Within 5000 meters \\[6pt]
+		\includegraphics[width=0.4\textwidth]{2014_distance_2000_histogram.png}  &       \includegraphics[width=0.4\textwidth]{2014_distance_200_histogram.png} \\
+		(c) Within 2000 meters & (d) Within 200 meters\\[6pt]
+	\end{tabular}
+	\label{fig:distances}
+\end{figure}
+
+A simple visualization of randomly selected images at two clusters, the Metropolitan Museum of Art and the Brooklyn Bridge, reveals there is relative intracluster similarity and intercluster dissimilarity. These two sets of example clusters are extremely far apart in high-level semantic space and are perhaps not representative of the dataset as a whole, which consists of many generic street view photos. But they do demonstrate that there is significant high-level variation in image features as a function of geographic location, particularly when switching from indoor to outdoor settings.
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=\textwidth]{brooklynbridge.jpg}
+	\caption{Photos from the Brooklyn Bridge (40.706 -73.996)}
+	\label{fig:brooklynbridge}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=\textwidth]{met.jpg}
+	\caption{Photos from the Metropolitan Museum of Art (40.779 -73.963)}
+	\label{fig:met}
+\end{figure}
+
+We notice that there are frequently duplicate photos. Some can be seen in the selection of images from the Brooklyn Bridge. We use aggressive duplication removal when selecting positive image pairs for training. 
+
+
+The highly clustered nature of the images leads us to believe that image triplets can be sampled with a positive pair being less than one meter apart and a negative pair defined as images more than 2000 meters apart. 2000 meters is significant threshold because the maximum dimension of any easily identifiable cluster is 1825 meters for the Brooklyn Bridge. 
+
+
+
+Though the existence of semantic clusters provides the basis for our model's learnability, we never explicitely create these clusters or segment our images in any way beyond creating 1 meter and 2000 meter balls for positive and negative image pair selection. In a similar paper which trained a CNN to geolocate Flickr images on a global scale, Weyand et al look at the geographic density of their photos and divide the earth into variable size latitude longitude bounding boxes which they use as image classes.\cite{weyand2016planet} The existence of classes allows Weyand et al to frame geolocalization as a standard classification problem to which a CNN is easily applied. We do not explicitly apply this sort of segmentation and we do not seek to predict a class but rather to find an image embedding.
+
+
+\subsection{Quantifying the Amount of Fuzziness}
+
+
+
+
+
+\section{Google Image Data}
+Because we will use the Flickr dataset to generate fuzzily labeled image pairs, we also require a manually labeled dataset for testing. For this, we use a dataset published by Wang et al., which we will refer to as the Wang set.\cite{wang2014learning}. 
+The Wang set consists of 5033 image triplets. The dataset was curated by sampling triplets of images, $(Q, A, B)$ from the top 50 search results for 1000 popular text queries using the Google image search engine. Most text queries are thus represented multiple times. Human raters were given four choices in ranking the similarity of images in the triplets: 1) both $A$ and $B$ were similar to $Q$; 2) both $A$ and $B$ were dissimilar to $Q$; 3) $A$ was more similar to $Q$ than $B$; 4) $B$ was more similar to $Q$ than $A$. Each triplet was rated by three different humans. If all three ratings were the same, the triplet was included in the dataset.
+
+The Wang set contains an extremely wide variety of images due to its creation through sampling popular Google image searches. A random sampling of the image categories returns \texttt{\justify Lynda Carter, Paris skyline, Empire State building, brunette, Bob Marley, Angora Rabbit, Jeep Liberty, 2 Fast 2 Furious, Shemar Moore, soccer ball, motorbike racing, Brittany Murphy}. A plurality of classes refer to people, mostly celebrities.
+
+We display in Table \ref{table:random_triplets} a random sampling of triplets. In contrast to the Flickr data, which we expect to generate a non-trivial proportion of triplets $(p, p_+, p_-)$, where all three images are relatively dissimilar, the Wang set has a high proportion of triplets where all three images are extremely similar. Despite the requirement of unanimous agreement by the three human raters in the creation of this dataset, we feel that some examples may be mislabeled or should not have been included in the dataset. In Table TODO, we show a few examples demonstrating the relatively narrow margin between similar and dissimilar pairs. , and in Table TODO a few examples demonstrating the necessity of learning a general image invariants.
+
+\begin{table}
+	\begin{tabular}{*{4}{c}}
+		\toprule
+		\bfseries Image Query & \bfseries Base Image ($p$) & \bfseries Similar Image ($p_+$) & \bfseries Dissimilar Image ($p_-$) \\
+		\midrule
+		\centering New York City & \includegraphics[width=1.4in]{images/nyc_base.jpeg} & \includegraphics[width=1.4in]{images/nyc_pos.jpeg} & \includegraphics[width=1.4in]{images/nyc_neg.jpeg}\\
+		Column1b & Column2b & Column3b & \\
+		Column1c & Column2c & Column3c & \\
+		Column1d & Column2d & Column3d & \\
+		\bottomrule
+	\end{tabular}
+	\caption{My table}
+	\label{table:random_triplets}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

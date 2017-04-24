@@ -20,7 +20,7 @@ from keras.applications.resnet50 import ResNet50
 
 
 from models.utils import _load_model
-from siamese_network import contrastive_loss
+from siamese_network import contrastive_loss, _generator
 from format_h5 import load_path_map
 
 

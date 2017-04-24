@@ -1,0 +1,324 @@
+\documentclass[11pt, notitlepage]{report}
+%^ hack for subfiles
+
+\usepackage{enumerate}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{natbib}
+\usepackage[usenames]{color}
+%\usepackage[dvips]{graphicx}
+%\usepackage{bm}
+
+\usepackage{smile}
+\usepackage{natbib}
+\usepackage{multirow}
+\usepackage{listings}
+% \usepackage{geometry}
+\usepackage{pdflscape}
+%\usepackage{rotating}
+\usepackage{todonotes}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, fit, calc}
+
+
+\usepackage{silence}% Filter out unwanted warnings and error messages
+\WarningFilter{pdftex}{destination with the same}
+%\usepackage{subfigure}
+%\usepackage{makecell}
+\usepackage[colorlinks = false,
+            % linkcolor=red,
+            % anchorcolor=blue,
+            % citecolor=blue
+            ]{hyperref}
+            
+\graphicspath{ {/Users/daway/Documents/Princeton/Thesis2017/plots/} }
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{-0.5in}
+
+% \usepackage{scrextend}
+\usepackage{float}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{afterpage}
+\usepackage{relsize}
+\usepackage{tabularx}
+
+%\mathbb{set}
+
+% Sample macros -- how you define new commands
+% My own set of frequently-used macros have grown to many hundreds of lines.
+% Here are some simple samples.
+
+\newcommand{\Adv}{{\mathbf{Adv}}}       
+\newcommand{\prp}{{\mathrm{prp}}}                  % How to define new commands 
+\newcommand{\calK}{{\cal K}}
+\newcommand{\outputs}{{\Rightarrow}}                
+\newcommand{\getsr}{{\:\stackrel{{\scriptscriptstyle\hspace{0.2em}\$}}{\leftarrow}\:}}
+\newcommand{\andthen}{{\::\;\;}}    % \, \: \; for thinspace, medspace, thickspace
+\newcommand{\Rand}[1]{{\mathrm{Rand}[{#1}]}}       % A command with one argument
+\newcommand{\Perm}[1]{{\mathrm{Perm}[{#1}]}}       
+\newcommand{\Randd}[2]{{\mathrm{Rand}[{#1},{#2}]}} % and with two arguments
+\newcommand{\thetahat}{{\hat\theta}}
+\providecommand{\floor}[1]{\left \lfloor #1 \right \rfloor }
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+\newcommand*\justify{%
+	\fontdimen2\font=0.4em% interword space
+	\fontdimen3\font=0.2em% interword stretch
+	\fontdimen4\font=0.1em% interword shrink
+	\fontdimen7\font=0.1em% extra space
+	\hyphenchar\font=`\-% allowing hyphenation
+}
+
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+
+\usepackage{mathrsfs}
+
+\usepackage{fullpage}
+\renewcommand{\baselinestretch}{1.0}
+
+
+\usepackage{hyperref}
+%\usepackage[protrusion=false,expansion=true]{microtype}
+%\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+\usepackage[    protrusion=true,
+            expansion=true,
+            final,
+            babel
+                ]{microtype}
+\usepackage{setspace}
+\usepackage{enumitem}
+
+% \usepackage{parskip}
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+
+%% Thesis requirements for binding
+\usepackage[top=1in, bottom=1in, left=1.5in, right=1in]{geometry}
+
+%% modular files
+\usepackage{subfiles}
+
+\setlength\parskip{\baselineskip}
+
+%% chapter-fixing
+\newcommand{\mychapter}[2]{
+    \setcounter{chapter}{#1}
+    \setcounter{section}{0}
+    \chapter*{#2}
+    \addcontentsline{toc}{chapter}{#2}
+}
+
+%% landscaping
+\usepackage{rotating}
+\usepackage{pdflscape}
+
+%% indicator function
+\usepackage{bbm}
+
+%% make C++ look pretty
+\newcommand{\CPP}
+{C\nolinebreak[4]\hspace{-.05em}\raisebox{.22ex}{\footnotesize\bf ++}\hspace{.3em}}
+
+%% reset sub-counts for figures within chapters
+\usepackage{chngcntr}
+% \counterwithout{figure}{chapter}
+\counterwithin{figure}{chapter}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\pagenumbering{Alph}
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{.8\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+\renewenvironment{abstract}
+ {\small
+  \begin{center}
+  \bfseries \abstractname\vspace{-.5em}\vspace{0pt}
+  \end{center}
+  \list{}{
+    \setlength{\leftmargin}{.5cm}%
+    \setlength{\rightmargin}{\leftmargin}%
+  }%
+  \item\relax}
+ {\endlist}
+
+
+\center % Center everything on the page
+
+%----------------------------------------------------------------------------------------
+%   HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Princeton University}\\[0.5cm] % Name of your university/college
+\textsc{\large Computer Science}\\[0.5cm] % Major heading such as course name
+
+\vspace{2em}
+%----------------------------------------------------------------------------------------
+%   TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.2cm]
+{\Large \bfseries A Fine-Grained Embedding\\
+for Image Similarity Through\\
+Weakly Supervised Learning\\
+\par}
+% { \LARGE \bfseries Applying Nested Statistical Models\\
+% for Temporal Affordance Learning\\
+% in Vision-Based Autonomous Driving\par}
+\HRule \\[1.5cm]
+ 
+\vspace{2em}
+%----------------------------------------------------------------------------------------
+%   AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+Daway \textsc{Chou-Ren} % Your name
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Advisor:} \\
+Dr. Szymon \textsc{Rusinkcewicz} % Supervisor's Name
+\end{flushright}
+\end{minipage}\\[1cm]
+
+\vspace{2em}
+%----------------------------------------------------------------------------------------
+%   LOGO SECTION
+%----------------------------------------------------------------------------------------
+\begin{figure}[H]
+\centering
+\includegraphics[width=30mm]{figs/princeton_shield}
+\end{figure}
+
+\vspace{4em}
+ 
+%----------------------------------------------------------------------------------------
+\textsc{
+Submitted in partial fulfillment\\
+of the requirements for the degree of\\
+Bachelor of Science in Engineering\\
+Department of Computer Science\\
+Princeton University
+}\\[0.5cm]
+
+\vspace{2em}
+%----------------------------------------------------------------------------------------
+%   DATE SECTION
+%----------------------------------------------------------------------------------------
+
+\textsc{\large \today}\\[5mm] % Date, change the \today to a set date if you want to be precise
+\pagestyle{empty}
+
+%----------------------------------------------------------------------------------------
+% Statements
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{\textwidth}
+\begin{flushleft} \large
+\textsc{I hereby declare that I am the sole author of this thesis.}\par
+\vspace{1em}
+\textsc{I authorize Princeton University to lend this thesis to other institutions or individuals for
+the purpose of scholarly research.}
+\vspace{6em}
+\end{flushleft}
+\begin{flushright}
+\noindent\begin{tabular}{ll}
+\makebox[2.5in]{\hrulefill}{\hrulefill}\\
+\textsc{Daway Chou-Ren}\\
+\end{tabular}
+\end{flushright}
+\vspace{6em}
+\begin{flushleft} \large
+\textsc{I further authorize Princeton University to reproduce this thesis by photocopying or by
+other means, in total or in part, at the request of other institutions or individuals for the
+purpose of scholarly research.}
+\vspace{6em}
+\end{flushleft}
+\begin{flushright}
+\noindent\begin{tabular}{ll}
+\makebox[2.5in]{\hrulefill}{\hrulefill}\\
+\textsc{Daway Chou-Ren}\\
+\end{tabular}
+\end{flushright}
+\end{minipage}
+
+\pagestyle{empty}
+\newpage
+%----------------------------------------------------------------------------------------
+% Acknowledgements
+%----------------------------------------------------------------------------------------
+\begin{minipage}{\textwidth}
+{ \LARGE \bfseries Acknowledgements\par}
+\parskip=\baselineskip \advance\parskip by 0pt plus 2pt
+\end{minipage}
+
+\end{titlepage}
+
+\hypersetup{pageanchor=false}
+\tableofcontents
+
+\hypersetup{pageanchor=true}
+\thispagestyle{empty}
+\cleardoublepage
+% \pagestyle{headings}
+\pagenumbering{arabic}
+
+\mychapter{0}{Abstract} \label{chapter:abstract}
+
+\mychapter{1}{Introduction} \label{chapter:intro}
+\cleardoublepage 
+\subfile{Introduction}
+
+\mychapter{2}{Related Work} \label{chapter:related}
+\cleardoublepage 
+\subfile{Related_Work}
+
+\mychapter{3}{Network Architecture and Training} \label{chapter:network}
+\cleardoublepage  
+\subfile{Network}
+
+\mychapter{4}{Data} \label{chapter:data}
+\cleardoublepage  
+\subfile{Data}
+
+\mychapter{5}{Experiments} \label{chapter:experiments}
+\subfile{Experiments}
+
+\mychapter{6}{Results and Conclusion} \label{chapter:results}
+\cleardoublepage  
+\subfile{Results}
+
+\setlength{\bibsep}{1pt}
+{
+\bibliographystyle{IEEEtranS}
+\bibliography{master}
+}
+\end{document} 
