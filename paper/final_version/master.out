@@ -1,27 +1,40 @@
 \BOOKMARK [0][-]{chapter*.2}{Abstract}{}% 1
 \BOOKMARK [0][-]{chapter*.3}{Introduction}{}% 2
-\BOOKMARK [1][-]{section.1.1}{Introduction}{chapter*.3}% 3
-\BOOKMARK [0][-]{chapter*.6}{Related Work}{}% 4
-\BOOKMARK [1][-]{section.2.1}{Related Work}{chapter*.6}% 5
-\BOOKMARK [2][-]{subsection.2.1.1}{Effectiveness of Deep Learning}{section.2.1}% 6
-\BOOKMARK [2][-]{subsection.2.1.2}{Deep Convolutional Neural Networks}{section.2.1}% 7
-\BOOKMARK [2][-]{subsection.2.1.3}{Weakly Supervised Learning with Fuzzy Data}{section.2.1}% 8
-\BOOKMARK [2][-]{subsection.2.1.4}{Siamese Neural Networks}{section.2.1}% 9
-\BOOKMARK [1][-]{section.2.2}{Distance Metric for Siamese Network}{chapter*.6}% 10
-\BOOKMARK [0][-]{chapter*.7}{Network Architecture and Training}{}% 11
-\BOOKMARK [1][-]{section.3.1}{Model Design}{chapter*.7}% 12
-\BOOKMARK [2][-]{subsection.3.1.1}{Proprocessing}{section.3.1}% 13
-\BOOKMARK [2][-]{subsection.3.1.2}{Data Augmentation}{section.3.1}% 14
-\BOOKMARK [2][-]{subsection.3.1.3}{Detecting Variants and Invariants}{section.3.1}% 15
-\BOOKMARK [2][-]{subsection.3.1.4}{Blending Variant and Invariant Outputs}{section.3.1}% 16
-\BOOKMARK [2][-]{subsection.3.1.5}{Loss Function}{section.3.1}% 17
-\BOOKMARK [0][-]{chapter*.11}{Data}{}% 18
-\BOOKMARK [1][-]{section.4.1}{Data}{chapter*.11}% 19
-\BOOKMARK [2][-]{subsection.4.1.1}{Quantifying the Amount of Fuzziness}{section.4.1}% 20
-\BOOKMARK [0][-]{chapter*.12}{Experiments}{}% 21
-\BOOKMARK [1][-]{section.5.1}{Weakly Supervised Image Embedding}{chapter*.12}% 22
-\BOOKMARK [1][-]{section.5.2}{Investigation of Data Fuzziness}{chapter*.12}% 23
-\BOOKMARK [1][-]{section.5.3}{Image Invariants}{chapter*.12}% 24
-\BOOKMARK [0][-]{chapter*.13}{Results and Conclusion}{}% 25
-\BOOKMARK [1][-]{section.6.1}{Results}{chapter*.13}% 26
-\BOOKMARK [1][-]{section.6.2}{Conclusion}{chapter*.13}% 27
+\BOOKMARK [1][-]{section.1.1}{Image Similarity}{chapter*.3}% 3
+\BOOKMARK [2][-]{subsection.1.1.1}{Fine-Grained Image Similarity}{section.1.1}% 4
+\BOOKMARK [1][-]{section.1.2}{Weakly Supervised Training}{chapter*.3}% 5
+\BOOKMARK [1][-]{section.1.3}{Motivations}{chapter*.3}% 6
+\BOOKMARK [1][-]{section.1.4}{Contributions}{chapter*.3}% 7
+\BOOKMARK [0][-]{chapter*.4}{Background}{}% 8
+\BOOKMARK [1][-]{section.2.1}{A History of Machine Vision}{chapter*.4}% 9
+\BOOKMARK [2][-]{subsection.2.1.1}{Classical Techniques}{section.2.1}% 10
+\BOOKMARK [2][-]{subsection.2.1.2}{The Deep Learning Revolution}{section.2.1}% 11
+\BOOKMARK [2][-]{subsection.2.1.3}{Deep Convolutional Neural Networks}{section.2.1}% 12
+\BOOKMARK [2][-]{subsection.2.1.4}{Deep Embeddings}{section.2.1}% 13
+\BOOKMARK [2][-]{subsection.2.1.5}{Image Invariants}{section.2.1}% 14
+\BOOKMARK [1][-]{section.2.2}{Deep Learning for Image Similarity}{chapter*.4}% 15
+\BOOKMARK [2][-]{subsection.2.2.1}{Siamese Neural Networks}{section.2.2}% 16
+\BOOKMARK [1][-]{section.2.3}{Weakly Supervised Learning}{chapter*.4}% 17
+\BOOKMARK [2][-]{subsection.2.3.1}{Fuzzy Data}{section.2.3}% 18
+\BOOKMARK [0][-]{chapter*.6}{Network Architecture and Training}{}% 19
+\BOOKMARK [1][-]{section.3.1}{Model Design}{chapter*.6}% 20
+\BOOKMARK [2][-]{subsection.3.1.1}{Proprocessing}{section.3.1}% 21
+\BOOKMARK [2][-]{subsection.3.1.2}{Data Augmentation}{section.3.1}% 22
+\BOOKMARK [2][-]{subsection.3.1.3}{Detecting Variants and Invariants}{section.3.1}% 23
+\BOOKMARK [2][-]{subsection.3.1.4}{Blending Variant and Invariant Outputs}{section.3.1}% 24
+\BOOKMARK [2][-]{subsection.3.1.5}{Loss Function}{section.3.1}% 25
+\BOOKMARK [1][-]{section.3.2}{Training and Validation}{chapter*.6}% 26
+\BOOKMARK [2][-]{subsection.3.2.1}{Data Sampling}{section.3.2}% 27
+\BOOKMARK [0][-]{chapter*.10}{Data}{}% 28
+\BOOKMARK [1][-]{section.4.1}{Flickr Data}{chapter*.10}% 29
+\BOOKMARK [2][-]{subsection.4.1.1}{Quantifying the Amount of Fuzziness}{section.4.1}% 30
+\BOOKMARK [1][-]{section.4.2}{Google Image Data}{chapter*.10}% 31
+\BOOKMARK [0][-]{chapter*.11}{Experiments}{}% 32
+\BOOKMARK [1][-]{section.5.1}{Data Set Creation}{chapter*.11}% 33
+\BOOKMARK [1][-]{section.5.2}{Weakly Supervised Image Embedding}{chapter*.11}% 34
+\BOOKMARK [2][-]{subsection.5.2.1}{Training Module C}{section.5.2}% 35
+\BOOKMARK [1][-]{section.5.3}{Investigation of Data Fuzziness}{chapter*.11}% 36
+\BOOKMARK [1][-]{section.5.4}{Image Invariants}{chapter*.11}% 37
+\BOOKMARK [0][-]{chapter*.17}{Results and Conclusion}{}% 38
+\BOOKMARK [1][-]{section.6.1}{Results}{chapter*.17}% 39
+\BOOKMARK [1][-]{section.6.2}{Conclusion}{chapter*.17}% 40

@@ -98,6 +98,7 @@ def build_double_siamese_network(input_shape, variant_model_name, variant_model_
     variant_processed_b = variant_model(input_b)
     invariant_processed_b = invariant_model(input_b)
 
+
     processed_a = skip_invariant([variant_processed_a, invariant_processed_a], layer_size_1, layer_size_2, name='a')
     processed_b = skip_invariant([variant_processed_b, invariant_processed_b], layer_size_1, layer_size_2, name='b')
 
@@ -107,6 +108,8 @@ def build_double_siamese_network(input_shape, variant_model_name, variant_model_
 
     opt = get_optimizer(optimizer)
     model.compile(loss=contrastive_loss, optimizer=opt)
+    ipdb.set_trace()
+    
 
     print('Model compiled')
     return model
@@ -194,6 +197,8 @@ def main():
         print('\n\n\nStarting training without fold {}'.format(i))
         model = build_double_siamese_network(input_shape, model_name, weights, layer_size_1, layer_size_2, optimizer=optimizer_name)
         print('Double Siamese network built')
+
+        # ipdb.set_trace()
 
         augment = True
         generator = _fold_generator(pairs_file, leave_out_indices[i], leave_out_indices[i+1], batch_size=batch_size, index=0, augment=augment)

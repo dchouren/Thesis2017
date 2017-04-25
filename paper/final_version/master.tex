@@ -19,6 +19,8 @@
 \usepackage{todonotes}
 \usepackage{tikz}
 \usetikzlibrary{shapes, arrows, fit, calc}
+\usepackage{array}% http://ctan.org/pkg/array
+\newcolumntype{M}{>{\centering\arraybackslash}m{}}
 
 
 \usepackage{silence}% Filter out unwanted warnings and error messages
@@ -297,9 +299,9 @@ purpose of scholarly research.}
 \cleardoublepage 
 \subfile{Introduction}
 
-\mychapter{2}{Related Work} \label{chapter:related}
+\mychapter{2}{Background} \label{chapter:background}
 \cleardoublepage 
-\subfile{Related_Work}
+\subfile{Background}
 
 \mychapter{3}{Network Architecture and Training} \label{chapter:network}
 \cleardoublepage  

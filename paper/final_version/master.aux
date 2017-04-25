@@ -36,11 +36,15 @@
 \citation{paudyal2016smart}
 \citation{pouladzadeh2015foodd}
 \citation{krizhevsky2012imagenet}
-\@writefile{toc}{\contentsline {section}{\numberline {1.1}Introduction}{3}{section.1.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.1}Image Similarity}{3}{section.1.1}}
 \citation{xu2015augmenting}
 \citation{krause2016unreasonable}
-\@writefile{toc}{\contentsline {chapter}{Related Work}{6}{chapter*.6}}
-\newlabel{chapter:related}{{}{6}{Related Work}{chapter*.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.1}Fine-Grained Image Similarity}{4}{subsection.1.1.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.2}Weakly Supervised Training}{4}{section.1.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}Motivations}{4}{section.1.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.4}Contributions}{5}{section.1.4}}
+\@writefile{toc}{\contentsline {chapter}{Background}{6}{chapter*.4}}
+\newlabel{chapter:background}{{}{6}{Background}{chapter*.4}{}}
 \citation{lecun1989backpropagation}
 \citation{krizhevsky2012imagenet}
 \citation{szegedy2015going}
@@ -61,90 +65,109 @@
 \citation{karpathy2014large}
 \citation{krizhevsky2012imagenet}
 \citation{szegedy2015going}
-\@writefile{toc}{\contentsline {section}{\numberline {2.1}Related Work}{7}{section.2.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}Effectiveness of Deep Learning}{7}{subsection.2.1.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.2}Deep Convolutional Neural Networks}{7}{subsection.2.1.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}A History of Machine Vision}{7}{section.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}Classical Techniques}{7}{subsection.2.1.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.2}The Deep Learning Revolution}{7}{subsection.2.1.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.3}Deep Convolutional Neural Networks}{7}{subsection.2.1.3}}
 \citation{he2016deep}
 \citation{srivastava2014dropout}
 \citation{simonyan2014very}
 \citation{he2016deep}
-\citation{russakovsky2013detecting}
-\citation{angelova2013image}
-\citation{rejeb2013vantage}
-\citation{berg2014birdsnap}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.3}Weakly Supervised Learning with Fuzzy Data}{8}{subsection.2.1.3}}
-\citation{bergamo2010exploiting}
-\citation{fergus2010learning}
-\citation{li2010optimol}
-\citation{schroff2011harvesting}
-\citation{rubinstein2013unsupervised}
-\citation{krause2016unreasonable}
 \citation{wang2014learning}
 \citation{bromley1993signature}
 \citation{lin2015learning}
 \citation{bell2015learning}
 \citation{zagoruyko2015learning}
 \citation{koch2015siamese}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.4}Siamese Neural Networks}{9}{subsection.2.1.4}}
 \citation{bell2015learning}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.4}Deep Embeddings}{9}{subsection.2.1.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.5}Image Invariants}{9}{subsection.2.1.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}Deep Learning for Image Similarity}{9}{section.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Siamese Neural Networks}{9}{subsection.2.2.1}}
+\@writefile{toc}{\contentsline {subsubsection}{Distance Metric for Siamese Network}{9}{section*.5}}
+\newlabel{fig:siamese_configurations}{{2.2.1}{10}{Siamese Neural Networks}{subsection.2.2.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Some configurations from Bell and Bala}}{10}{figure.2.1}}
 \citation{hadsell2006dimensionality}
 \citation{lin2015learning}
 \citation{wang2014learning}
-\@writefile{toc}{\contentsline {section}{\numberline {2.2}Distance Metric for Siamese Network}{10}{section.2.2}}
-\newlabel{fig:siamese_configurations}{{2.1.4}{11}{Siamese Neural Networks}{subsection.2.1.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Some configurations from Bell and Bala}}{11}{figure.2.1}}
-\@writefile{toc}{\contentsline {chapter}{Network Architecture and Training}{12}{chapter*.7}}
-\newlabel{chapter:network}{{}{12}{Network Architecture and Training}{chapter*.7}{}}
+\citation{russakovsky2013detecting}
+\citation{angelova2013image}
+\citation{rejeb2013vantage}
+\citation{berg2014birdsnap}
+\citation{bergamo2010exploiting}
+\citation{fergus2010learning}
+\citation{li2010optimol}
+\citation{schroff2011harvesting}
+\citation{rubinstein2013unsupervised}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Weakly Supervised Learning}{11}{section.2.3}}
+\citation{krause2016unreasonable}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Fuzzy Data}{12}{subsection.2.3.1}}
+\@writefile{toc}{\contentsline {chapter}{Network Architecture and Training}{13}{chapter*.6}}
+\newlabel{chapter:network}{{}{13}{Network Architecture and Training}{chapter*.6}{}}
 \citation{hadsell2006dimensionality}
 \citation{lin2015learning}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Model Design}{13}{section.3.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Model Design}{14}{section.3.1}}
 \citation{He2015}
-\newlabel{fig:variant_model_train}{{3.1}{14}{Model Design}{section.3.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Pipeline for training the variant network, $V$}}{14}{figure.3.2}}
-\newlabel{fig:blend_model_train}{{3.1}{15}{Model Design}{figure.3.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Pipeline for training the blending network, $B$}}{15}{figure.3.3}}
+\newlabel{fig:variant_model_train}{{3.1}{15}{Model Design}{section.3.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Pipeline for training the variant network, $V$}}{15}{figure.3.2}}
+\newlabel{fig:blend_model_train}{{3.1}{16}{Model Design}{figure.3.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Pipeline for training the blending network, $B$}}{16}{figure.3.3}}
 \citation{He2015}
 \citation{He2015}
 \citation{szegedy2016inception}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Proprocessing}{16}{subsection.3.1.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Data Augmentation}{16}{subsection.3.1.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}Detecting Variants and Invariants}{16}{subsection.3.1.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Proprocessing}{17}{subsection.3.1.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Data Augmentation}{17}{subsection.3.1.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}Detecting Variants and Invariants}{17}{subsection.3.1.3}}
 \citation{glorot2010understanding}
 \citation{he2015delving}
-\newlabel{table:cnn_benchmarks}{{3.1.3}{17}{Detecting Variants and Invariants}{subsection.3.1.3}{}}
-\@writefile{toc}{\contentsline {subsubsection}{}{17}{section*.8}}
-\@writefile{toc}{\contentsline {subsubsection}{He Normal weight initialization}{17}{section*.9}}
-\@writefile{toc}{\contentsline {subsubsection}{Parametric ReLU activation}{17}{section*.10}}
+\newlabel{table:cnn_benchmarks}{{3.1.3}{18}{Detecting Variants and Invariants}{subsection.3.1.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{}{18}{section*.7}}
+\@writefile{toc}{\contentsline {subsubsection}{He Normal weight initialization}{18}{section*.8}}
+\@writefile{toc}{\contentsline {subsubsection}{Parametric ReLU activation}{18}{section*.9}}
 \citation{he2016deep}
 \citation{hadsell2006dimensionality}
-\citation{}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.4}Blending Variant and Invariant Outputs}{18}{subsection.3.1.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.5}Loss Function}{18}{subsection.3.1.5}}
-\@writefile{toc}{\contentsline {chapter}{Data}{20}{chapter*.11}}
-\newlabel{chapter:data}{{}{20}{Data}{chapter*.11}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Data}{21}{section.4.1}}
-\newlabel{fig:densities}{{4.1}{21}{Data}{section.4.1}{}}
-\newlabel{fig:distances}{{4.1}{22}{Data}{section.4.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Photos from the Brooklyn Bridge (40.706 -73.996)}}{22}{figure.4.4}}
-\newlabel{fig:brooklynbridge}{{4.4}{22}{Photos from the Brooklyn Bridge (40.706 -73.996)}{figure.4.4}{}}
-\citation{weyand2016planet}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Photos from the Metropolitan Museum of Art (40.779 -73.963)}}{23}{figure.4.5}}
-\newlabel{fig:met}{{4.5}{23}{Photos from the Metropolitan Museum of Art (40.779 -73.963)}{figure.4.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Quantifying the Amount of Fuzziness}{23}{subsection.4.1.1}}
-\@writefile{toc}{\contentsline {chapter}{Experiments}{24}{chapter*.12}}
-\newlabel{chapter:experiments}{{}{24}{Experiments}{chapter*.12}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Weakly Supervised Image Embedding}{24}{section.5.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Investigation of Data Fuzziness}{24}{section.5.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Image Invariants}{24}{section.5.3}}
-\@writefile{toc}{\contentsline {chapter}{Results and Conclusion}{25}{chapter*.13}}
-\newlabel{chapter:results}{{}{25}{Results and Conclusion}{chapter*.13}{}}
 \citation{wang2014learning}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.4}Blending Variant and Invariant Outputs}{19}{subsection.3.1.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.5}Loss Function}{19}{subsection.3.1.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Training and Validation}{20}{section.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Data Sampling}{20}{subsection.3.2.1}}
+\@writefile{toc}{\contentsline {chapter}{Data}{21}{chapter*.10}}
+\newlabel{chapter:data}{{}{21}{Data}{chapter*.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Flickr Data}{22}{section.4.1}}
+\newlabel{fig:densities}{{4.1}{22}{Flickr Data}{section.4.1}{}}
+\newlabel{fig:distances}{{4.1}{23}{Flickr Data}{section.4.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Photos from the Brooklyn Bridge (40.706 -73.996)}}{23}{figure.4.4}}
+\newlabel{fig:brooklynbridge}{{4.4}{23}{Photos from the Brooklyn Bridge (40.706 -73.996)}{figure.4.4}{}}
+\citation{weyand2016planet}
+\citation{wang2014learning}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Photos from the Metropolitan Museum of Art (40.779 -73.963)}}{24}{figure.4.5}}
+\newlabel{fig:met}{{4.5}{24}{Photos from the Metropolitan Museum of Art (40.779 -73.963)}{figure.4.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Quantifying the Amount of Fuzziness}{24}{subsection.4.1.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Google Image Data}{24}{section.4.2}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces My table}}{25}{table.4.1}}
+\newlabel{table:random_triplets}{{4.1}{25}{My table}{table.4.1}{}}
+\@writefile{toc}{\contentsline {chapter}{Experiments}{26}{chapter*.11}}
+\newlabel{chapter:experiments}{{}{26}{Experiments}{chapter*.11}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Data Set Creation}{26}{section.5.1}}
+\@writefile{toc}{\contentsline {subsubsection}{Distance Heuristics}{26}{section*.12}}
+\@writefile{toc}{\contentsline {subsubsection}{Temporal Heuristics}{27}{section*.13}}
+\@writefile{toc}{\contentsline {subsubsection}{Filtering by User}{27}{section*.14}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces Datasets}}{28}{table.5.2}}
+\newlabel{table:datasets}{{5.2}{28}{Datasets}{table.5.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Other}{28}{section*.15}}
+\@writefile{toc}{\contentsline {subsubsection}{Summary}{28}{section*.16}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Weakly Supervised Image Embedding}{28}{section.5.2}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.3}{\ignorespaces Training statistics}}{29}{table.5.3}}
+\newlabel{table:embedding_parameters}{{5.3}{29}{Training statistics}{table.5.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Training Module $C$}{29}{subsection.5.2.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Investigation of Data Fuzziness}{29}{section.5.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Image Invariants}{29}{section.5.4}}
+\@writefile{toc}{\contentsline {chapter}{Results and Conclusion}{30}{chapter*.17}}
+\newlabel{chapter:results}{{}{30}{Results and Conclusion}{chapter*.17}{}}
 \bibstyle{IEEEtranS}
 \bibdata{master}
-\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces My table}}{26}{table.6.1}}
-\newlabel{table:random_triplets}{{6.1}{26}{My table}{table.6.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}Results}{26}{section.6.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}Conclusion}{26}{section.6.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Results}{31}{section.6.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Conclusion}{31}{section.6.2}}
 \bibcite{angelova2013image}{{1}{}{{}}{{}}}
 \bibcite{athiwaratkun2015feature}{{2}{}{{}}{{}}}
 \bibcite{bell2015learning}{{3}{}{{}}{{}}}

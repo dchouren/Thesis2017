@@ -7,12 +7,13 @@ import html.html_utils as hm
 
 
 
+preds = None
 if len(sys.argv) > 1:
     preds_file = sys.argv[1]
 
-preds_file = join('/tigress/dchouren/thesis/evaluation/preds', preds_file)
+    preds_file = join('/tigress/dchouren/thesis/evaluation/preds', preds_file)
 
-preds = np.load(preds_file)
+    preds = np.load(preds_file)
 
 doc = hm.begin_document()
 
@@ -26,7 +27,10 @@ with open('/tigress/dchouren/thesis/evaluation/query_and_triplets.txt', 'r') as 
 
         if index == 1:
             doc += hm.open_div()
-            doc += hm.add_image(line, str(preds[int(i/4)]))
+            if preds:
+                doc += hm.add_image(line, str(preds[int(i/4)]))
+            else:
+                doc += hm.add_image(line, label)
         elif index == 2:
             doc += hm.add_image(line, label + '_pos')
         elif index == 3:

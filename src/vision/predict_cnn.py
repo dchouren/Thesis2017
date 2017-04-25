@@ -30,6 +30,8 @@ K.set_image_data_format('channels_first')
 # model = load_model(join(model_dir, model_name) + '.h5')
 model = ResNet50(weights='imagenet', include_top=False, input_shape=(3,224,224), pooling='avg')
 
+ipdb.set_trace()
+
 with h5py.File('/tigress/dchouren/thesis/evaluation/images.h5', 'r') as eval_file:
     images = eval_file['images']
     # preds = save_bottleneck_features(model, year, month, pred_output)

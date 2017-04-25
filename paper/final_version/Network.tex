@@ -191,11 +191,13 @@ Various forms of ReLU have been proposed, notably the parametric ReLU (pReLU), w
 
 Because we are training on a fairly large and very noisy dataset, we seek to mitigate the possibility of 'dying' ReLU activations by using parametric ReLU activations. ReLU units can 'die' when a large gradient causes the weights to update in such a way that the unit never again activates for the rest of the dataset, causing it to output 0. Since the unit never contributes to the model prediction, it is never updated, and is therefore a dead end in the model. Experimentally, up to 40\% of network ReLU units can die. We expect it will be important to mitigate this since our dataset spans a wide variety of images, from all white to all black, and therefore we are likely to have a high chance of killing more ReLU units than normal.
 
+In addition, we clip the norms of our weight gradients at 1.
+
 \subsection{Blending Variant and Invariant Outputs}
 We use a shallow CNN to blend our variant and invariant outputs. We experiment with CNNs with one and two fully connected layers and also experiment with the sizes of these layers. Because of the limited size of our dataset, we experiment with some ad-hoc manual architectures as well by including a residual layer for either the variant output or invariant output, or for both. When using two fully connected ayers, we use dropout improved generalizability. Again, we use a He Normal weight initialization and pReLU for our activation function.
 
 \subsection{Loss Function}
-Our loss function follows the contrastive loss proposed by Hadsell et al.\cite{hadsell2006dimensionality}, which assigns a high loss to pairs whose embeddings are far apart and a low loss to pairs whose embeddings are close together. Wang et al.\cite{} had extended this loss function to take triplets of images, but in order to use this loss, we would have to prepare triplets of images, which proved computationally intractible for certain experiments we wanted to run, which we will discuss in Chapter \ref{chapter:data}.
+Our loss function follows the contrastive loss proposed by Hadsell et al.\cite{hadsell2006dimensionality}, which assigns a high loss to pairs whose embeddings are far apart and a low loss to pairs whose embeddings are close together. Wang et al.\cite{wang2014learning} had extended this loss function to take triplets of images, but in order to use this loss, we would have to prepare triplets of images, which proved computationally intractible for certain experiments we wanted to run, which we will discuss in Chapter \ref{chapter:data}.
 
 \begin{equation}
 L(l, p_1, p_2) = \dfrac{1}{2}lS(p_1, p_2) + \dfrac{1}{2}(1-l)\text{max}(0, (g-S(p_1,p_2)))
@@ -204,6 +206,12 @@ L(l, p_1, p_2) = \dfrac{1}{2}lS(p_1, p_2) + \dfrac{1}{2}(1-l)\text{max}(0, (g-S(
 \begin{equation}
 l(p_i, p_i^+, p_i^-) = \text{max}\{0, g + ||f(p_i) - f(p_i^+)||_2^2 - ||f(p_i)-f(p_i^-)||_2^2\}
 \end{equation}
+
+
+
+\section{Training and Validation}
+
+\subsection{Data Sampling}
 
 
 

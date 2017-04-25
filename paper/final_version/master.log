@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  23 APR 2017 23:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  25 APR 2017 05:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -984,7 +984,7 @@ See the natbib package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.198 ...and\NAT@force@numbers{}\NAT@force@numbers
+l.221 ...and\NAT@force@numbers{}\NAT@force@numbers
                                                   
 Check the bibliography entries for non-compliant syntax,
 or select author-year BibTeX style, e.g. plainnat
@@ -992,20 +992,20 @@ or select author-year BibTeX style, e.g. plainnat
 )
 \openout1 = `master.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 150.
-LaTeX Font Info:    ... okay on input line 150.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 150.
-LaTeX Font Info:    ... okay on input line 150.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 150.
-LaTeX Font Info:    ... okay on input line 150.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 150.
-LaTeX Font Info:    ... okay on input line 150.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 150.
-LaTeX Font Info:    ... okay on input line 150.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 150.
-LaTeX Font Info:    ... okay on input line 150.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 150.
-LaTeX Font Info:    ... okay on input line 150.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 152.
+LaTeX Font Info:    ... okay on input line 152.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 152.
+LaTeX Font Info:    ... okay on input line 152.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 152.
+LaTeX Font Info:    ... okay on input line 152.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 152.
+LaTeX Font Info:    ... okay on input line 152.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 152.
+LaTeX Font Info:    ... okay on input line 152.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 152.
+LaTeX Font Info:    ... okay on input line 152.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 152.
+LaTeX Font Info:    ... okay on input line 152.
  (/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count180
@@ -1038,7 +1038,7 @@ e
 
 ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box68
-Package hyperref Info: Link coloring OFF on input line 150.
+Package hyperref Info: Link coloring OFF on input line 152.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -1048,15 +1048,15 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count187
 )
-LaTeX Info: Redefining \ref on input line 150.
-LaTeX Info: Redefining \pageref on input line 150.
-LaTeX Info: Redefining \nameref on input line 150.
+LaTeX Info: Redefining \ref on input line 152.
+LaTeX Info: Redefining \pageref on input line 152.
+LaTeX Info: Redefining \nameref on input line 152.
 
 (./master.out) (./master.out)
 \@outlinefile=\write4
 \openout4 = `master.out'.
 
-LaTeX Info: Redefining \microtypecontext on input line 150.
+LaTeX Info: Redefining \microtypecontext on input line 152.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1109,15 +1109,15 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Option `pageanchor' set `false' on input line 151.
-LaTeX Font Info:    Try loading font information for U+msa on input line 203.
+Package hyperref Info: Option `pageanchor' set `false' on input line 153.
+LaTeX Font Info:    Try loading font information for U+msa on input line 205.
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 203.
+LaTeX Font Info:    Try loading font information for U+msb on input line 205.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1125,22 +1125,22 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 203.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 205.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
-<figs/princeton_shield.png, id=115, 807.015pt x 1027.84pt>
+<figs/princeton_shield.png, id=167, 807.015pt x 1027.84pt>
 File: figs/princeton_shield.png Graphic file (type png)
 
 <use figs/princeton_shield.png>
-Package pdftex.def Info: figs/princeton_shield.png used on input line 218.
+Package pdftex.def Info: figs/princeton_shield.png used on input line 220.
 (pdftex.def)             Requested size: 85.35826pt x 108.70271pt.
  [1
 
 {/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./figs/
 princeton_shield.png>] [2] [3]
-Package hyperref Info: Option `pageanchor' set `false' on input line 285.
+Package hyperref Info: Option `pageanchor' set `false' on input line 287.
  (./master.toc
 [1
 
@@ -1148,8 +1148,8 @@ Package hyperref Info: Option `pageanchor' set `false' on input line 285.
 \tf@toc=\write5
 \openout5 = `master.toc'.
 
-Package hyperref Info: Option `pageanchor' set `true' on input line 288.
- [2] [1
+Package hyperref Info: Option `pageanchor' set `true' on input line 290.
+ [2] [3] [1
 
 
 ] [2
@@ -1158,196 +1158,214 @@ Package hyperref Info: Option `pageanchor' set `true' on input line 288.
 
 ] [4]) [5] [6
 
-] (./Related_Work.tex
+] (./Background.tex
 [7
 
-] [8] [9]
+] [8]
 </Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configurations.jpg, 
-id=319, 2457.18pt x 3276.24pt>
+id=358, 2457.18pt x 3276.24pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configurations.
 jpg Graphic file (type jpg)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configurations.j
 pg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/siam
-ese_configurations.jpg used on input line 59.
+ese_configurations.jpg used on input line 56.
 (pdftex.def)             Requested size: 433.62001pt x 578.14977pt.
-) [10] [11 </Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configura
-tions.jpg>] [12
+ [9] [10 </Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configurati
+ons.jpg>] [11]) [12] [13
 
-] (./Network.tex [13
+] (./Network.tex [14
 
-] [14] [15] [16] [17]
+] [15] [16] [17] [18]
 
-LaTeX Warning: Reference `chapter:Data' on page 18 undefined on input line 198.
+Package hyperref Warning: Suppressing empty link on input line 200.
 
-
-[18]) [19] [20
+[19]) [20] [21
 
 ] (./Data.tex
-</Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png, id=405,
+</Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png, id=479,
  769.87625pt x 761.84625pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png Gra
 phic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/newy
-ork_density.png used on input line 21.
+ork_density.png used on input line 9.
 (pdftex.def)             Requested size: 173.44534pt x 171.62888pt.
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png, id=40
-6, 505.89pt x 505.89pt>
+</Users/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png, id=48
+0, 505.89pt x 505.89pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png G
 raphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/manh
-attan_density.png used on input line 21.
+attan_density.png used on input line 9.
 (pdftex.def)             Requested size: 173.44534pt x 173.44382pt.
 
+
+LaTeX Warning: Reference `sec:pair_sampling' on page 22 undefined on input line
+ 15.
+
+
 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram.png,
- id=407, 462.528pt x 346.896pt>
+ id=481, 462.528pt x 346.896pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram
 .png Graphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram.
 png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/2014
-_distance_histogram.png used on input line 34.
+_distance_histogram.png used on input line 22.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
 
 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_5000_histogram
-.png, id=408, 462.528pt x 346.896pt>
+.png, id=482, 462.528pt x 346.896pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_5000_hist
 ogram.png Graphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_5000_histo
 gram.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/2014
-_distance_5000_histogram.png used on input line 34.
+_distance_5000_histogram.png used on input line 22.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
 
 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_2000_histogram
-.png, id=409, 462.528pt x 346.896pt>
+.png, id=483, 462.528pt x 346.896pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_2000_hist
 ogram.png Graphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_2000_histo
 gram.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/2014
-_distance_2000_histogram.png used on input line 36.
+_distance_2000_histogram.png used on input line 24.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
 
 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_200_histogram.
-png, id=410, 462.528pt x 346.896pt>
+png, id=484, 462.528pt x 346.896pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_200_histo
 gram.png Graphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_200_histog
 ram.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/2014
-_distance_200_histogram.png used on input line 36.
+_distance_200_histogram.png used on input line 24.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/brooklynbridge.jpg, id=411, 
+</Users/daway/Documents/Princeton/Thesis2017/plots/brooklynbridge.jpg, id=485, 
 2764.3275pt x 1449.415pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/brooklynbridge.jpg Grap
 hic file (type jpg)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/brooklynbridge.jpg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/broo
-klynbridge.jpg used on input line 46.
+klynbridge.jpg used on input line 34.
 (pdftex.def)             Requested size: 433.62001pt x 227.35518pt.
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg, id=412, 2788.4175pt
+</Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg, id=486, 2788.4175pt
  x 1168.365pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg Graphic file (t
 ype jpg)
  <use /Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/met.
-jpg used on input line 53.
+jpg used on input line 41.
 (pdftex.def)             Requested size: 433.62001pt x 181.68301pt.
 
-[21
+[22
 
  </Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png> </User
 s/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png>]
-[22 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram.
+[23 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram.
 png> </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_5000_hist
 ogram.png> </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_200
 0_histogram.png> </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distan
 ce_200_histogram.png> </Users/daway/Documents/Princeton/Thesis2017/plots/brookl
-ynbridge.jpg>]) [23 </Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg>
-] (./Experiments.tex) [24
-
-] [25
-
-] (./Results.tex
+ynbridge.jpg>] [24 </Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg>]
 Package microtype Info: Loading generic settings for font family
 (microtype)             `cmtt' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg, id=448
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg, id=511
 , 259.97125pt x 194.7275pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg Gr
 aphic file (type jpg)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
-es/nyc_base.jpeg used on input line 15.
+es/nyc_base.jpeg used on input line 75.
 (pdftex.def)             Requested size: 101.17755pt x 75.78592pt.
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg, id=449,
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg, id=512,
  276.03125pt x 184.69pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg Gra
 phic file (type jpg)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
-es/nyc_pos.jpeg used on input line 15.
+es/nyc_pos.jpeg used on input line 75.
 (pdftex.def)             Requested size: 101.17755pt x 67.69731pt.
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg, id=450,
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg, id=513,
  259.97125pt x 194.7275pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg Gra
 phic file (type jpg)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
-es/nyc_neg.jpeg used on input line 15.
+es/nyc_neg.jpeg used on input line 75.
 (pdftex.def)             Requested size: 101.17755pt x 75.78592pt.
 
-Overfull \hbox (10.5808pt too wide) in paragraph at lines 11--21
+Overfull \hbox (10.5808pt too wide) in paragraph at lines 71--81
 [][] 
  []
 
-) (./master.bbl [26
+) [25 </Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg> 
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg> </Users
+/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg>]
+(./Experiments.tex [26
 
- </Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg> </Use
-rs/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg> </Users/dawa
-y/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg>] [27
+] [27] [28]
+Overfull \hbox (8.13179pt too wide) in paragraph at lines 53--63
+[][] 
+ []
 
-] [28] [29]) [30]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 324.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 324.
- (./master.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 324.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 324.
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 67.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 67.
+
+) [29] [30
+
+] (./Results.tex) (./master.bbl [31
+
+] [32
+
+] [33] [34]) [35]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 326.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 326.
+
+(./master.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 326.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 326.
 Package rerunfilecheck Info: File `master.out' has not changed.
-(rerunfilecheck)             Checksum: CEFBABBD37537F28AA186340D7F53077;1831.
+(rerunfilecheck)             Checksum: 7BBAA6B2B40ABF7674AD4B56DBCE0669;2725.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 324.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 326.
  ) 
 Here is how much of TeX's memory you used:
- 25385 strings out of 493089
- 481778 string characters out of 6134842
- 626320 words of memory out of 5000000
- 28041 multiletter control sequences out of 15000+600000
- 20476 words of font info for 126 fonts, out of 8000000 for 9000
+ 25444 strings out of 493089
+ 482622 string characters out of 6134842
+ 626446 words of memory out of 5000000
+ 28074 multiletter control sequences out of 15000+600000
+ 22501 words of font info for 134 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  62i,12n,72p,1880b,837s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
@@ -1355,19 +1373,20 @@ Here is how much of TeX's memory you used:
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
 /usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
-usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></us
-r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/
-local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/lo
-cal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local
-/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
-texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/te
-xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/tex
-live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texl
-ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on master.pdf (35 pages, 7551764 bytes).
+usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></u
+sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr
+/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/l
+ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loc
+al/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/
+texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/tex
+live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texl
+ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texli
+ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on master.pdf (41 pages, 7577098 bytes).
 PDF statistics:
- 553 PDF objects out of 1000 (max. 8388607)
- 477 compressed objects within 5 object streams
- 135 named destinations out of 1000 (max. 500000)
- 19750 words of extra memory for PDF output out of 20736 (max. 10000000)
+ 666 PDF objects out of 1000 (max. 8388607)
+ 582 compressed objects within 6 object streams
+ 160 named destinations out of 1000 (max. 500000)
+ 19854 words of extra memory for PDF output out of 20736 (max. 10000000)
 

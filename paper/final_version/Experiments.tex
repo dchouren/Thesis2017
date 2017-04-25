@@ -5,7 +5,67 @@ We have three main experimental goals:
 	\item Investigate how the presence of certain invariants in our data affects model generalizability
 \end{enumerate}
 
+\section{Data Set Creation}
+Since our full dataset is many magnitudes too large to hope of fully utilizing in model training as there are trillions of possible image pairs that can be created, we design sampling heuristics intended to minimize the number of pairs while maximizing learning potential. We do this by using various distance, temporal, and other meta-data heuristics.
+
+\subsubsection{Distance Heuristics}
+To allow for computationally tractible sampling of image pairs by distance metrics, we load sets of images into a custom implementation of a KD-Tree where images are indexed by their latitude and longitude.
+
+It is important to note that our latitude and longitude information is not precise. Latitude and longitude coordinates are given with six decimal places, and at the latitude of New York (roughly 40), a 0.000001 change in latitude represents roughly one tenth of a meter, and a 0.000001 change in longitude represents roughly one thirtieth of a meter. However, though we only use images Flickr has denoted as having their highest accuracy level, Flickr's API describes this as "street-level" accuracy. This would imply an error bar on our image locations of about 10 meters, and therefore we cannot claim with certainty that our distance calculations follow a precise conversion from latitude and longitude deltas. For simplicity, we take our error to be 10 meters, noting also that for the purposes of creating a weakly labeled dataset, we are not too concerned with our inability to firmly quantify this statistic.
+
+We form $\mathcal{P}_{10, 2000}$ by doing a range query for all pairs $p, p^+$ within 1 meter of each other. Experimentally, the pairs that are returned have the same latitude, longitude coordinates. Taking into account our maximum geolocation error, this means $p, p^+$ are within 10 meters of each other. From these positive pairs, we then randomly sample for images $p^-$ that are farther than 2000 meters from $p$. The distance of 2000 meters is chosen to be longer than the maximum diameter of any eyeballed cluster in Figure \ref{fig:densities}. The longest such cluster is the Brooklyn Bridge, at a span of 1825 meters. Thus, $\mathcal{P}_{1,2000}$ enforces a maximum distance for $p, p^+$ of 10 meters and a minimum distance for $p, p^-$ of 2000 meters.
+
+We form a second set $\mathcal{P}_{30,2000}$ doing a range query for all pairs $p, p^+$ within 10 meters of each other. Taking into account our geolocation error, this means $p$ and $p^+$ can actually be up to 30 meters apart. Negative pair sampling proceeds in the same manner as for $\mathcal{P}_{30,2000}$. 
+
+Attempts to create a dataset with negative samples $p^-$ lying at minimum $a$ and at maximum $b$ from $p$ by performing a ring query proved to be computationally intractible. The KD-Tree algorithm supports a highly scalable ball query, even for datasets of our size, for points lying within a certain distance from each other. A ring query can be easily decomposed into the subtraction of the set of results of a ball query with radius $a$ from the set of results of a ball query with radius $b$, but because of the associated meta-data with our images (including descriptions and other user information), hashing pair results to a set was actually infeasible. Otherwise we would have explored results for sets like $\mathcal{P}_{10,[30-100]}$, where negative samples lie farther than 30 meters but within 100 meters from the base image.
+
+\subsubsection{Temporal Heuristics}
+We split our original Flickr dataset into subsets divided by year and month. We apply the above distance heuristics to these time divisions, thus creating sets like $\mathcal{P}_{10,2000,June2013})$ and $\mathcal{P}_{10,2000,2013-2015})$, which refer to the distance set described intersected with the set of all possible image pairs from June 2013 and from 2013, 2014, and 2015 respectively. We expect datasets limited to one month to have pairs that are more similar in general, for both the positive pairs and negative pairs, whereas datasets which span years will have pairs that are less similar in general. This intuition is seen by considering that two photos taken in June of 2013 will have similar weather patterns, similar clothing worn by people, and similar ranges of daylight hours, among other factors. Two photos sampled from any time from 2013 to 2015 will be less likely to share these similarities. 
+
+\subsubsection{Filtering by User}
+As can be expected, our distance heuristic is extremely fuzzy. A selfie taken at Times Square will look very different from a family tourist photo taken at the same place, and both will look very different from a photo of a crowd waiting for the New Year. And it is highly possible that two photos taken miles apart, for example at the George Washington Bridge and the Brooklyn Bridge, or the Metropolitan Museum of Art and the Museum of Modern Art, will look fairly similar. We create another dataset designed to have less fuzziness by requiring similar pairs to have been taken by the same user. We can denote this as $\mathcal{P}_{10,2000,June2013,same})$.
+
+\subsubsection{Other}
+We notice there is a user who has uploaded thousands of photos from a time lapse of construction of the Barclays Arena in Brooklyn. These images slowly change over time as construction progresses, and they change hourly with the arrival and departure of trucks and people as well as with the lighting conditions. We construct a dataset where similar images are pairs sampled entirely from this time lapse, and dissimilar images follow a minimum distance heuristic. We refer to this as $\mathcal{P}_{timelapse,2000,June2013}$. TODO should I put information about how we expect this to force our model to learn invariance or should I leave that for discussion?
+
+\subsubsection{Summary}
+In total, we create TODO(number) datasets designed to have various degrees of label fuzziness and to require our model to focus on different features. We summarize these in Table \ref{table:datasets}.
+
+\begin{table}
+	\centering
+	\begin{tabular}{c >{\centering\arraybackslash}m{1.7cm} >{\centering\arraybackslash}m{1.7cm} c >{\centering\arraybackslash}m{2cm} c}
+		\toprule
+		\bfseries{Dataset} &  \bfseries Positive Distance & \bfseries Negative Distance & \bfseries Time Frame & \bfseries Other & \bfseries{Size}\\
+		\midrule
+		$\mathcal{P}_{1,2000,June2013,TL}$ & $<$ 1m & $>$ 2000m & June 2013 & Timelapse of Barclays & blank\\
+		\bottomrule
+	\end{tabular}
+	\caption{Datasets}
+	\label{table:datasets}
+\end{table}
+
+
+
 \section{Weakly Supervised Image Embedding}
+Our main experiment, to find a network formulation which can learn a useful image embedding from fuzzily labeled data, is represented by the pipeline shown in Figure \ref{fig:variant_model_train}. As a recap, we compare three different methods used to train the networks that compose $C$: 1) concatenate the vector output from a frozen $I$ with the vector output from $V$, and update $V$ only; 2) concatenate the vector output from $I$ with the vector output from $V$ and update both $I$ and $V$; 3) take only the vector output from $V$ and update $V$. We designed $V$ to arbitrarily produce an output vector of size 1024. We use an unmodified ResNet50 model pretrained on the ImageNet dataset as $I$, which has an output vector of size 2048. We will refer to the training of these methods as $T_c^1, T_c^2,$ and $T_c^3$. We refer to the training of the blending network as $T_b$. We summarize some basic statistics about these training regimes in Table \ref{table:embedding_parameters}.
+
+\begin{table}
+	\begin{tabular}{*{4}{c}}
+		\toprule
+		\bfseries Training Method & \bfseries Major Units Trained & \bfseries Trainable Parameters & \bfseries Output Size\\
+		\midrule
+		$T_c^1$ & $V$ ($I$ frozen) & 68,192,000 & 3072\\
+		$T_c^2$ & $V$ and $I$ & 68,192,00 32,488,576 & 3072 \\
+		$T_c^3$ & $V$ & Column3c & 1024\\
+		$T_b$ & $B$ ($V$ and $I$ frozen) & & variable\\
+		\bottomrule
+	\end{tabular}
+	\caption{Training statistics}
+	\label{table:embedding_parameters}
+\end{table}
+
+\subsection{Training Module $C$}
+We sample our Flickr dataset in deliberate ways to create a variety training sets of similar and dissimilar pairs for the training of module $C$. We will refer to a set of pairs as $\mathcal{P}$, and subscript this with a descriptor of our sampling method. Our main sampling contraints for base images $p$ and similar/dissimilar images $p^+, p^-$ are enforcing minimum and maximum geographic distances, user matches, and time of year.
 
 
 
@@ -14,3 +74,32 @@ We have three main experimental goals:
 
 
 \section{Image Invariants}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
