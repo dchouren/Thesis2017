@@ -4,6 +4,7 @@ import sys
 from os.path import join
 import os
 import pickle
+import glob
 
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
@@ -21,6 +22,7 @@ from keras.optimizers import RMSprop, Adadelta, Adagrad, Nadam, Adam, Adamax, SG
 from keras import backend as K
 K.set_image_data_format('channels_first')
 from keras.applications.resnet50 import ResNet50
+from keras.applications.stock_resnet50 import SResNet50
 from keras.utils.io_utils import HDF5Matrix
 from keras.callbacks import ModelCheckpoint
 from keras.preprocessing.image import ImageDataGenerator
@@ -38,24 +40,64 @@ from siamese_network import euclidean_distance, eucl_dist_output_shape, get_opti
 import ipdb
 
 
-def build_variant_model(model_name, model_weights, input_shape, name='variant'):
+def pop_layer(model):
+    if not model.outputs:
+        raise Exception('Sequential model cannot be popped: model is empty.')
+
+    popped_layer = model.layers.pop()
+    if not model.layers:
+        model.outputs = []
+        model.inbound_nodes = []
+        model.outbound_nodes = []
+    else:
+        model.layers[-1].outbound_nodes = []
+        model.outputs = [model.layers[-1].output]
+    model.built = False
+    return popped_layer
+
+
+def build_variant_model(input_shape, model_name, model_weights=None, name='variant', frozen=False):
 
     if model_name == 'base':
         model = create_base_network(input_shape)
     else:
-        model = ResNet50(include_top=True, weights=None, input_shape=input_shape, name=name)
-    model.load_weights(model_weights, by_name=True)
+        model = ResNet50(include_top=False, weights=None, input_shape=input_shape, name=name)
+
+        model = Model(model.input, Flatten()(model.output))
+        # model = Flatten()(model.output)
+        # pop_layer(model)
+    if model_weights:
+        model.load_weights(model_weights, by_name=True)
+
+    if frozen:
+        for layer in model.layers:
+            layer.trainable = False
 
     return model
 
 
-def build_invariant_model(model_name, model_weights, input_shape, name='invariant'):
+def build_invariant_model(input_shape, model_name, model_weights=None, frozen=False):
 
     if model_name == 'base':
         model = create_base_network(input_shape)
         model.load_weights(model_weights, by_name=True)
     else:
-        model = ResNet50(include_top=True, weights=model_weights, input_shape=input_shape, name=name)
+        model = SResNet50(include_top=False, weights=model_weights, input_shape=input_shape)
+
+        flat = Flatten()(model.output)
+        # softmax = Dense(1000, activation='softmax')(flat)
+        # output = concatenate([flat, softmax])
+        output = flat
+        model = Model(model.input, output)
+
+
+        # model = Flatten()(model)
+        # pop_layer(model)
+        # pop_layer(model)
+
+        if frozen:
+            for layer in model.layers:
+                layer.trainable = False
 
     return model
 
@@ -87,8 +129,10 @@ def blend_models(models, layer_size_1, layer_size_2, name):
 
 def build_double_siamese_network(input_shape, variant_model_name, variant_model_weights, layer_size_1, layer_size_2, invariant_model_name='resnet50', invariant_model_weights='imagenet', optimizer='nadam'):
 
-    variant_model = build_variant_model(variant_model_name, variant_model_weights, input_shape)
-    invariant_model = build_invariant_model(invariant_model_name, invariant_model_weights, input_shape)
+    variant_model = build_variant_model(input_shape, variant_model_name, variant_model_weights, frozen=False)
+    invariant_model = build_invariant_model(input_shape, invariant_model_name, invariant_model_weights, frozen=False)
+
+    # ipdb.set_trace()
 
     input_a = Input(shape=input_shape)
     input_b = Input(shape=input_shape)
@@ -99,8 +143,8 @@ def build_double_siamese_network(input_shape, variant_model_name, variant_model_
     invariant_processed_b = invariant_model(input_b)
 
 
-    processed_a = skip_invariant([variant_processed_a, invariant_processed_a], layer_size_1, layer_size_2, name='a')
-    processed_b = skip_invariant([variant_processed_b, invariant_processed_b], layer_size_1, layer_size_2, name='b')
+    processed_a = blend_models([variant_processed_a, invariant_processed_a], layer_size_1, layer_size_2, name='a')
+    processed_b = blend_models([variant_processed_b, invariant_processed_b], layer_size_1, layer_size_2, name='b')
 
     distance = Lambda(euclidean_distance, output_shape=eucl_dist_output_shape)([processed_a, processed_b])
 
@@ -108,8 +152,7 @@ def build_double_siamese_network(input_shape, variant_model_name, variant_model_
 
     opt = get_optimizer(optimizer)
     model.compile(loss=contrastive_loss, optimizer=opt)
-    ipdb.set_trace()
-    
+
 
     print('Model compiled')
     return model
@@ -120,6 +163,7 @@ def _fold_generator(filename, leave_out_start, leave_out_end, batch_size=32, ind
     f = h5py.File(filename, 'r')
     pairs = f['pairs']
     total_pairs = pairs.shape[0]
+
     idg = ImageDataGenerator(rotation_range=20, horizontal_flip=True, vertical_flip=True, zoom_range=0.05)
     while 1:
         if index == leave_out_start:
@@ -131,6 +175,7 @@ def _fold_generator(filename, leave_out_start, leave_out_end, batch_size=32, ind
         else:
             data = pairs[index:index+batch_size]
             index += batch_size
+            index %= total_pairs
 
         if augment:
             data = np.array([[idg.random_transform(x[0]), idg.random_transform(x[1])] for x in data])
@@ -179,8 +224,8 @@ def main():
 
 
     pairs_file = '/tigress/dchouren/thesis/evaluation/pairs.h5'
-    f = h5py.File(pairs_file)
-    num_pairs = f['pairs'].shape[0]
+    with h5py.File(pairs_file, 'r') as f:
+        num_pairs = f['pairs'].shape[0]
     n_batch = int(num_pairs / batch_size) + 1
 
     skip = int((num_pairs - num_pairs % k*batch_size) / (k*batch_size)) * batch_size
@@ -200,17 +245,27 @@ def main():
 
         # ipdb.set_trace()
 
+        # ipdb.set_trace()
+        fold_model_dir = join('/tigress/dchouren/thesis/trained_models', identifier, str(i))
+        if not os.path.exists(fold_model_dir):
+            os.makedirs(fold_model_dir)
+        save_weights_path = join(fold_model_dir, '{epoch:02d}-{val_loss:.4f}.h5')
+        checkpointer = ModelCheckpoint(save_weights_path, monitor='val_loss', verbose=1, save_best_only=True, save_weights_only=False, mode='auto', period=1)
+
         augment = True
         generator = _fold_generator(pairs_file, leave_out_indices[i], leave_out_indices[i+1], batch_size=batch_size, index=0, augment=augment)
         val_generator = _fold_generator(pairs_file, -1, -1, batch_size=batch_size, index=leave_out_indices[i], augment=augment)
         print('Generator constructed')
 
         n_train_batch = int(leave_out_indices[i] / batch_size) + int((num_pairs - leave_out_indices[i+1]) / batch_size) + 1
-        n_val_batch = int((leave_out_indices[i+1] - leave_out_indices[i]) / batch_size)
+        if leave_out_indices[i+1] == 0:
+            n_val_batch = int((num_pairs - leave_out_indices[i]) / batch_size)
+        else:
+            n_val_batch = int((leave_out_indices[i+1] - leave_out_indices[i]) / batch_size)
 
         # ipdb.set_trace()    
 
-        history = model.fit_generator(generator, steps_per_epoch=n_train_batch, epochs=nb_epoch, validation_data=val_generator, validation_steps=n_val_batch)
+        history = model.fit_generator(generator, steps_per_epoch=n_train_batch, epochs=nb_epoch, validation_data=val_generator, validation_steps=n_val_batch, callbacks=[checkpointer])
         print('Finished fitting')
 
         k_identifier = identifier + '_' + str(i)
@@ -223,6 +278,9 @@ def main():
             pickle.dump(h, outf)
 
         print('Saved weights and history')
+
+        newest_weights = min(glob.iglob(join(fold_model_dir, '*.h5')), key=os.path.getctime)
+        model = load_model(newest_weights, custom_objects={'contrastive_loss': contrastive_loss})
 
         val_generator = _fold_generator(pairs_file, -1, -1, batch_size=batch_size, index=leave_out_indices[i], augment=False)
         val_predictions = model.predict_generator(val_generator, steps=n_val_batch)

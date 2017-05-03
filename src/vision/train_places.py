@@ -31,7 +31,7 @@ import ipdb
 
 model_weights = sys.argv[1]
 optimizer_name = sys.argv[2]
-places_trained_weights = sys.argv[3]
+# places_trained_weights = sys.argv[3]
 # identifier = sys.argv[3]
 
 

@@ -17,10 +17,11 @@ import h5py
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import load_model
 from keras.applications.resnet50 import ResNet50
+from keras.applications.stock_resnet50 import SResNet50
 
 
 from models.utils import _load_model
-from siamese_network import contrastive_loss, _generator
+from siamese_network import contrastive_loss
 from format_h5 import load_path_map
 
 
@@ -87,7 +88,12 @@ def _generator(filename, batch_size=32, index=0, augment=False):
         if augment:
             data = np.array([[idg.random_transform(x[0]), idg.random_transform(x[1])] for x in data])
 
-        yield np.vstack((data[:,0],data[:,1]))
+        left = data[:,0]
+        right = data[:,1]
+        gen_batch = np.empty((left.shape[0] + right.shape[0], *left.shape[1:]), dtype=left.dtype)
+        gen_batch[0::2] = left
+        gen_batch[1::2] = right
+        yield gen_batch
         index += batch_size
         index = index % len(pairs)
         # print(index)
@@ -101,9 +107,44 @@ def extract_bottlenecks(model, pairs_file, output):
     with h5py.File(pairs_file) as inf:
         total_images = inf['pairs'].shape[0] * 2
     generator = _generator(pairs_file)
+
+    print('Predicting')
     bottlenecks = model.predict_generator(generator, steps=int(total_images/batch_size))
+
+    pos_distances, pos_mean, pos_median, neg_distances, neg_mean, neg_median = compute_distance_metrics(bottlenecks)
+    np.save(output + '_posdist', pos_distances)
+    np.save(output + '_negdist', neg_distances)
+
+
+    print('Pos Mean: {}'.format(pos_mean))
+    print('Pos Median: {}'.format(pos_median))
+    print('Neg Mean: {}'.format(neg_mean))
+    print('Neg Median: {}'.format(neg_median))
     np.save(output, bottlenecks)
     print('Saved to {}'.format(output))
+
+
+def compute_distance_metrics(bottlenecks):
+    pos_distances = np.array([np.linalg.norm(left - right) for left, right in zip(bottlenecks[0::4], bottlenecks[1::4])])
+    neg_distances = np.array([np.linalg.norm(left - right) for left, right in zip(bottlenecks[2::4], bottlenecks[3::4])])
+
+    inversions = sum(pos_distances > neg_distances)
+    inversion_pct = inversions / len(pos_distances)
+    print('Inversions: {}'.format(inversion_pct))
+
+    pos_mean = np.mean(pos_distances)
+    pos_median = np.median(pos_distances)
+    neg_mean = np.mean(neg_distances)
+    neg_median = np.median(neg_distances)
+
+
+    print('Pos Mean: {}'.format(pos_mean))
+    print('Pos Median: {}'.format(pos_median))
+    print('Neg Mean: {}'.format(neg_mean))
+    print('Neg Median: {}'.format(neg_median))
+
+    return pos_distances, pos_mean, pos_median, neg_distances, neg_mean, neg_median
+
 
 
 def main():
@@ -124,11 +165,35 @@ def main():
 
     # save_bottleneck_features(model, year, month, output, (224, 224), 32)
 
-    model = ResNet50(weights='imagenet')
-    pairs_file = sys.argv[1]
-    output_file = sys.argv[2]
+    model = SResNet50(include_top=False, weights='imagenet')
+    pairs = sys.argv[1]
+
+    pairs_dir = '/tigress/dchouren/thesis/resources/pairs/'
+    pairs_file = join(pairs_dir, pairs)
+    filebase = pairs.split('.h5')[0]
+
+    output_dir = '/tigress/dchouren/thesis/resources/bottlenecks/'
+    output_file = join(output_dir, filebase + '.npy')
+
 
     extract_bottlenecks(model, pairs_file, output_file)
+
+    # filebases = ["2015_01_32000.h5", "2014_02_32000.h5", "2015_02_32000.h5", "2015_03_32000.h5", "middlebury_diffuser.h5", "2013-5_10m_tl.h5", "2014_03_32000.h5", "2015_04_32000.h5", "2013-5_10m_user.h5", "2014_04_32000.h5", "2015_05_32000.h5", "2013-5_1m.h5", "2014_05_32000.h5", "2015_06_32000.h5", "middlebury_sameuser.h5", "2014_06_32000.h5", "2015_07_32000.h5", "new_2013_2014_2015_all.h5", "2013-5_1m_tl.h5", "2014_07_32000.h5", "2015_08_32000.h5", "new_2015_all.h5", "2013-5_1m_user.h5", "2014_08_32000.h5", "2015_09_32000.h5", "2013-5_30m_user_2h.h5", "2014_09_32000.h5", "2015_10_32000.h5", "stereo_diffuser.h5", "2014_01_32000.h5", "2014_10_32000.h5", "2015_11_32000.h5", "stereo_sameuser.h5", "2014_11_32000.h5", "2015_12_32000.h5", "2014_12_32000.h5"]
+    # filebases = ['a2013-5_1m_user.h5']
+
+    # for filebase in sorted(filebases):
+    filebase = filebase.split('.')[0]
+    bottleneck_file = join(output_dir, filebase + '.npy')
+    try:
+        bottlenecks = np.load(bottleneck_file)
+        print(filebase)
+        compute_distance_metrics(bottlenecks)
+        print()
+    except:
+        pass
+
+
+
 
 
 

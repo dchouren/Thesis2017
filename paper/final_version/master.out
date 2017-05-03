@@ -1,40 +1,49 @@
-\BOOKMARK [0][-]{chapter*.2}{Abstract}{}% 1
-\BOOKMARK [0][-]{chapter*.3}{Introduction}{}% 2
-\BOOKMARK [1][-]{section.1.1}{Image Similarity}{chapter*.3}% 3
-\BOOKMARK [2][-]{subsection.1.1.1}{Fine-Grained Image Similarity}{section.1.1}% 4
-\BOOKMARK [1][-]{section.1.2}{Weakly Supervised Training}{chapter*.3}% 5
-\BOOKMARK [1][-]{section.1.3}{Motivations}{chapter*.3}% 6
-\BOOKMARK [1][-]{section.1.4}{Contributions}{chapter*.3}% 7
-\BOOKMARK [0][-]{chapter*.4}{Background}{}% 8
-\BOOKMARK [1][-]{section.2.1}{A History of Machine Vision}{chapter*.4}% 9
-\BOOKMARK [2][-]{subsection.2.1.1}{Classical Techniques}{section.2.1}% 10
-\BOOKMARK [2][-]{subsection.2.1.2}{The Deep Learning Revolution}{section.2.1}% 11
-\BOOKMARK [2][-]{subsection.2.1.3}{Deep Convolutional Neural Networks}{section.2.1}% 12
-\BOOKMARK [2][-]{subsection.2.1.4}{Deep Embeddings}{section.2.1}% 13
-\BOOKMARK [2][-]{subsection.2.1.5}{Image Invariants}{section.2.1}% 14
-\BOOKMARK [1][-]{section.2.2}{Deep Learning for Image Similarity}{chapter*.4}% 15
-\BOOKMARK [2][-]{subsection.2.2.1}{Siamese Neural Networks}{section.2.2}% 16
-\BOOKMARK [1][-]{section.2.3}{Weakly Supervised Learning}{chapter*.4}% 17
-\BOOKMARK [2][-]{subsection.2.3.1}{Fuzzy Data}{section.2.3}% 18
-\BOOKMARK [0][-]{chapter*.6}{Network Architecture and Training}{}% 19
-\BOOKMARK [1][-]{section.3.1}{Model Design}{chapter*.6}% 20
-\BOOKMARK [2][-]{subsection.3.1.1}{Proprocessing}{section.3.1}% 21
-\BOOKMARK [2][-]{subsection.3.1.2}{Data Augmentation}{section.3.1}% 22
-\BOOKMARK [2][-]{subsection.3.1.3}{Detecting Variants and Invariants}{section.3.1}% 23
-\BOOKMARK [2][-]{subsection.3.1.4}{Blending Variant and Invariant Outputs}{section.3.1}% 24
-\BOOKMARK [2][-]{subsection.3.1.5}{Loss Function}{section.3.1}% 25
-\BOOKMARK [1][-]{section.3.2}{Training and Validation}{chapter*.6}% 26
-\BOOKMARK [2][-]{subsection.3.2.1}{Data Sampling}{section.3.2}% 27
-\BOOKMARK [0][-]{chapter*.10}{Data}{}% 28
-\BOOKMARK [1][-]{section.4.1}{Flickr Data}{chapter*.10}% 29
-\BOOKMARK [2][-]{subsection.4.1.1}{Quantifying the Amount of Fuzziness}{section.4.1}% 30
-\BOOKMARK [1][-]{section.4.2}{Google Image Data}{chapter*.10}% 31
-\BOOKMARK [0][-]{chapter*.11}{Experiments}{}% 32
-\BOOKMARK [1][-]{section.5.1}{Data Set Creation}{chapter*.11}% 33
-\BOOKMARK [1][-]{section.5.2}{Weakly Supervised Image Embedding}{chapter*.11}% 34
-\BOOKMARK [2][-]{subsection.5.2.1}{Training Module C}{section.5.2}% 35
-\BOOKMARK [1][-]{section.5.3}{Investigation of Data Fuzziness}{chapter*.11}% 36
-\BOOKMARK [1][-]{section.5.4}{Image Invariants}{chapter*.11}% 37
-\BOOKMARK [0][-]{chapter*.17}{Results and Conclusion}{}% 38
-\BOOKMARK [1][-]{section.6.1}{Results}{chapter*.17}% 39
-\BOOKMARK [1][-]{section.6.2}{Conclusion}{chapter*.17}% 40
+\BOOKMARK [0][-]{chapter.1}{Abstract}{}% 1
+\BOOKMARK [0][-]{chapter.1}{Abstract}{}% 2
+\BOOKMARK [0][-]{chapter.2}{Introduction}{}% 3
+\BOOKMARK [0][-]{chapter.2}{Introduction}{}% 4
+\BOOKMARK [1][-]{section.2.1}{Image Similarity}{chapter.2}% 5
+\BOOKMARK [2][-]{subsection.2.1.1}{Fine-Grained Image Similarity}{section.2.1}% 6
+\BOOKMARK [1][-]{section.2.2}{Weakly Supervised Training}{chapter.2}% 7
+\BOOKMARK [1][-]{section.2.3}{Motivations}{chapter.2}% 8
+\BOOKMARK [1][-]{section.2.4}{Contributions}{chapter.2}% 9
+\BOOKMARK [0][-]{chapter.3}{Background}{}% 10
+\BOOKMARK [0][-]{chapter.3}{Background}{}% 11
+\BOOKMARK [1][-]{section.3.1}{A History of Machine Vision}{chapter.3}% 12
+\BOOKMARK [2][-]{subsection.3.1.1}{Classical Techniques}{section.3.1}% 13
+\BOOKMARK [2][-]{subsection.3.1.2}{The Deep Learning Revolution}{section.3.1}% 14
+\BOOKMARK [2][-]{subsection.3.1.3}{Deep Convolutional Neural Networks}{section.3.1}% 15
+\BOOKMARK [2][-]{subsection.3.1.4}{Deep Embeddings}{section.3.1}% 16
+\BOOKMARK [2][-]{subsection.3.1.5}{Image Invariants}{section.3.1}% 17
+\BOOKMARK [1][-]{section.3.2}{Deep Learning for Image Similarity}{chapter.3}% 18
+\BOOKMARK [2][-]{subsection.3.2.1}{Siamese Neural Networks}{section.3.2}% 19
+\BOOKMARK [1][-]{section.3.3}{Weakly Supervised Learning}{chapter.3}% 20
+\BOOKMARK [2][-]{subsection.3.3.1}{Fuzzy Data}{section.3.3}% 21
+\BOOKMARK [0][-]{chapter.4}{Network Architecture and Training}{}% 22
+\BOOKMARK [0][-]{chapter.4}{Network Architecture and Training}{}% 23
+\BOOKMARK [1][-]{section.4.1}{Model Design}{chapter.4}% 24
+\BOOKMARK [2][-]{subsection.4.1.1}{Proprocessing}{section.4.1}% 25
+\BOOKMARK [2][-]{subsection.4.1.2}{Data Augmentation}{section.4.1}% 26
+\BOOKMARK [2][-]{subsection.4.1.3}{Detecting Variants and Invariants}{section.4.1}% 27
+\BOOKMARK [2][-]{subsection.4.1.4}{Blending Variant and Invariant Outputs}{section.4.1}% 28
+\BOOKMARK [2][-]{subsection.4.1.5}{Loss Function}{section.4.1}% 29
+\BOOKMARK [1][-]{section.4.2}{Training and Validation}{chapter.4}% 30
+\BOOKMARK [2][-]{subsection.4.2.1}{Data Sampling}{section.4.2}% 31
+\BOOKMARK [0][-]{chapter.5}{Data}{}% 32
+\BOOKMARK [0][-]{chapter.5}{Data}{}% 33
+\BOOKMARK [1][-]{section.5.1}{Flickr Data}{chapter.5}% 34
+\BOOKMARK [2][-]{subsection.5.1.1}{Pair Sampling}{section.5.1}% 35
+\BOOKMARK [1][-]{section.5.2}{Middlebury Stereo Data}{chapter.5}% 36
+\BOOKMARK [1][-]{section.5.3}{Google Image Data}{chapter.5}% 37
+\BOOKMARK [2][-]{subsection.5.3.1}{Quantifying the Amount of Fuzziness}{section.5.3}% 38
+\BOOKMARK [0][-]{chapter.6}{Experiments}{}% 39
+\BOOKMARK [0][-]{chapter.6}{Experiments}{}% 40
+\BOOKMARK [1][-]{section.6.1}{Weakly Supervised Image Embedding}{chapter.6}% 41
+\BOOKMARK [2][-]{subsection.6.1.1}{Optimizer Experiments}{section.6.1}% 42
+\BOOKMARK [2][-]{subsection.6.1.2}{Training Module C}{section.6.1}% 43
+\BOOKMARK [1][-]{section.6.2}{Investigation of Data Fuzziness}{chapter.6}% 44
+\BOOKMARK [1][-]{section.6.3}{Image Invariants}{chapter.6}% 45
+\BOOKMARK [0][-]{chapter.7}{Results and Conclusion}{}% 46
+\BOOKMARK [0][-]{chapter.7}{Results and Conclusion}{}% 47
+\BOOKMARK [1][-]{section.7.1}{Results}{chapter.7}% 48
+\BOOKMARK [1][-]{section.7.2}{Conclusion}{chapter.7}% 49

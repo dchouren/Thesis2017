@@ -82,6 +82,9 @@
 \setlength{\parindent}{0pt}
 \renewcommand{\indent}{\hspace*{\tindent}}
 
+\renewcommand*{\chapterheadstartvskip}{\vspace*{1cm}}
+\renewcommand*{\chapterheadendvskip}{\vspace{2cm}}
+
 \usepackage{mathrsfs}
 
 \usepackage{fullpage}
@@ -129,13 +132,14 @@
 \newcommand{\mychapter}[2]{
     \setcounter{chapter}{#1}
     \setcounter{section}{0}
-    \chapter*{#2}
+    \chapter{#2}
     \addcontentsline{toc}{chapter}{#2}
 }
 
 %% landscaping
 \usepackage{rotating}
 \usepackage{pdflscape}
+\usepackage{gensymb}
 
 %% indicator function
 \usepackage{bbm}
@@ -183,13 +187,12 @@
 %----------------------------------------------------------------------------------------
 
 \HRule \\[0.2cm]
-{\Large \bfseries A Fine-Grained Embedding\\
-for Image Similarity Through\\
-Weakly Supervised Learning\\
+%{\Large \bfseries Weakly Learning\\
+%	a Fine-Grained Image Similarity\\
+{\Large \bfseries Learning Fine-Grained\\
+	Image Similarity Through\\
+	Weak Supervision\\
 \par}
-% { \LARGE \bfseries Applying Nested Statistical Models\\
-% for Temporal Affordance Learning\\
-% in Vision-Based Autonomous Driving\par}
 \HRule \\[1.5cm]
  
 \vspace{2em}
@@ -296,26 +299,21 @@ purpose of scholarly research.}
 \mychapter{0}{Abstract} \label{chapter:abstract}
 
 \mychapter{1}{Introduction} \label{chapter:intro}
-\cleardoublepage 
 \subfile{Introduction}
 
 \mychapter{2}{Background} \label{chapter:background}
-\cleardoublepage 
 \subfile{Background}
 
 \mychapter{3}{Network Architecture and Training} \label{chapter:network}
-\cleardoublepage  
 \subfile{Network}
 
 \mychapter{4}{Data} \label{chapter:data}
-\cleardoublepage  
 \subfile{Data}
 
 \mychapter{5}{Experiments} \label{chapter:experiments}
 \subfile{Experiments}
 
 \mychapter{6}{Results and Conclusion} \label{chapter:results}
-\cleardoublepage  
 \subfile{Results}
 
 \setlength{\bibsep}{1pt}

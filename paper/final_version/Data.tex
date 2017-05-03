@@ -1,6 +1,8 @@
 
-\section{Flickr Data}
-Our data consists of all geo-tagged images uploaded to Flickr between 00:00:00 (GMT) January 1, 2006 to 00:00:00 January 1, 2017 with latitude and longitude inside the [lower left, upper right] bounding box [(-74.052544, 40.525070), (-73.740685, 40.889249)]. This bounding box roughly corresponds to the city limits of New York, New York. There are over 6 million images in the dataset, with roughly 500,000 each for the years from 2009-2016. In addition to the latitude and longitude, each image was downloaded with an associated timestamp, Flickr user identifier, title, and description (user uploaded caption). The vast majority of photos are from Manhattan, and distinct clusters can be seen around typical tourist attractions such as the World Trade Center, the Brooklyn Bridge, the Metropolitan Museum of Art, the Rockefeller Center, and up and down Broadway Avenue. To give an idea of the image densities shown, there are 6745 images with latitude beginning with 40.779 and longitude beginning with -73.963, which corresponds to 100 square meters around Metropolitan Museum of Art from from 2014 only.
+\section{Flickr Data}\label{sec:flickr_data}
+Our available data consists of all geo-tagged images uploaded to Flickr between 00:00:00 (GMT) January 1, 2006 to 00:00:00 January 1, 2017 with latitude and longitude inside the [lower left, upper right] bounding box [(-74.052544, 40.525070), (-73.740685, 40.889249)]. This bounding box roughly corresponds to the city limits of New York, New York. There are over 6 million images in the dataset, with roughly 500,000 each for the years from 2009-2016. In addition to the latitude and longitude, each image was downloaded with an associated timestamp, Flickr user identifier, title, and description (user uploaded caption). The vast majority of photos are from Manhattan, and distinct clusters can be seen around typical tourist attractions such as the World Trade Center, the Brooklyn Bridge, the Metropolitan Museum of Art, the Rockefeller Center, and up and down Broadway Avenue. To give an idea of the image densities shown, there are 6745 images with latitude beginning with 40.779 and longitude beginning with -73.963, which corresponds to 100 square meters around Metropolitan Museum of Art from 2014 only.
+
+It is important to note that our latitude and longitude information is not precise. Latitude and longitude coordinates are given with six decimal places, and at the latitude of New York (roughly 40$\degree$), a 0.000001 change in latitude represents roughly one tenth of a meter, and a 0.000001 change in longitude represents roughly one thirtieth of a meter. However, though we only use images Flickr has denoted as having their highest accuracy level, Flickr's API describes this as "street-level" accuracy. This would imply an error bar on our image locations of about 10 meters, and therefore we cannot claim with certainty that our distance calculations follow a precise conversion from their latitude and longitude deltas. For simplicity, we take our error to be 10 meters, noting also that for the purposes of creating a weakly labeled dataset, we are not too concerned with our inability to firmly quantify this statistic. This means two images with a Euclidean distance, $d$, between their coordinates can be, at worst, up to $d$ + 20 meters away. 
 
 
 \begin{figure}[!htbp]
@@ -43,20 +45,115 @@ A simple visualization of randomly selected images at two clusters, the Metropol
 	\label{fig:met}
 \end{figure}
 
-We notice that there are frequently duplicate photos. Some can be seen in the selection of images from the Brooklyn Bridge. We use aggressive duplication removal when selecting positive image pairs for training. 
+We notice that there are a non-trivial amount of duplicate photos. Some can be seen in the selection of images from the Brooklyn Bridge in Figure \ref{fig:brooklynbridge}. We use aggressive duplication removal when selecting positive image pairs for training. 
+
+Though the existence of semantic clusters provides the basis for our model's learnability, we never explicitly create these clusters or segment our images in any way. In training a CNN to geolocate Flickr images on a global scale, Weyand et al. look at the geographic density of their photos and divide the earth into variable size latitude longitude bounding boxes which they use as image classes.\cite{weyand2016planet} The existence of classes allows Weyand et al to frame geolocalization as a standard classification problem to which a CNN is easily applied. We do not explicitly apply this sort of segmentation and we do not seek to predict a class but rather to find an image embedding.
+
+\subsection{Pair Sampling}\label{sec:pair_sampling}
+Since our full dataset is many magnitudes too large to fully use in model training as there are trillions of possible image pairs that can be created, we design sampling heuristics intended to minimize the number of pairs used while maximizing learning potential. We do this by using various distance, temporal, and other meta-data heuristics. We denote a set of pairs as $\mathcal{P}$. Unless otherwise noted, $\mathcal{P}$ will be understood to consist of similar pairs of images $(p, p^+)$ and dissimilar pairs $(p, p^-)$ in equal proportion. When referring to pairs or images, similar and positive should be considered interchangeable, as should dissimilar and negative. 
+
+\subsubsection{Distance Heuristics}
+To allow for computationally tractible sampling of image pairs by distance metrics, we load sets of images into a custom implementation of a KD-Tree where images are indexed by their latitude and longitude. We noted in Section \ref{sec:flickr_data}, that, because of imprecision in our image geolocation, two images with a Euclidean distance $d$ between their coordinates can be, at worst, up to $d$ + 20 meters away, and at best, $\texttt{max}(0, d-20)$ meters away.
+
+We form $\mathcal{P}_{21, 2000}$ by doing a range query for all pairs $p, p^+$ within 1 meter of each other. Experimentally, the pairs that are returned have the same latitude, longitude coordinates. Taking into account our maximum geolocation error, this means $p, p^+$ are within 11 meters of each other. From these positive pairs, we then randomly sample for images $p^-$ that are farther than 2020 meters from $p$. The distance of 2020 meters is chosen to be longer than the maximum diameter of any eyeballed cluster in Figure \ref{fig:densities}. The longest such cluster diameter is the Brooklyn Bridge at a span of 1825 meters. Thus, $\mathcal{P}_{21,2000}$ enforces a maximum distance for $p, p^+$ of 11 meters and a minimum distance for $p, p^-$ of 2000 meters.
+
+We form a second set $\mathcal{P}_{30,2000}$ doing a range query for all pairs $p, p^+$ within 10 meters of each other. Taking into account our geolocation error, this means $p$ and $p^+$ can actually be up to 30 meters apart. Negative pair sampling proceeds in the same manner as for $\mathcal{P}_{30,2000}$. 
+
+Attempts to create a dataset with negative samples $p^-$ lying at minimum $a$ and at maximum $b$ from $p$ by performing a ring query proved to be computationally intractible for the purposes of this project. The KD-Tree algorithm supports a highly scalable ball query for points lying within a certain distance from each other even for datasets of our size. Our attempted ring query can be easily decomposed into the subtraction of the set of results of a ball query with radius $a$ from the set of results of a ball query with radius $b$, but because of the associated meta-data with our images (including descriptions and other user information), hashing pair results to a set was actually infeasible. Otherwise we would have explored results for sets like $\mathcal{P}_{10,[30-100]}$, where negative samples lie farther than 30 meters but within 100 meters from the base image.
+
+\subsubsection{Temporal Heuristics}
+We split our original Flickr dataset into subsets divided by year and month. We apply the above distance heuristics to these time divisions, thus creating sets like $\mathcal{P}_{10,2000,June2013})$ and $\mathcal{P}_{10,2000,2013-2015})$, which refer to the distance set described intersected with the set of all possible image pairs from June 2013 and from 2013, 2014, and 2015 respectively. We expect datasets limited to one month to have pairs that are more similar in general, for both the positive pairs and negative pairs, whereas datasets which span years will have pairs that are less similar in general. This intuition is seen by considering that two photos taken in June of 2013 will have similar weather patterns, similar clothing worn by people, and similar ranges of daylight hours, among other factors. Two photos sampled from any time between 2013 and 2015 will be, on average, less likely to share these similarities. 
+
+\subsubsection{Filtering by User}
+As can be expected, our distance heuristic is extremely fuzzy. A selfie taken at Times Square will look very different from a family tourist photo taken at the same place, and both will look very different from a photo of a crowd waiting for the New Year. And it is highly possible that two photos taken miles apart, for example at the George Washington Bridge and the Brooklyn Bridge, or the Metropolitan Museum of Art and the Museum of Modern Art, will look fairly similar. We create another dataset designed to have less fuzziness by requiring similar pairs to have been taken by the same user. We can denote this as $\mathcal{P}_{10,2000,June2013,same})$. We also create datasets where we require both positive and negative examples to be within a certain bounding ball but differentiate positive pairs as having the same user and negative pairs as having different users. These would be denoted as $\mathcal{P}_{10,2013,same}$ if the bounding ball is 10 meters and the images are from 2013. 
+
+\subsubsection{Other}
+We notice there is a user who has uploaded thousands of photos from a time lapse of construction of the Barclays Arena in Brooklyn. These images slowly change over time as construction progresses, and they change hourly with the arrival and departure of trucks and people as well as with the lighting conditions. We construct a dataset where similar images are pairs sampled entirely from this time lapse, and dissimilar images follow a minimum distance heuristic. We refer to this as $\mathcal{P}_{timelapse,2000,June2013}$. TODO should I put information about how we expect this to force our model to learn invariance or should I leave that for discussion?
+
+\subsubsection{Summary}
+In total, we create TODO(number) datasets designed to have various degrees of label fuzziness and to require our model to focus on different features. We summarize these in Table \ref{table:datasets}. Because we generate our datasets by sampling, it is difficult to force them all to have the same size. We decide we would rather have possibly large variances in dataset size than throw away sampled data by truncating them all to be of size $\min{|\mathcal{P}|}$. Again, the amount of data we have is truly staggering, so we mostly focus on generating sets from the years 2013, 2014, and 2015, though we did also generate data from other years. For brevity, summarize only a subset of the datasets that we ran experiments on, since many of the results will be redundant. 
+
+\begin{table}
+	\centering
+	\begin{tabular}{c >{\centering\arraybackslash}m{3.2cm} >{\centering\arraybackslash}m{3cm} >{\centering\arraybackslash}m{2cm} c}
+		\toprule
+		\bfseries{Dataset} &  \bfseries Positive Distance & \bfseries Negative Distance & \bfseries Time Frame & \bfseries{Size}\\
+		\midrule
+		$\mathcal{P}_{1,2000,2013-2015}$ & $<$ 1m & $>$ 2000m & Jan 2013 - Dec 2015  & 176000\\
+		$\mathcal{P}_{1,2000,2015}$ & $<$ 1m & $>$ 2000m & Jan 2015 - Dec 2015  & 140800\\
+		$\mathcal{P}_{1,2013-2015,user}$ & $<$ 1m, same user & $<$ 1m & Jan 2013 - Dec 2015  & 57600\\
+		$\mathcal{P}_{1,2013-2015,tl}$ & $<$ 1m & $<$ 1m, timelapse & Jan 2013 - Dec 2015  & 54400\\
+		$\mathcal{P}_{10,2013-2015,user}$ & $<$ 10m, same user & $<$ 10m & Jan 2013 - Dec 2015  & 118400\\
+		$\mathcal{P}_{10,2013-2015,tl}$ & $<$ 10m & $<$ 10m, timelapse & Jan 2013 - Dec 2015  & \_\\
+		$\mathcal{P}_{30,2013-2015,user}$ & $<$ 30m, same user within 2 hours & $<$ 30m & Jan 2013 - Dec 2015  & 198400\\
+		$\mathcal{P}_{Middlebury}$ & Middlebury pairs & random & N/A & 32000 \\
+		$\mathcal{P}_{1,2000,01\_2014}$ & $<$ 1m & $>$ 2000m & Jan 2014  & 32000\\
+		$\mathcal{P}_{1,2000,02\_2014}$ & $<$ 1m & $>$ 2000m & Feb 2014  & 32000\\
+		$\mathcal{P}_{1,2000,03\_2014}$ & $<$ 1m & $>$ 2000m & Mar 2014 & 32000\\
+		$\mathcal{P}_{1,2000,04\_2014}$ & $<$ 1m & $>$ 2000m & Apr 2014  & 32000\\
+		$\mathcal{P}_{1,2000,05\_62014}$ & $<$ 1m & $>$ 2000m & May 2014  & 32000\\
+		$\mathcal{P}_{1,2000,06\_2014}$ & $<$ 1m & $>$ 2000m & Jun 2014  & 32000\\
+		$\mathcal{P}_{1,2000,07\_2014}$ & $<$ 1m & $>$ 2000m & Jul 2014  & 32000\\
+		$\mathcal{P}_{1,2000,08\_2014}$ & $<$ 1m & $>$ 2000m & Aug 2014  & 32000\\
+		$\mathcal{P}_{1,2000,09\_2014}$ & $<$ 1m & $>$ 2000m & Sep 2014  & 32000\\
+		$\mathcal{P}_{1,2000,10\_2014}$ & $<$ 1m & $>$ 2000m & Oct 2014  & 32000\\
+		$\mathcal{P}_{1,2000,11\_2014}$ & $<$ 1m & $>$ 2000m & Nov 2014  & 32000\\
+		$\mathcal{P}_{1,2000,12\_2014}$ & $<$ 1m & $>$ 2000m & Dec 2014  & 32000\\
+		$\mathcal{P}_{1,2000,01\_2015}$ & $<$ 1m & $>$ 2000m & Jan 2015  & 32000\\
+		$\mathcal{P}_{1,2000,02\_2015}$ & $<$ 1m & $>$ 2000m & Feb 2015  & 32000\\
+		$\mathcal{P}_{1,2000,03\_2015}$ & $<$ 1m & $>$ 2000m & Mar 2015  & 32000\\
+		$\mathcal{P}_{1,2000,04\_2015}$ & $<$ 1m & $>$ 2000m & Apr 2015  & 32000\\
+		$\mathcal{P}_{1,2000,05\_2015}$ & $<$ 1m & $>$ 2000m & May 2015  & 32000\\
+		$\mathcal{P}_{1,2000,06\_2015}$ & $<$ 1m & $>$ 2000m & Jun 2015  & 32000\\
+		$\mathcal{P}_{1,2000,07\_2015}$ & $<$ 1m & $>$ 2000m & Jul 2015  & 32000\\
+		$\mathcal{P}_{1,2000,08\_2015}$ & $<$ 1m & $>$ 2000m & Aug 2015  & 32000\\
+		$\mathcal{P}_{1,2000,09\_2015}$ & $<$ 1m & $>$ 2000m & Sep 2015  & 32000\\
+		$\mathcal{P}_{1,2000,10\_2015}$ & $<$ 1m & $>$ 2000m & Oct 2015  & 32000\\
+		$\mathcal{P}_{1,2000,11\_2015}$ & $<$ 1m & $>$ 2000m & Nov 2015  & 32000\\
+		$\mathcal{P}_{1,2000,12\_2015}$ & $<$ 1m & $>$ 2000m & Dec 2015  & 32000\\
+		\bottomrule
+	\end{tabular}
+	\caption{Datasets}
+	\label{table:datasets}
+\end{table}
 
 
-The highly clustered nature of the images leads us to believe that image triplets can be sampled with a positive pair being less than one meter apart and a negative pair defined as images more than 2000 meters apart. 2000 meters is significant threshold because the maximum dimension of any easily identifiable cluster is 1825 meters for the Brooklyn Bridge. 
+\section{Middlebury Stereo Data}
+While we can augment images to create datasets that include color, rotational, translational, and magnitude invariants, especially with the discovery of timelapse data in the Flickr set, it is more difficult to artificially construct a dataset that includes stereoscopic invariance. In order to study the effects of this type of invariance on image similarity, we use a dataset prepared by Scharstein et al. in a studio of stereo algorithms.\cite{scharstein2014high}
 
+The dataset is very small, containing data for just 33 objects such as a motorbike, plants, and umbrella. There are four pictures per object--default left and right stereo images, a right image under different exposure, and a right image under different lighting conditions.
 
+We display examples in Figure \ref{fig:middlebury}.
 
-Though the existence of semantic clusters provides the basis for our model's learnability, we never explicitely create these clusters or segment our images in any way beyond creating 1 meter and 2000 meter balls for positive and negative image pair selection. In a similar paper which trained a CNN to geolocate Flickr images on a global scale, Weyand et al look at the geographic density of their photos and divide the earth into variable size latitude longitude bounding boxes which they use as image classes.\cite{weyand2016planet} The existence of classes allows Weyand et al to frame geolocalization as a standard classification problem to which a CNN is easily applied. We do not explicitly apply this sort of segmentation and we do not seek to predict a class but rather to find an image embedding.
+\begin{figure}[!htbp]
+	\centering
+	\begin{tabular}{cc}
+		\includegraphics[width=0.4\textwidth]{images/Motorcycle-perfect_im0.png}  &       \includegraphics[width=0.4\textwidth]{images/Motorcycle-perfect_im1.png}  \\
+		(a) Left image & (b) Right image\\[6pt]
+		\includegraphics[width=0.4\textwidth]{images/Motorcycle-perfect_im1E.png}  &       \includegraphics[width=0.4\textwidth]{images/Motorcycle-perfect_im1L.png} \\
+		(c) Right image, different exposure & (d) Right image, different lighting\\[6pt]
+	\end{tabular}
+	\label{fig:middlebury}
+	\caption{Images for motorcycle}
+\end{figure}
 
+We create several datasets with pairs from the Middlebury data as positive pairs, and negative pairs formed from sampling our Flickr set. Positive pairs are sampled either entirely from the set of left, right stereo images associated with each object, or they are sampled by drawing pairs from the four left, right, exposure, and lighting images associated with each object. For negative pairs, we sample images from Flickr that are within 10 meters of each other and either taken by the same or different users.
 
-\subsection{Quantifying the Amount of Fuzziness}
-
-
-
+\begin{table}
+	\centering
+	\begin{tabular}{c >{\centering\arraybackslash}m{3.2cm} >{\centering\arraybackslash}m{3cm} c}
+		\toprule
+		\bfseries{Dataset} &  \bfseries Positive Pairs & \bfseries Negative Pairs & \bfseries{Size}\\
+		\midrule
+		$\mathcal{P}_{MiddleburyLR,diff\_user}$ & Left, right pairs & Different users  & \\
+		$\mathcal{P}_{MiddleburyLR,same\_user}$ & Left, right pairs& Same users  & \\
+		$\mathcal{P}_{MiddleburyLREL,diff\_user}$ & Left, right, exposure, lighting pairs  & Different users  & \\
+		$\mathcal{P}_{MiddleburyLREL,same\_user}$ & Left, right, exposure, lighting pairs  & Same users  & \\
+	\end{tabular}
+	\caption{Datasets}
+	\label{table:datasets}
+\end{table}
+We take the left and right stereo images as examples of positive pairs, and merge this with random images from our Flickr set for negative pairs. This sampling creates a dataset $\mathcal{P}_{stereoLR}$. We also create $\mathcal{P}_{stereoE}$, which takes the right image and right image with different exposure to be a positive pair, and $\mathcal{P}_{stereoL}$, which takes the right image and right image with different lighting to be a positive pair.
 
 
 \section{Google Image Data}
@@ -68,26 +165,118 @@ The Wang set contains an extremely wide variety of images due to its creation th
 We display in Table \ref{table:random_triplets} a random sampling of triplets. In contrast to the Flickr data, which we expect to generate a non-trivial proportion of triplets $(p, p_+, p_-)$, where all three images are relatively dissimilar, the Wang set has a high proportion of triplets where all three images are extremely similar. Despite the requirement of unanimous agreement by the three human raters in the creation of this dataset, we feel that some examples may be mislabeled or should not have been included in the dataset. In Table TODO, we show a few examples demonstrating the relatively narrow margin between similar and dissimilar pairs. , and in Table TODO a few examples demonstrating the necessity of learning a general image invariants.
 
 \begin{table}
-	\begin{tabular}{*{4}{c}}
+	\begin{tabular}{>{\centering\arraybackslash}m{1in} >{\centering\arraybackslash}m{1.4in} >{\centering\arraybackslash}m{1.4in} >{\centering\arraybackslash}m{1.4in}}
 		\toprule
 		\bfseries Image Query & \bfseries Base Image ($p$) & \bfseries Similar Image ($p_+$) & \bfseries Dissimilar Image ($p_-$) \\
 		\midrule
 		\centering New York City & \includegraphics[width=1.4in]{images/nyc_base.jpeg} & \includegraphics[width=1.4in]{images/nyc_pos.jpeg} & \includegraphics[width=1.4in]{images/nyc_neg.jpeg}\\
-		Column1b & Column2b & Column3b & \\
-		Column1c & Column2c & Column3c & \\
+		Bart Simpson & \includegraphics[width=1.4in]{images/bart.jpeg} & \includegraphics[width=1.4in]{images/bart_pos.jpeg} & \includegraphics[width=1.4in]{images/bart_neg.jpeg}\\
+		Sonic boom & \includegraphics[width=1.4in]{images/sonic_boom.jpeg} & \includegraphics[width=1.4in]{images/sonic_boom_pos.jpeg} & \includegraphics[width=1.4in]{images/sonic_boom_neg.jpeg}\\
 		Column1d & Column2d & Column3d & \\
 		\bottomrule
 	\end{tabular}
-	\caption{My table}
+	\caption{Random triplets from Wang Set}
 	\label{table:random_triplets}
 \end{table}
 
+\begin{table}
+	\begin{tabular}{>{\centering\arraybackslash}m{1in} >{\centering\arraybackslash}m{1.4in} >{\centering\arraybackslash}m{1.4in} >{\centering\arraybackslash}m{1.4in}}
+		\toprule
+		\bfseries Image Query & \bfseries Base Image ($p$) & \bfseries Similar Image ($p_+$) & \bfseries Dissimilar Image ($p_-$) \\
+		\midrule
+		\centering Monument Valley & \includegraphics[width=1.4in]{images/monument_valley_base.jpeg} & \includegraphics[width=1.4in]{images/monument_valley_pos.jpeg} & \includegraphics[width=1.4in]{images/monument_valley_neg.jpeg}\\
+		Guitar & \includegraphics[width=1.4in]{images/guitar.jpeg} & \includegraphics[width=1.4in]{images/guitar_pos.jpeg} & \includegraphics[width=1.4in]{images/guitar_neg.jpeg}\\
+		Nirvana & \includegraphics[width=1.4in]{images/nirvana.jpeg} & \includegraphics[width=1.4in]{images/nirvana_pos.jpeg} & \includegraphics[width=1.4in]{images/nirvana_neg.jpeg}\\
+		\bottomrule
+	\end{tabular}
+	\caption{Hard triplets from Wang Set}
+	\label{table:hard_triplets}
+\end{table}
+
+Though Wang et al. took steps to ensure a fairly clean dataset by requiring unanimous rankings by three different rankers, we feel the dataset is not particularly clean and in fact contains a non-trivial number of ambiguous similarity rankings. As show in Table \ref{table:hard_triplets}, the watermarked Monument Valley image seems less similar, as does the pink guitar, because of the presence of a magazine. There are many examples similar to the Nirvana triplet where the differences between $p, p^+,$ and $p^-$ are incredibly subtle. We do not remove these examples to "clean" the dataset, but mention them only to note that though the Wang set was created through three unanimous decisions, that does not mean we should expect it to be entirely pure.
+
+This is not the say that the dataset is malformed. There are many instances of easily separable rankings, such as the one shown in Table \ref{table:easy_triplet}.
+\begin{table}
+	\begin{tabular}{>{\centering\arraybackslash}m{1in} >{\centering\arraybackslash}m{1.4in} >{\centering\arraybackslash}m{1.4in} >{\centering\arraybackslash}m{1.4in}}
+		\toprule
+		\bfseries Image Query & \bfseries Base Image ($p$) & \bfseries Similar Image ($p_+$) & \bfseries Dissimilar Image ($p_-$) \\
+		\midrule
+		\centering Parthenon & \includegraphics[width=1.4in]{images/parthenon.jpeg} & \includegraphics[width=1.4in]{images/parthenon_pos.jpeg} & \includegraphics[width=1.4in]{images/parthenon_neg.jpeg}\
+	\end{tabular}
+	\caption{An easy triplet from the Wang Set}
+	\label{table:easy_triplet}
+\end{table}
+
+In \ref{chapter:experiments}, rather than attempt to quantify our models' performances on what we consider to be easy or hard triplets, we will instead compare performance to general baseline techniques.
+
+\begin{table}
+	\begin{tabular}{>{\centering\arraybackslash}m{1in} >{\centering\arraybackslash}m{1.4in} >{\centering\arraybackslash}m{1.4in} >{\centering\arraybackslash}m{1.4in}}
+		\toprule
+		\bfseries Image Query & \bfseries Base Image ($p$) & \bfseries Similar Image ($p_+$) & \bfseries Dissimilar Image ($p_-$) \\
+		\midrule
+		\centering New York City & \includegraphics[width=1.4in]{images/freedom_tower.jpeg} & \includegraphics[width=1.4in]{images/freedom_tower_pos.jpeg} & \includegraphics[width=1.4in]{images/freedom_tower_neg.jpeg}\\
+		Sydney Opera House & \includegraphics[width=1.4in]{images/sydney_opera_house_base.jpeg} & \includegraphics[width=1.4in]{images/sydney_opera_house_pos.jpeg} & \includegraphics[width=1.4in]{images/sydney_opera_house_neg.jpeg}\\
+		Michelangelo & \includegraphics[width=1.4in]{images/michelangelo.jpeg} & \includegraphics[width=1.4in]{images/michelangelo_pos.jpeg} & \includegraphics[width=1.4in]{images/michelangelo_neg.jpeg}\\
+		Picasso & \includegraphics[width=1.4in]{images/picasso.jpeg} & \includegraphics[width=1.4in]{images/picasso_pos.jpeg} & \includegraphics[width=1.4in]{images/picasso_neg.jpeg}\\
+		\bottomrule
+	\end{tabular}
+	\caption{Variant reliant triplets from Wang Set}
+	\label{table:variant_triplets}
+\end{table}
+
+In Table \ref{table:variant_triplets}, we see that the human rankers rely quite often on image variants. For New York City, zoom variance is important; for the Sydney Opera House and Michelangelo, illumination and stereoscopic variance comes into play; and for Picasso, the rankers seem to have picked up on some similarity in hue.
 
 
 
 
+\subsection{Quantifying the Amount of Fuzziness}
+We quantify the fuzziness in our Flickr dataset labels by extracting image embeddings using a model trained on ImageNet. We compute the mean and median distances for positive pairs and negative pairs as well as the percentage of triplets with ranking violations, where the positive distance is greater than the negative one.
 
+\begin{table}
+	\centering
+	\begin{tabular}{c >{\centering\arraybackslash}m{3.2cm} >{\centering\arraybackslash}m{3cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} c}
+		\toprule
+		\bfseries{Dataset} &  \bfseries Median Positive Distance & \bfseries Median Negative Distance & \bfseries Mean Positive Distance & \bfseries Mean Negative Distance & Ranking Violations\\
+		\midrule
+		$\mathcal{P}_{1,2000,2013-2015}$ & $<$ 1m & $>$ 2000m & Jan 2013 - Dec 2015  & 176000\\
+		$\mathcal{P}_{1,2000,2015}$ & $<$ 1m & $>$ 2000m & Jan 2015 - Dec 2015  & 140800\\
+		$\mathcal{P}_{1,2013-2015,user}$ & $<$ 1m, same user & $<$ 1m & Jan 2013 - Dec 2015  & 57600\\
+		$\mathcal{P}_{1,2013-2015,tl}$ & $<$ 1m & $<$ 1m, timelapse & Jan 2013 - Dec 2015  & 54400\\
+		$\mathcal{P}_{10,2013-2015,user}$ & $<$ 10m, same user & $<$ 10m & Jan 2013 - Dec 2015  & 118400\\
+		$\mathcal{P}_{10,2013-2015,tl}$ & $<$ 10m & $<$ 10m, timelapse & Jan 2013 - Dec 2015  & \_\\
+		$\mathcal{P}_{30,2013-2015,user}$ & $<$ 30m, same user within 2 hours & $<$ 30m & Jan 2013 - Dec 2015  & 198400\\
+		$\mathcal{P}_{Middlebury}$ & Middlebury pairs & random & N/A & 32000 \\
+		$\mathcal{P}_{1,2000,01\_2014}$ & $<$ 1m & $>$ 2000m & Jan 2014  & 32000\\
+		$\mathcal{P}_{1,2000,02\_2014}$ & $<$ 1m & $>$ 2000m & Feb 2014  & 32000\\
+		$\mathcal{P}_{1,2000,03\_2014}$ & $<$ 1m & $>$ 2000m & Mar 2014 & 32000\\
+		$\mathcal{P}_{1,2000,04\_2014}$ & $<$ 1m & $>$ 2000m & Apr 2014  & 32000\\
+		$\mathcal{P}_{1,2000,05\_62014}$ & $<$ 1m & $>$ 2000m & May 2014  & 32000\\
+		$\mathcal{P}_{1,2000,06\_2014}$ & $<$ 1m & $>$ 2000m & Jun 2014  & 32000\\
+		$\mathcal{P}_{1,2000,07\_2014}$ & $<$ 1m & $>$ 2000m & Jul 2014  & 32000\\
+		$\mathcal{P}_{1,2000,08\_2014}$ & $<$ 1m & $>$ 2000m & Aug 2014  & 32000\\
+		$\mathcal{P}_{1,2000,09\_2014}$ & $<$ 1m & $>$ 2000m & Sep 2014  & 32000\\
+		$\mathcal{P}_{1,2000,10\_2014}$ & $<$ 1m & $>$ 2000m & Oct 2014  & 32000\\
+		$\mathcal{P}_{1,2000,11\_2014}$ & $<$ 1m & $>$ 2000m & Nov 2014  & 32000\\
+		$\mathcal{P}_{1,2000,12\_2014}$ & $<$ 1m & $>$ 2000m & Dec 2014  & 32000\\
+		$\mathcal{P}_{1,2000,01\_2015}$ & $<$ 1m & $>$ 2000m & Jan 2015  & 32000\\
+		$\mathcal{P}_{1,2000,02\_2015}$ & $<$ 1m & $>$ 2000m & Feb 2015  & 32000\\
+		$\mathcal{P}_{1,2000,03\_2015}$ & $<$ 1m & $>$ 2000m & Mar 2015  & 32000\\
+		$\mathcal{P}_{1,2000,04\_2015}$ & $<$ 1m & $>$ 2000m & Apr 2015  & 32000\\
+		$\mathcal{P}_{1,2000,05\_2015}$ & $<$ 1m & $>$ 2000m & May 2015  & 32000\\
+		$\mathcal{P}_{1,2000,06\_2015}$ & $<$ 1m & $>$ 2000m & Jun 2015  & 32000\\
+		$\mathcal{P}_{1,2000,07\_2015}$ & $<$ 1m & $>$ 2000m & Jul 2015  & 32000\\
+		$\mathcal{P}_{1,2000,08\_2015}$ & $<$ 1m & $>$ 2000m & Aug 2015  & 32000\\
+		$\mathcal{P}_{1,2000,09\_2015}$ & $<$ 1m & $>$ 2000m & Sep 2015  & 32000\\
+		$\mathcal{P}_{1,2000,10\_2015}$ & $<$ 1m & $>$ 2000m & Oct 2015  & 32000\\
+		$\mathcal{P}_{1,2000,11\_2015}$ & $<$ 1m & $>$ 2000m & Nov 2015  & 32000\\
+		$\mathcal{P}_{1,2000,12\_2015}$ & $<$ 1m & $>$ 2000m & Dec 2015  & 32000\\
+		\bottomrule
+	\end{tabular}
+	\caption{Dataset Fuzziness}
+	\label{table:data_fuzziness}
+\end{table}
 
+We find that our sampling techniques do indeed split our data into roughly more similar and less similar pairs. We do see that our task is quite difficult. In contrast to Krause et al. study, which had roughly 16\% fuzziness per class, we have an average fuzziness of TODO.\cite{krause2016unreasonable}
 
 
 

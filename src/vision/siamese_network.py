@@ -34,6 +34,8 @@ from keras.optimizers import RMSprop, Adadelta, Adagrad, Nadam, Adam, Adamax, SG
 from keras import backend as K
 K.set_image_data_format('channels_first')
 from keras.applications.resnet50 import ResNet50
+from keras.applications.stock_resnet50 import SResNet50
+
 from keras.utils.io_utils import HDF5Matrix
 from keras.callbacks import ModelCheckpoint
 from keras.preprocessing.image import ImageDataGenerator
@@ -126,7 +128,7 @@ def get_optimizer(optimizer='SGD'):
     if optimizer == 'sgd':
         opt = SGD(lr=0.0001, momentum=0.9, decay=0.0, nesterov=False, clipnorm=clipnorm)
     elif optimizer == 'rms':
-        opt = RMSprop(lr=0.001, rho=0.9, epsilon=1e-08, decay=0.0, clipnorm=clipnorm)
+        opt = RMSprop(lr=0.0001, rho=0.9, epsilon=1e-08, decay=0.0, clipnorm=clipnorm)
     elif optimizer == 'adadelta':
         opt = Adadelta(lr=1.0, rho=0.95, epsilon=1e-08, decay=0.0, clipnorm=clipnorm)
     elif optimizer == 'adagrad':
@@ -192,6 +194,7 @@ def build_siamese_network(model_name, input_shape, optimizer, weights=None):
 
 def _generator(filename, batch_size=32, index=0, augment=False):
     f = h5py.File(filename, 'r')
+    print(filename)
     pairs = f['pairs']
     total_pairs = pairs.shape[0]
 
@@ -203,10 +206,11 @@ def _generator(filename, batch_size=32, index=0, augment=False):
         else:
             data = pairs[index:index+batch_size]
             index += batch_size
+            index %= total_pairs
 
         if augment:
             data = np.array([[idg.random_transform(x[0]), idg.random_transform(x[1])] for x in data])
-        yield [data[:,0], data[:,1]], [1,0]*int(batch_size/2)
+        yield [data[:,0], data[:,1]], [1,0]*int(len(data[:,0])/2)
     f.close()
 
 
@@ -227,20 +231,20 @@ def main():
     model_name = sys.argv[1]
     optimizer_name = sys.argv[2]
     nb_epoch = int(sys.argv[3])
-    n_batch = int(sys.argv[4])
-    identifier = sys.argv[5]
-    pairs_file = sys.argv[6]
+    # n_batch = int(sys.argv[4])
+    pairs = sys.argv[4]
+    identifier = 'None'
+    if len(sys.argv) > 5:
+        identifier = sys.argv[5]
 
     weights_file = None
-    if len(sys.argv) > 7:
-        weights_file = sys.argv[7]
+    if len(sys.argv) > 6:
+        weights_file = sys.argv[6]
 
     input_shape = (3, 224, 224)
-    identifier = model_name + '_' + str(nb_epoch) + '_' + str(n_batch) + '_' + optimizer_name + '_' + identifier
-
 
     sys.setrecursionlimit(10000)
-    weights = 'imagenet'
+    weights = None
     model = build_siamese_network(model_name, input_shape, optimizer_name, weights)
 
     # # model = load_model('/tigress/dchouren/thesis/resnet50_siamese.h5', custom_objects={'contrastive_loss': contrastive_loss})
@@ -250,6 +254,15 @@ def main():
     print('Siamese network built')
 
     batch_size = 32
+    pairs_file = join('/tigress/dchouren/thesis/resources/pairs/', pairs)
+    print(pairs_file)
+    n_batch = 0
+    with h5py.File(pairs_file, 'r') as f:
+        x = f['pairs']
+        n_batch = int(x.shape[0] / batch_size)
+    print(n_batch)
+
+    identifier = pairs + '_' + str(nb_epoch) + '_' + str(n_batch) + '_' + optimizer_name + '_' + identifier
 
 
     model_dir = '/tigress/dchouren/thesis/trained_models'
@@ -257,15 +270,17 @@ def main():
     if weights_file:
         model.load_weights(join(model_dir, weights_file))
 
-    save_weights_path = join(model_dir, identifier + '_weights.{epoch:02d}-{val_loss:.4f}.h5')
+    save_weights_path = join('/tigress/dchouren/thesis/trained_models', identifier + '_weights.{epoch:02d}-{val_loss:.4f}.h5')
     checkpointer = ModelCheckpoint(filepath=save_weights_path, verbose=1, save_best_only=True)
+
+    print(save_weights_path)
 
     n_train_batch = int(n_batch / 10 * 9)
 
-    pairs_file = join('/tigress/dchouren/thesis/resources/pairs/', pairs_file)
-    generator = _generator(pairs_file, batch_size=batch_size, augment=False)
-    val_generator = _generator(pairs_file, batch_size=batch_size, index=n_train_batch*batch_size, augment=False)
-   print('Generator constructed')
+    augment = False
+    generator = _generator(pairs_file, batch_size=batch_size, augment=augment)
+    val_generator = _generator(pairs_file, batch_size=batch_size, index=n_train_batch*batch_size, augment=augment)
+    print('Generator constructed')
     history = model.fit_generator(generator, steps_per_epoch=n_train_batch, epochs=nb_epoch, validation_data=val_generator, validation_steps=n_batch-n_train_batch, callbacks=[checkpointer])
     print('Finished fitting')
 

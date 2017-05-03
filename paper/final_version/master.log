@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  25 APR 2017 05:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  2 MAY 2017 23:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -888,6 +888,30 @@ LaTeX Info: Thecontrolsequence`\]'isalreadyrobust on input line 129.
 )
 \tindent=\skip66
 
+
+! LaTeX Error: \chapterheadstartvskip undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.85 \renewcommand*{\chapterheadstartvskip}
+                                           {\vspace*{1cm}}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: \chapterheadendvskip undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.86 \renewcommand*{\chapterheadendvskip}
+                                         {\vspace{2cm}}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 (/usr/local/texlive/2015/texmf-dist/tex/latex/jknapltx/mathrsfs.sty
 Package: mathrsfs 1996/01/01 Math RSFS package v1.0 (jk)
 \symrsfs=\mathgroup9
@@ -963,6 +987,9 @@ Package: rotating 2009/03/28 v2.16a rotated objects in LaTeX
 \rot@float@box=\box66
 \rot@mess@toks=\toks62
 )
+(/usr/local/texlive/2015/texmf-dist/tex/latex/was/gensymb.sty
+Package: gensymb 2003/07/02 v1.0 (WaS)
+)
 (/usr/local/texlive/2015/texmf-dist/tex/latex/bbm-macros/bbm.sty
 Package: bbm 1999/03/15 V 1.2 provides fonts for set symbols - TH
 LaTeX Font Info:    Overwriting math alphabet `\mathbbm' in version `bold'
@@ -975,6 +1002,9 @@ Package: chngcntr 2009/09/02 v1.0a change counter resetting
 )
 (./master.aux
 
+LaTeX Warning: Label `table:datasets' multiply defined.
+
+
 ! Package natbib Error: Bibliography not compatible with author-year citations.
 
 (natbib)                Press <return> to continue in numerical citation style.
@@ -984,7 +1014,7 @@ See the natbib package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.221 ...and\NAT@force@numbers{}\NAT@force@numbers
+l.265 ...and\NAT@force@numbers{}\NAT@force@numbers
                                                   
 Check the bibliography entries for non-compliant syntax,
 or select author-year BibTeX style, e.g. plainnat
@@ -992,20 +1022,20 @@ or select author-year BibTeX style, e.g. plainnat
 )
 \openout1 = `master.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 152.
-LaTeX Font Info:    ... okay on input line 152.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 152.
-LaTeX Font Info:    ... okay on input line 152.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 152.
-LaTeX Font Info:    ... okay on input line 152.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 152.
-LaTeX Font Info:    ... okay on input line 152.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 152.
-LaTeX Font Info:    ... okay on input line 152.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 152.
-LaTeX Font Info:    ... okay on input line 152.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 152.
-LaTeX Font Info:    ... okay on input line 152.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 156.
+LaTeX Font Info:    ... okay on input line 156.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 156.
+LaTeX Font Info:    ... okay on input line 156.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 156.
+LaTeX Font Info:    ... okay on input line 156.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 156.
+LaTeX Font Info:    ... okay on input line 156.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 156.
+LaTeX Font Info:    ... okay on input line 156.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 156.
+LaTeX Font Info:    ... okay on input line 156.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 156.
+LaTeX Font Info:    ... okay on input line 156.
  (/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count180
@@ -1038,7 +1068,7 @@ e
 
 ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box68
-Package hyperref Info: Link coloring OFF on input line 152.
+Package hyperref Info: Link coloring OFF on input line 156.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -1048,15 +1078,15 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count187
 )
-LaTeX Info: Redefining \ref on input line 152.
-LaTeX Info: Redefining \pageref on input line 152.
-LaTeX Info: Redefining \nameref on input line 152.
+LaTeX Info: Redefining \ref on input line 156.
+LaTeX Info: Redefining \pageref on input line 156.
+LaTeX Info: Redefining \nameref on input line 156.
 
 (./master.out) (./master.out)
 \@outlinefile=\write4
 \openout4 = `master.out'.
 
-LaTeX Info: Redefining \microtypecontext on input line 152.
+LaTeX Info: Redefining \microtypecontext on input line 156.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1109,15 +1139,26 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Option `pageanchor' set `false' on input line 153.
-LaTeX Font Info:    Try loading font information for U+msa on input line 205.
+LaTeX Info: Redefining \celsius on input line 156.
+Package gensymb Info: Faking symbols for \degree and \celsius on input line 156
+.
+
+Package gensymb Warning: Not defining \perthousand.
+
+LaTeX Info: Redefining \ohm on input line 156.
+Package gensymb Info: Using \Omega for \ohm on input line 156.
+
+Package gensymb Warning: Not defining \micro.
+
+Package hyperref Info: Option `pageanchor' set `false' on input line 157.
+LaTeX Font Info:    Try loading font information for U+msa on input line 208.
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 205.
+LaTeX Font Info:    Try loading font information for U+msb on input line 208.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1125,45 +1166,46 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 205.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 208.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
-<figs/princeton_shield.png, id=167, 807.015pt x 1027.84pt>
+<figs/princeton_shield.png, id=196, 807.015pt x 1027.84pt>
 File: figs/princeton_shield.png Graphic file (type png)
 
 <use figs/princeton_shield.png>
-Package pdftex.def Info: figs/princeton_shield.png used on input line 220.
+Package pdftex.def Info: figs/princeton_shield.png used on input line 223.
 (pdftex.def)             Requested size: 85.35826pt x 108.70271pt.
  [1
 
 {/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./figs/
 princeton_shield.png>] [2] [3]
-Package hyperref Info: Option `pageanchor' set `false' on input line 287.
+Package hyperref Info: Option `pageanchor' set `false' on input line 290.
  (./master.toc
 [1
 
-])
+] [2])
 \tf@toc=\write5
 \openout5 = `master.toc'.
 
-Package hyperref Info: Option `pageanchor' set `true' on input line 290.
- [2] [3] [1
+Package hyperref Info: Option `pageanchor' set `true' on input line 293.
+ [3]
+Chapter 1.
+[1
 
 
-] [2
+]
+Chapter 2.
+(./Introduction.tex [2
 
-] (./Introduction.tex [3
+] [3]) [4]
+Chapter 3.
+(./Background.tex [5
 
-] [4]) [5] [6
-
-] (./Background.tex
-[7
-
-] [8]
+] [6]
 </Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configurations.jpg, 
-id=358, 2457.18pt x 3276.24pt>
+id=385, 2457.18pt x 3276.24pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configurations.
 jpg Graphic file (type jpg)
 
@@ -1172,202 +1214,626 @@ pg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/siam
 ese_configurations.jpg used on input line 56.
 (pdftex.def)             Requested size: 433.62001pt x 578.14977pt.
- [9] [10 </Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configurati
-ons.jpg>] [11]) [12] [13
+ [7] [8 </Users/daway/Documents/Princeton/Thesis2017/plots/siamese_configuratio
+ns.jpg>] [9]) [10]
+Chapter 4.
+(./Network.tex [11
 
-] (./Network.tex [14
-
-] [15] [16] [17] [18]
-
-Package hyperref Warning: Suppressing empty link on input line 200.
-
-[19]) [20] [21
-
-] (./Data.tex
-</Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png, id=479,
+] [12] [13] [14] [15] [16]) [17]
+Chapter 5.
+(./Data.tex
+</Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png, id=500,
  769.87625pt x 761.84625pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png Gra
 phic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/newy
-ork_density.png used on input line 9.
+ork_density.png used on input line 11.
 (pdftex.def)             Requested size: 173.44534pt x 171.62888pt.
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png, id=48
-0, 505.89pt x 505.89pt>
+</Users/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png, id=50
+1, 505.89pt x 505.89pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png G
 raphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/manh
-attan_density.png used on input line 9.
+attan_density.png used on input line 11.
 (pdftex.def)             Requested size: 173.44534pt x 173.44382pt.
 
+[18
 
-LaTeX Warning: Reference `sec:pair_sampling' on page 22 undefined on input line
- 15.
-
-
+]
 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram.png,
- id=481, 462.528pt x 346.896pt>
+ id=507, 462.528pt x 346.896pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram
 .png Graphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram.
 png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/2014
-_distance_histogram.png used on input line 22.
+_distance_histogram.png used on input line 24.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
 
 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_5000_histogram
-.png, id=482, 462.528pt x 346.896pt>
+.png, id=508, 462.528pt x 346.896pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_5000_hist
 ogram.png Graphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_5000_histo
 gram.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/2014
-_distance_5000_histogram.png used on input line 22.
+_distance_5000_histogram.png used on input line 24.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
 
 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_2000_histogram
-.png, id=483, 462.528pt x 346.896pt>
+.png, id=509, 462.528pt x 346.896pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_2000_hist
 ogram.png Graphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_2000_histo
 gram.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/2014
-_distance_2000_histogram.png used on input line 24.
+_distance_2000_histogram.png used on input line 26.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
 
 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_200_histogram.
-png, id=484, 462.528pt x 346.896pt>
+png, id=510, 462.528pt x 346.896pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_200_histo
 gram.png Graphic file (type png)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_200_histog
 ram.png>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/2014
-_distance_200_histogram.png used on input line 24.
+_distance_200_histogram.png used on input line 26.
 (pdftex.def)             Requested size: 173.44534pt x 130.08568pt.
-
-</Users/daway/Documents/Princeton/Thesis2017/plots/brooklynbridge.jpg, id=485, 
+ [19 </Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png> </
+Users/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png> </Users
+/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram.png> </User
+s/daway/Documents/Princeton/Thesis2017/plots/2014_distance_5000_histogram.png> 
+</Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_2000_histogram
+.png> </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_200_hist
+ogram.png>]
+</Users/daway/Documents/Princeton/Thesis2017/plots/brooklynbridge.jpg, id=522, 
 2764.3275pt x 1449.415pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/brooklynbridge.jpg Grap
 hic file (type jpg)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/brooklynbridge.jpg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/broo
-klynbridge.jpg used on input line 34.
+klynbridge.jpg used on input line 36.
 (pdftex.def)             Requested size: 433.62001pt x 227.35518pt.
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg, id=486, 2788.4175pt
+</Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg, id=523, 2788.4175pt
  x 1168.365pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg Graphic file (t
 ype jpg)
  <use /Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/met.
-jpg used on input line 41.
+jpg used on input line 43.
 (pdftex.def)             Requested size: 433.62001pt x 181.68301pt.
 
-[22
-
- </Users/daway/Documents/Princeton/Thesis2017/plots/newyork_density.png> </User
-s/daway/Documents/Princeton/Thesis2017/plots/manhattan_density.png>]
-[23 </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_histogram.
-png> </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_5000_hist
-ogram.png> </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distance_200
-0_histogram.png> </Users/daway/Documents/Princeton/Thesis2017/plots/2014_distan
-ce_200_histogram.png> </Users/daway/Documents/Princeton/Thesis2017/plots/brookl
-ynbridge.jpg>] [24 </Users/daway/Documents/Princeton/Thesis2017/plots/met.jpg>]
+[20 </Users/daway/Documents/Princeton/Thesis2017/plots/brooklynbridge.jpg> </Us
+ers/daway/Documents/Princeton/Thesis2017/plots/met.jpg>]
 Package microtype Info: Loading generic settings for font family
 (microtype)             `cmtt' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
+ [21] [22]
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg, id=511
+Package natbib Warning: Citation `scharstein2014high' on page 23 undefined on i
+nput line 122.
+
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/Motorcycle-perfect_im
+0.png, id=550, 2975.115pt x 2007.5pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/Motorcycle-perfe
+ct_im0.png Graphic file (type png)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/Motorcycle-perfec
+t_im0.png>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/Motorcycle-perfect_im0.png used on input line 131.
+(pdftex.def)             Requested size: 173.44534pt x 117.01402pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/Motorcycle-perfect_im
+1.png, id=551, 2975.115pt x 2007.5pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/Motorcycle-perfe
+ct_im1.png Graphic file (type png)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/Motorcycle-perfec
+t_im1.png>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/Motorcycle-perfect_im1.png used on input line 131.
+(pdftex.def)             Requested size: 173.44534pt x 117.01402pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/Motorcycle-perfect_im
+1E.png, id=552, 2975.115pt x 2007.5pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/Motorcycle-perfe
+ct_im1E.png Graphic file (type png)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/Motorcycle-perfec
+t_im1E.png>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/Motorcycle-perfect_im1E.png used on input line 133.
+(pdftex.def)             Requested size: 173.44534pt x 117.01402pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/Motorcycle-perfect_im
+1L.png, id=553, 2975.115pt x 2007.5pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/Motorcycle-perfe
+ct_im1L.png Graphic file (type png)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/Motorcycle-perfec
+t_im1L.png>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/Motorcycle-perfect_im1L.png used on input line 133.
+(pdftex.def)             Requested size: 173.44534pt x 117.01402pt.
+ [23] [24] [25 </Users/daway/Documents/Princeton/Thesis2017/plots/images/Motorc
+ycle-perfect_im0.png (PNG copy)> </Users/daway/Documents/Princeton/Thesis2017/p
+lots/images/Motorcycle-perfect_im1.png (PNG copy)> </Users/daway/Documents/Prin
+ceton/Thesis2017/plots/images/Motorcycle-perfect_im1E.png (PNG copy)> </Users/d
+away/Documents/Princeton/Thesis2017/plots/images/Motorcycle-perfect_im1L.png (P
+NG copy)>]
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg, id=573
 , 259.97125pt x 194.7275pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg Gr
 aphic file (type jpg)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
-es/nyc_base.jpeg used on input line 75.
+es/nyc_base.jpeg used on input line 172.
 (pdftex.def)             Requested size: 101.17755pt x 75.78592pt.
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg, id=512,
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg, id=574,
  276.03125pt x 184.69pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg Gra
 phic file (type jpg)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
-es/nyc_pos.jpeg used on input line 75.
+es/nyc_pos.jpeg used on input line 172.
 (pdftex.def)             Requested size: 101.17755pt x 67.69731pt.
 
-</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg, id=513,
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg, id=575,
  259.97125pt x 194.7275pt>
 File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg Gra
 phic file (type jpg)
 
 <use /Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg>
 Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
-es/nyc_neg.jpeg used on input line 75.
+es/nyc_neg.jpeg used on input line 172.
 (pdftex.def)             Requested size: 101.17755pt x 75.78592pt.
 
-Overfull \hbox (10.5808pt too wide) in paragraph at lines 71--81
-[][] 
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/bart.jpeg, id=576, 22
+5.84375pt x 225.84375pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/bart.jpeg Graphi
+c file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/bart.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/bart.jpeg used on input line 173.
+(pdftex.def)             Requested size: 101.17755pt x 101.18074pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/bart_pos.jpeg, id=577
+, 259.97125pt x 194.7275pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/bart_pos.jpeg Gr
+aphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/bart_pos.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/bart_pos.jpeg used on input line 173.
+(pdftex.def)             Requested size: 101.17755pt x 75.78592pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/bart_neg.jpeg, id=578
+, 279.0425pt x 181.67876pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/bart_neg.jpeg Gr
+aphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/bart_neg.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/bart_neg.jpeg used on input line 173.
+(pdftex.def)             Requested size: 101.17755pt x 65.87279pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/sonic_boom.jpeg, id=5
+79, 244.915pt x 207.77625pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/sonic_boom.jpeg 
+Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/sonic_boom.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/sonic_boom.jpeg used on input line 174.
+(pdftex.def)             Requested size: 101.17755pt x 85.8324pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/sonic_boom_pos.jpeg, 
+id=580, 259.97125pt x 194.7275pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/sonic_boom_pos.j
+peg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/sonic_boom_pos.jp
+eg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/sonic_boom_pos.jpeg used on input line 174.
+(pdftex.def)             Requested size: 101.17755pt x 75.78592pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/sonic_boom_neg.jpeg, 
+id=581, 259.97125pt x 194.7275pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/sonic_boom_neg.j
+peg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/sonic_boom_neg.jp
+eg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/sonic_boom_neg.jpeg used on input line 174.
+(pdftex.def)             Requested size: 101.17755pt x 75.78592pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/monument_valley_base.
+jpeg, id=582, 251.94125pt x 201.75375pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/monument_valley_
+base.jpeg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/monument_valley_b
+ase.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/monument_valley_base.jpeg used on input line 187.
+(pdftex.def)             Requested size: 101.17755pt x 81.0233pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/monument_valley_pos.j
+peg, id=583, 277.035pt x 183.68625pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/monument_valley_
+pos.jpeg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/monument_valley_p
+os.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/monument_valley_pos.jpeg used on input line 187.
+(pdftex.def)             Requested size: 101.17755pt x 67.08556pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/monument_valley_neg.j
+peg, id=584, 295.1025pt x 171.64125pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/monument_valley_
+neg.jpeg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/monument_valley_n
+eg.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/monument_valley_neg.jpeg used on input line 187.
+(pdftex.def)             Requested size: 101.17755pt x 58.847pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/guitar.jpeg, id=585, 
+225.84375pt x 225.84375pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/guitar.jpeg Grap
+hic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/guitar.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/guitar.jpeg used on input line 188.
+(pdftex.def)             Requested size: 101.17755pt x 101.18074pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/guitar_pos.jpeg, id=5
+86, 217.81375pt x 232.87pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/guitar_pos.jpeg 
+Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/guitar_pos.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/guitar_pos.jpeg used on input line 188.
+(pdftex.def)             Requested size: 101.17755pt x 108.16971pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/guitar_neg.jpeg, id=5
+87, 238.8925pt x 212.795pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/guitar_neg.jpeg 
+Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/guitar_neg.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/guitar_neg.jpeg used on input line 188.
+(pdftex.def)             Requested size: 101.17755pt x 90.12334pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/nirvana.jpeg, id=588,
+ 150.5625pt x 112.42pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/nirvana.jpeg Gra
+phic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/nirvana.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/nirvana.jpeg used on input line 189.
+(pdftex.def)             Requested size: 101.17755pt x 75.54915pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/nirvana_pos.jpeg, id=
+589, 128.48pt x 72.27pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/nirvana_pos.jpeg
+ Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/nirvana_pos.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/nirvana_pos.jpeg used on input line 189.
+(pdftex.def)             Requested size: 101.17755pt x 56.9129pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/nirvana_neg.jpeg, id=
+590, 309.155pt x 164.615pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/nirvana_neg.jpeg
+ Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/nirvana_neg.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/nirvana_neg.jpeg used on input line 189.
+(pdftex.def)             Requested size: 101.17755pt x 53.87349pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/parthenon.jpeg, id=59
+3, 254.9525pt x 198.7425pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/parthenon.jpeg G
+raphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/parthenon.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/parthenon.jpeg used on input line 204.
+(pdftex.def)             Requested size: 101.17755pt x 78.87088pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/parthenon_pos.jpeg, i
+d=594, 251.94125pt x 201.75375pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/parthenon_pos.jp
+eg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/parthenon_pos.jpe
+g>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/parthenon_pos.jpeg used on input line 204.
+(pdftex.def)             Requested size: 101.17755pt x 81.0233pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/parthenon_neg.jpeg, i
+d=595, 268.00125pt x 189.70876pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/parthenon_neg.jp
+eg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/parthenon_neg.jpe
+g>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/parthenon_neg.jpeg used on input line 204.
+(pdftex.def)             Requested size: 101.17755pt x 71.61823pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/freedom_tower.jpeg, i
+d=597, 261.97874pt x 193.72375pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/freedom_tower.jp
+eg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/freedom_tower.jpe
+g>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/freedom_tower.jpeg used on input line 217.
+(pdftex.def)             Requested size: 101.17755pt x 74.8159pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/freedom_tower_pos.jpe
+g, id=598, 257.96375pt x 196.735pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/freedom_tower_po
+s.jpeg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/freedom_tower_pos
+.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/freedom_tower_pos.jpeg used on input line 217.
+(pdftex.def)             Requested size: 101.17755pt x 77.1616pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/freedom_tower_neg.jpe
+g, id=599, 81.30376pt x 113.42375pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/freedom_tower_ne
+g.jpeg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/freedom_tower_neg
+.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/freedom_tower_neg.jpeg used on input line 217.
+(pdftex.def)             Requested size: 101.17755pt x 141.15973pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/sydney_opera_house_ba
+se.jpeg, id=600, 270.00874pt x 187.70125pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/sydney_opera_hou
+se_base.jpeg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/sydney_opera_hous
+e_base.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/sydney_opera_house_base.jpeg used on input line 218.
+(pdftex.def)             Requested size: 101.17755pt x 70.33337pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/sydney_opera_house_po
+s.jpeg, id=601, 266.9975pt x 190.7125pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/sydney_opera_hou
+se_pos.jpeg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/sydney_opera_hous
+e_pos.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/sydney_opera_house_pos.jpeg used on input line 218.
+(pdftex.def)             Requested size: 101.17755pt x 72.2707pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/sydney_opera_house_ne
+g.jpeg, id=602, 240.9pt x 195.73125pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/sydney_opera_hou
+se_neg.jpeg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/sydney_opera_hous
+e_neg.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/sydney_opera_house_neg.jpeg used on input line 218.
+(pdftex.def)             Requested size: 101.17755pt x 82.20656pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/michelangelo.jpeg, id
+=603, 171.64125pt x 296.10625pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/michelangelo.jpe
+g Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/michelangelo.jpeg
+>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/michelangelo.jpeg used on input line 219.
+(pdftex.def)             Requested size: 101.17755pt x 174.54303pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/michelangelo_pos.jpeg
+, id=604, 184.69pt x 275.0275pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/michelangelo_pos
+.jpeg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/michelangelo_pos.
+jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/michelangelo_pos.jpeg used on input line 219.
+(pdftex.def)             Requested size: 101.17755pt x 150.66548pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/michelangelo_neg.jpeg
+, id=605, 162.6075pt x 312.16624pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/michelangelo_neg
+.jpeg Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/michelangelo_neg.
+jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/michelangelo_neg.jpeg used on input line 219.
+(pdftex.def)             Requested size: 101.17755pt x 194.24127pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/picasso.jpeg, id=606,
+ 217.81375pt x 232.87pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/picasso.jpeg Gra
+phic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/picasso.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/picasso.jpeg used on input line 220.
+(pdftex.def)             Requested size: 101.17755pt x 108.16971pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/picasso_pos.jpeg, id=
+607, 219.82124pt x 230.8625pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/picasso_pos.jpeg
+ Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/picasso_pos.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/picasso_pos.jpeg used on input line 220.
+(pdftex.def)             Requested size: 101.17755pt x 106.25792pt.
+
+</Users/daway/Documents/Princeton/Thesis2017/plots/images/picasso_neg.jpeg, id=
+608, 218.8175pt x 232.87pt>
+File: /Users/daway/Documents/Princeton/Thesis2017/plots/images/picasso_neg.jpeg
+ Graphic file (type jpg)
+
+<use /Users/daway/Documents/Princeton/Thesis2017/plots/images/picasso_neg.jpeg>
+Package pdftex.def Info: /Users/daway/Documents/Princeton/Thesis2017/plots/imag
+es/picasso_neg.jpeg used on input line 220.
+(pdftex.def)             Requested size: 101.17755pt x 107.6758pt.
+[26] [27 </Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpe
+g> </Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg> </Us
+ers/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg> </Users/daw
+ay/Documents/Princeton/Thesis2017/plots/images/bart.jpeg> </Users/daway/Documen
+ts/Princeton/Thesis2017/plots/images/bart_pos.jpeg> </Users/daway/Documents/Pri
+nceton/Thesis2017/plots/images/bart_neg.jpeg> </Users/daway/Documents/Princeton
+/Thesis2017/plots/images/sonic_boom.jpeg> </Users/daway/Documents/Princeton/The
+sis2017/plots/images/sonic_boom_pos.jpeg> </Users/daway/Documents/Princeton/The
+sis2017/plots/images/sonic_boom_neg.jpeg>] [28 </Users/daway/Documents/Princeto
+n/Thesis2017/plots/images/monument_valley_base.jpeg> </Users/daway/Documents/Pr
+inceton/Thesis2017/plots/images/monument_valley_pos.jpeg> </Users/daway/Documen
+ts/Princeton/Thesis2017/plots/images/monument_valley_neg.jpeg> </Users/daway/Do
+cuments/Princeton/Thesis2017/plots/images/guitar.jpeg> </Users/daway/Documents/
+Princeton/Thesis2017/plots/images/guitar_pos.jpeg> </Users/daway/Documents/Prin
+ceton/Thesis2017/plots/images/guitar_neg.jpeg> </Users/daway/Documents/Princeto
+n/Thesis2017/plots/images/nirvana.jpeg> </Users/daway/Documents/Princeton/Thesi
+s2017/plots/images/nirvana_pos.jpeg> </Users/daway/Documents/Princeton/Thesis20
+17/plots/images/nirvana_neg.jpeg> </Users/daway/Documents/Princeton/Thesis2017/
+plots/images/parthenon.jpeg> </Users/daway/Documents/Princeton/Thesis2017/plots
+/images/parthenon_pos.jpeg> </Users/daway/Documents/Princeton/Thesis2017/plots/
+images/parthenon_neg.jpeg>] [29 </Users/daway/Documents/Princeton/Thesis2017/pl
+ots/images/freedom_tower.jpeg> </Users/daway/Documents/Princeton/Thesis2017/plo
+ts/images/freedom_tower_pos.jpeg> </Users/daway/Documents/Princeton/Thesis2017/
+plots/images/freedom_tower_neg.jpeg> </Users/daway/Documents/Princeton/Thesis20
+17/plots/images/sydney_opera_house_base.jpeg> </Users/daway/Documents/Princeton
+/Thesis2017/plots/images/sydney_opera_house_pos.jpeg> </Users/daway/Documents/P
+rinceton/Thesis2017/plots/images/sydney_opera_house_neg.jpeg> </Users/daway/Doc
+uments/Princeton/Thesis2017/plots/images/michelangelo.jpeg> </Users/daway/Docum
+ents/Princeton/Thesis2017/plots/images/michelangelo_pos.jpeg> </Users/daway/Doc
+uments/Princeton/Thesis2017/plots/images/michelangelo_neg.jpeg> </Users/daway/D
+ocuments/Princeton/Thesis2017/plots/images/picasso.jpeg> </Users/daway/Document
+s/Princeton/Thesis2017/plots/images/picasso_pos.jpeg> </Users/daway/Documents/P
+rinceton/Thesis2017/plots/images/picasso_neg.jpeg>]
+Overfull \hbox (99.48671pt too wide) in paragraph at lines 237--275
+ [][] 
  []
 
-) [25 </Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_base.jpeg> 
-</Users/daway/Documents/Princeton/Thesis2017/plots/images/nyc_pos.jpeg> </Users
-/daway/Documents/Princeton/Thesis2017/plots/images/nyc_neg.jpeg>]
-(./Experiments.tex [26
+) [30] [31]
+Chapter 6.
+(./Experiments.tex
 
-] [27] [28]
-Overfull \hbox (8.13179pt too wide) in paragraph at lines 53--63
-[][] 
- []
+Package natbib Warning: Citation `tieleman2012lecture' on page 32 undefined on 
+input line 31.
+
+
+Package natbib Warning: Citation `duchi2011adaptive' on page 32 undefined on in
+put line 31.
+
+
+Package natbib Warning: Citation `zeiler2012adadelta' on page 32 undefined on i
+nput line 31.
+
+
+Package natbib Warning: Citation `kingma2014adam' on page 32 undefined on input
+ line 31.
+
+
+Package natbib Warning: Citation `kingma2014adam' on page 32 undefined on input
+ line 31.
+
+
+LaTeX Warning: Reference `fig:nonsmooth training' on page 32 undefined on input
+ line 31.
+
+[32
+
+]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 33.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 67.
+(hyperref)                removing `math shift' on input line 33.
 
 
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 67.
+LaTeX Warning: Reference `table:val_loss' on page 33 undefined on input line 36
+.
 
-) [29] [30
+) [33]
+Chapter 7.
+(./Results.tex) (./master.bbl [34
 
-] (./Results.tex) (./master.bbl [31
+] [35
 
-] [32
+] [36] [37])
 
-] [33] [34]) [35]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 326.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 326.
+Package natbib Warning: There were undefined citations.
 
-(./master.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 326.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 326.
+[38]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 324.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 324.
+ (./master.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 324.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 324.
 Package rerunfilecheck Info: File `master.out' has not changed.
-(rerunfilecheck)             Checksum: 7BBAA6B2B40ABF7674AD4B56DBCE0669;2725.
+(rerunfilecheck)             Checksum: 0EA70B5AD0D0DC8FEA3E05C3BDF39652;3189.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 326.
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 324.
  ) 
 Here is how much of TeX's memory you used:
- 25444 strings out of 493089
- 482622 string characters out of 6134842
- 626446 words of memory out of 5000000
- 28074 multiletter control sequences out of 15000+600000
- 22501 words of font info for 134 fonts, out of 8000000 for 9000
+ 25699 strings out of 493089
+ 495503 string characters out of 6134842
+ 640849 words of memory out of 5000000
+ 28280 multiletter control sequences out of 15000+600000
+ 23443 words of font info for 138 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,12n,72p,1880b,837s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,16n,72p,1880b,839s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
@@ -1383,10 +1849,10 @@ exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/tex
 live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texl
 ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texli
 ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on master.pdf (41 pages, 7577098 bytes).
+Output written on master.pdf (44 pages, 35395954 bytes).
 PDF statistics:
- 666 PDF objects out of 1000 (max. 8388607)
- 582 compressed objects within 6 object streams
- 160 named destinations out of 1000 (max. 500000)
- 19854 words of extra memory for PDF output out of 20736 (max. 10000000)
+ 770 PDF objects out of 1000 (max. 8388607)
+ 648 compressed objects within 7 object streams
+ 170 named destinations out of 1000 (max. 500000)
+ 22144 words of extra memory for PDF output out of 24883 (max. 10000000)
 

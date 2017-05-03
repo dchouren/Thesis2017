@@ -17,8 +17,8 @@ program_command="$3"
 job_name="$4"
 use_gpu="$5"
 
-email="$6"
-THESIS="$7"
+email="dchouren@princeton.edu"
+THESIS="/tigress/dchouren/thesis"
 SRC=$THESIS/src
 
 # slurm_header runtime mem program name [additional_sbatch_instr]
