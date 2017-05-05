@@ -9,7 +9,7 @@ We have three main experimental goals:
 
 
 \section{Weakly Supervised Image Embedding}
-Our main experiment, to find a network formulation which can learn a useful image embedding from fuzzily labeled data, is represented by the pipeline shown in Figure \ref{fig:variant_model_train}. As a recap, we compare two different methods used to train the networks that compose $C$: 1) concatenate the vector output from a frozen $I$ with the vector output from $V$, and update $V$ only; and 2) take only the vector output from $V$ and update $V$. We designed $V$ to arbitrarily produce an output vector of size 1024. We use an unmodified ResNet50 model pretrained on the ImageNet dataset as $I$, which has an output vector of size 2048. We will refer to the training of these methods as $T_c^1$ and  $T_c^2$. We refer to the training of the blending network as $T_b$. We summarize some basic statistics about these training regimes in Table \ref{table:embedding_parameters}. We experiment with different layer widths for the small blending model, but on the whole, the number of training parameters is magnitudes smaller than the training of the $C$ units.
+Our main experiment, to find a network formulation which can learn a useful image embedding from fuzzily labeled data, is represented by the pipeline shown in Figure \ref{fig:variant_model_train}. As a recap, we compare two different methods used to train the networks that compose \textbf{\textbf{C}}: 1) concatenate the vector output from a frozen $I$ with the vector output from $V$, and update $V$ only; and 2) take only the vector output from $V$ and update $V$. We designed $V$ to arbitrarily produce an output vector of size 1024. We use an unmodified ResNet50 model pretrained on the ImageNet dataset as $I$, which has an output vector of size 2048. We will refer to the training of these methods as $T_c^1$ and  $T_c^2$. We refer to the training of the blending network as $T_b$. We summarize some basic statistics about these training regimes in Table \ref{table:embedding_parameters}. We experiment with different layer widths for the small blending model, but on the whole, the number of training parameters is magnitudes smaller than the training of the \textbf{C} units.
 
 Training is done on either a Tesla K20m GPU with 5GB of memory or on a Tesla P100 GPU with 16GB of memory. Do to memory constraints, any models run on the K20m GPU are trained with batch sizes of 6. Models trained on the P100 GPU are trained with batch sizes of 32. All training is single GPU. 
 
@@ -20,35 +20,45 @@ Training is done on either a Tesla K20m GPU with 5GB of memory or on a Tesla P10
 		\midrule
 		$T_c^1$ & $V$ ($I$ frozen) & 47,822,464 & 3072\\
 		$T_c^2$ & $V$ & 34,587,776 & 1024\\
-		$T_b$ & $B$ ($V$ and $I$ frozen) & 393,216 to 12,582,912 & 128 to 1024\\
+		$T_b$ & \textbf{B} ($V$ and $I$ frozen) & 393,216 to 12,582,912 & 128 to 1024\\
 		\bottomrule
 	\end{tabular}
 	\caption{Training statistics}
 	\label{table:embedding_parameters}
 \end{table}
 
-\subsection{Optimizer Experiments}
-We considered several optimizers: stochastic gradient descent (SGD), RMSprop\cite{tieleman2012lecture}, Adagrad\cite{duchi2011adaptive}, Adadelta\cite{zeiler2012adadelta}, Adam\cite{kingma2014adam}, and Nadam\cite{kingma2014adam}. Before beginning training, we run a small subsampling of our data to select our optimizer based on validation loss. While Nadam proved to be the most volatile, often causing exploding gradient updates, it also proved the best at finding successively deeper local minima. As we show in Figure \ref{fig:nonsmooth training}, the loss space of our problem is highly rough. Nadam is Adam with Nesterov momentum. The Adam optimizer essentially combines momentum, which averages the direction of gradient updates with an exponential decay parameter to find the proper update vector direction, with RMSprop, which determines the direction of the update vector. Nadam is an adaptive-learning method, meaning that a learning rate schedule is not necessary. We use standard hyperparameters for Nadam, with an initial learning rate of 0.002, $\beta_1=0.9$, $\beta_2=0.999$, and $\epsilon=10^{-8}$.
 
-\subsection{Training Module $C$}
-Despite the extreme fuzziness of our labels as shown in Table \ref{table:data_fuzziness}, we find that our choices of architecture, optimizer, and loss function are able to quickly locate local minima. Validation loss plummets without delay, often reaching inflection points in the loss curve within three training epochs. Learning typically has enough momentum to escape local minima and find deeper minima.
+\subsection{Training Module \textbf{C}}
+Despite the extreme fuzziness of our labels as shown in Table \ref{table:data_fuzziness}, we find that our choices of architecture, optimizer, and loss function are able to quickly locate local minima. Validation loss plummets without delay, often reaching inflection points in the loss curve within three training epochs. Learning typically has enough momentum to escape local minima and find deeper minima. We display some of our training and validation loss curves in Figure \ref{fig:loss}. Since we are constrained both by time and by queued GPU resources, we limit training to 50 epochs. As can be seen in Figure \ref{fig:loss}, it is likely that additional training time would lower validation loss by non-trivial amounts as our loss curves have not yet flattened out nor do we see a conclusive split between training and validation loss.
 
-As our data is weakly labeled, it is impossible to quantify model performance with any sort of validation or test accuracy. Instead we must use the Wang dataset for a hard accuracy quantification. We present validation losses in Table \ref{table:val_loss}. Because these validation losses are for different datasets, however, we do not use the normal approach of selecting a training method with the lowest validation loss and computing its test accuracy. Instead, we use each trained model in an ensemble prediction. Note that though we have mentioned many datasets, some of these like the Middlebury datasets, are trained for exploration of image invariants, and some are for exploring the effect of an increase in the number of data samples on training. Our final ensemble will consist of the models trained on $\mathcal{P}_{1,2013-2015,user}, \mathcal{P}_{1,2000,2015}, \mathcal{P}_{1,2000,2013-2015}, \mathcal{P}_{10,2013-2015,user}$, and the monthly datasets from 2014, $\mathcal{P}_{1,2000,01\_2014}$ through $\mathcal{P}_{12,2000,01\_2014}$.  We do have 
+\begin{figure}[!htbp]
+	\centering
+	\begin{tabular}{cc}
+		\includegraphics[width=0.4\textwidth]{histories/2014_01_32000.png}  &       \includegraphics[width=0.4\textwidth]{histories/2014_06_32000.png}  \\
+		(a) $\mathcal{P}_{1,2000,01\_2014}$ & (b) $\mathcal{P}_{1,2000,12\_2014}$\\[6pt]
+		\includegraphics[width=0.4\textwidth]{histories/f2013-5_1m_user.png}  &       \includegraphics[width=0.4\textwidth]{histories/new_2015_all.png} \\
+		(c) $\mathcal{P}_{1,2013-2015,user}$ & (d) $\mathcal{P}_{1,2000,2015}$\\[6pt]
+	\end{tabular}
+	\caption{Log loss plots for training and validation}
+	\label{fig:loss}
+\end{figure}
+
+As our data is weakly labeled, it is impossible to quantify model performance with any sort of validation or test accuracy. Instead we must use predictions on the Wang dataset for evaluation. We present validation losses in Table \ref{table:val_loss}. Because these validation losses are for different datasets, however, we do not use the normal approach of selecting a training method with the lowest validation loss and computing its test accuracy. Instead, we use each trained model in an ensemble prediction. Note that though we have mentioned many datasets, some of these like the Middlebury datasets are trained for exploration of image invariants, and some are for exploring the effect of an increase in the number of data samples on training. Our final ensemble will consist of the models trained on $\mathcal{P}_{1,2013-2015,user}, \mathcal{P}_{1,2000,2015}, \mathcal{P}_{1,2000,2013-2015}, \mathcal{P}_{10,2013-2015,user}$, and the monthly datasets from 2014, $\mathcal{P}_{1,2000,01\_2014}$ through $\mathcal{P}_{1,2000,12\_2014}$.  We do have 
 
 \begin{table}
 	\centering
-	\begin{tabular}{c >{\centering\arraybackslash}m{3.2cm} >{\centering\arraybackslash}m{3cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} c}
+	\begin{tabular}{c >{\centering\arraybackslash}m{1.5cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm}}
 		\toprule
 		\bfseries{Dataset} &  \bfseries Epochs & \bfseries Samples & \bfseries $T_c^1$ Validation Loss & \bfseries $T_c^2$ Validation Loss & Ranking Violations\\
 		\midrule
-		$\mathcal{P}_{1,2000,2013-2015}$ & $<$ 1m & $>$ 2000m & Jan 2013 - Dec 2015  & 176000\\
-		$\mathcal{P}_{1,2000,2015}$ & $<$ 1m & $>$ 2000m & Jan 2015 - Dec 2015  & 140800\\
-		$\mathcal{P}_{1,2013-2015,user}$ & $<$ 1m, same user & $<$ 1m & Jan 2013 - Dec 2015  & 57600\\
-		$\mathcal{P}_{1,2013-2015,tl}$ & $<$ 1m & $<$ 1m, timelapse & Jan 2013 - Dec 2015  & 54400\\
-		$\mathcal{P}_{10,2013-2015,user}$ & $<$ 10m, same user & $<$ 10m & Jan 2013 - Dec 2015  & 118400\\
-		$\mathcal{P}_{10,2013-2015,tl}$ & $<$ 10m & $<$ 10m, timelapse & Jan 2013 - Dec 2015  & \_\\
-		$\mathcal{P}_{30,2013-2015,user}$ & $<$ 30m, same user within 2 hours & $<$ 30m & Jan 2013 - Dec 2015  & 198400\\
-		$\mathcal{P}_{Middlebury}$ & Middlebury pairs & random & N/A & 32000 \\
+		$\mathcal{P}_{1,2000,2013-2015}$ & $<$ 1m & & Jan 2013 - Dec 2015  & 176000\\
+		$\mathcal{P}_{1,2000,2015}$ & $<$ 1m & & Jan 2015 - Dec 2015  & 140800\\
+		$\mathcal{P}_{1,2013-2015,user}$ & & $<$ 1m & Jan 2013 - Dec 2015  & 57600\\
+		$\mathcal{P}_{1,2013-2015,tl}$ & $<$ 1m && Jan 2013 - Dec 2015  & 54400\\
+		$\mathcal{P}_{10,2013-2015,user}$ &  & $<$ 10m & Jan 2013 - Dec 2015  & 118400\\
+		$\mathcal{P}_{10,2013-2015,tl}$ &  & & Jan 2013 - Dec 2015  & \_\\
+		$\mathcal{P}_{30,2013-2015,user}$ &  & $<$ 30m & Jan 2013 - Dec 2015  & 198400\\
+		$\mathcal{P}_{Middlebury}$ & 50 & random & N/A & 32000 \\
 		$\mathcal{P}_{1,2000,01\_2014}$ & $<$ 1m & $>$ 2000m & Jan 2014  & 32000\\
 		$\mathcal{P}_{1,2000,02\_2014}$ & $<$ 1m & $>$ 2000m & Feb 2014  & 32000\\
 		$\mathcal{P}_{1,2000,03\_2014}$ & $<$ 1m & $>$ 2000m & Mar 2014 & 32000\\
@@ -79,27 +89,53 @@ As our data is weakly labeled, it is impossible to quantify model performance wi
 	\label{table:val_loss}
 \end{table}
 
-We initially expected $T_c_^1$ to outperform $T_c^2$, because in the case that the invariant portion of the output vector is highly similar for a pair, that indicates a feature detectable by an ImageNet trained model is highly prominent and this additional information should be highly useful. Essentially, only using a variant detecting output would limit us to predicting a correct ranking if $p$ and $p^+$ share more similar stylistic characteristics than $p$ and $p^-$. It's very likely that none of $p$, $p^+$, and $p^-$ have a particularly salient style, in which case the Euclidean distances of the variant portion of our embeddings will be on average equidistant from $p$ for both $p^+$ and $p^-$. In this case, the addition of the variant portion should allow us to make additional correct rankings since we expect geographically close images to have similar structures and textures, such as showing the sides of glass office buildings as contrasted with grass and trees in a park. When segmenting pairs by user, we would expect the same since photos drawn from the same user a likely to be of the same attraction. However, we actually find that the loss space for $T_c^1$ is difficult to optimize over. Across the board, $T_c^1$ trained models do not reach the same validation loss as do $T_c^2$ models, as shown in Table \ref{table:val_loss}. 
 
-We conjecture that this is because we were unable to train our models on enough data or for enough epochs. In theory, the addition of features should never decrease a model's effectiveness, since any weighting of the smaller set of features will be a subset of the possible weightings of the larger set, with optimization solutions being equivalent when the extra features are given weights of 0. Reaching this solution, however, might take a prohibitively long time. We also note that in this formulation. We note also that there is potential for large errors in the magnitude of our weight updates to the variant model. Should the invariant portions of our output vector be dramatically different, this will cause the overall Euclidean distance of our prediction to be large as well. But since we are only updating the variant model, we will change its weights in an unwarranted manner. 
+In our discussion, let the intermediate embedding vector produced by \textbf{C} be referred to as $E_c$ and let the final embedding vector outputted by \textbf{B} be referred to as $E_b$. In the case where we use the training $T_c^1$, $E_c$ is the concatenation of the invariant embedding, $E_i$, and the variant embedding, $E_v$. When discussing embedding distances among pairs or triplets, embedding with a superscript $E^+$ or $E^-$ will refer to the positive or negative example, and embeddings without superscripts will refer to the base image. 
 
-Our full model, as described in  includes a blending network $B$, which consists of one or two fully connected layers and takes as input the concatenated output vector from the variant and invariant model. We do a rough grid search for reasonable widths for layers $L_1$ and $L_2$, eventually deciding that TODO: insert parameters, with a dropout layer of TODO dropout, in between represented a reasonable architecture.
+We initially expected embeddings $E_b$ produced by models trained using $T_c^1$ to outperform models trained using $T_c^2$. Either images will be similar because they contain the same type of soft style, in which case both $T_c^1$ and $T_c^2$ will pick up on this, or they will be similar despite differences in soft style because the physical composition of the images will be similar in a way approximately learnable by an ImageNet model. In the latter case, only $T_c^1$ trained embeddings will capture this. Because of the way we sample images from our Flickr set, which is entirely without a notion of class, we do not expect to learn any notion of invariance. The ImageNet training process, as discussed, strongly enforces the learning of invariance. In other words, we expect $T_c^1$ to outperform $T_c^2$ because the set of features it trains a model to detect is a superset of the featuers $T_c^2$ will train a model to detect. 
 
-Our final model thus concatenates an output vector for variant features with a vector for invariant features and weights their indices according to the weights learned in the training of $B$. 
+In actuality, as seen in Table \ref{table:val_loss}, it appears that $T_c^1$ struggles to optimize on the loss space of our datasets. We conjecture that this is because we were unable to train our models on enough data or for enough epochs. In theory, the addition of features should never decrease a model's effectiveness, since any weighting of the smaller set of features will be a subset of the possible weightings of the larger set, with optimization solutions being equivalent when the extra features are given weights of 0. Reaching this solution, however, might take a prohibitively long time. We note also that there is potential for large errors in the magnitude of our weight updates to the variant model. Should the invariant portions of our output vector be dramatically different, this will cause the overall Euclidean distance of our prediction to be large as well. But since we are only updating the variant model, we will change its weights in an unwarranted manner. 
 
+These empirical results affirm our theory for appending a third network, the blending network \textbf{B}, after $E_c$ is produced. Noting that the disparity in the size of $E_i$ and $E_v$, 2048 and 1024, may cause problems with weight update magnitudes, we expect the blending function learned by \textbf{B} to allow for proper learning.
 
+In constructing \textbf{B}, we assume that any blending function should be relatively simple, so we limit \textbf{B} to be one or two layers. To determine the proper widths of these layers, $L_1$ and $L_2$, we perform a rough grid search. Since our image embedding should provide reasonable granularity, we bound the width to be at least as wide as 128 output neurons, and we bound the maximum width of a layer to be 3072, which is the size of $E_c$. We eventually decide on values of TODO, with a dropout layer with rate TODO between them. 
 
-The ensemble test accuracies are reported in
+After training \textbf{B} with 10 fold cross validation on the Wang set, using a frozen ImageNet trained model for \textbf{I} and frozen versions of our various trained $V$ models to produce $E_c$. As mentioned, it doesn't make sense to pick a singular version of $V$ to use for a final test accuracy computation since each $V$ was produced using a different dataset. Instead, for our final test accuracy, we use our $V_i$ predictions in ensemble, which we report in Table \ref{table:final_test}. Here, we also report the test accuracies on the entire Wang set and not just on the averaged 10-fold cross validation for our $V$ models. We compare these ranking accuracies with a baseline accuracy produced by an ImageNet trained model.
+
+\begin{table}
+	\centering
+	\begin{tabular}{*{4}{c}}
+		\toprule
+		\bfseries Final Model & \bfseries $T_c^1$ Loss & \bfseries $B$ Loss & \bfseries Test Accuracy\\
+		\midrule
+		$T_c^1$ & $V$ ($I$ frozen) & 47,822,464 & 3072\\
+		\bottomrule
+	\end{tabular}
+	\caption{Final model performance}
+	\label{table:final_test}
+\end{table}
+
+Our baseline ranking accuracy is 0.608, which is a fairly impressive result given the granularity required by a large portion of the Wang set in upholding correct triplet rankings. This is another testament to the well-proven generalizability of features learned by ImageNet trained models. We see that the rankings learned by models trained on just our Flickr data comes quite close to this baseline, with most reaching accuracies of 58-59\% and a few surpassing the 60\% benchmark. As with the baseline model, this demonstrates that the Flickr data can be used to learn generalizable features. We expect the distribution of image features sampled by our Flickr set to be quite different from the distribution of features contained within popular Google image searches. For one, a relatively low percentage of Flickr images have a singular human as their primary focus, and the Google image data is full of celebrity photos. Wang et al. achieve a ranking accuracy of 85\%, but they had the considerable advantage of training on a larger corpus of Google search images for the same queries as in this public test set.\cite{wang2014learning}
+
+%because in the case that the invariant portion of the output vector is highly similar for a pair, that indicates a feature detectable by an ImageNet trained model is highly prominent and this additional information should be highly useful. Essentially, only using a variant detecting output would limit us to predicting a correct ranking if $p$ and $p^+$ share more similar stylistic characteristics than $p$ and $p^-$. It's very likely that none of $p$, $p^+$, and $p^-$ have a particularly salient style, in which case the Euclidean distances of the variant portion of our embeddings will be on average equidistant from $p$ for both $p^+$ and $p^-$. In this case, the addition of the variant portion should allow us to make additional correct rankings since we expect geographically close images to have similar structures and textures, such as showing the sides of glass office buildings as contrasted with grass and trees in a park. When segmenting pairs by user, we would expect the same since photos drawn from the same user a likely to be of the same attraction. However, we actually find that the loss space for $T_c^1$ is difficult to optimize over. Across the board, $T_c^1$ trained models do not reach the same validation loss as do $T_c^2$ models, as shown in Table \ref{table:val_loss}. 
+
 
 \section{Investigation of Data Fuzziness}
+As noted in Table \ref{table:data_fuzziness}, our data sampling heuristics are extremely fuzzy. For distance based sampling heuristcs, we have an average fuzziness of TODO, and for user based heuristics, we have an average fuzziness of TODO. We perform a regression on the test accuracy of a $V$ unit trained on a dataset with an inversion rate $i$ and total training examples seen $n$. The inversion rate does not take into account the magnitude of an inversion, and our total number of experimental data point is very small. We are also attempting to generalize the effect of fuzziness across datasets with different sampling methods, but in general, we find that a decrease in inversion rate by one percentage point corresponds to an increase in ranking accuracy of TODO. We can double check that the number of total training examples seen has a negligible effect on our ability to learn a fine-grained similarity embedding by comparing the accuracies of models saved over successive epochs. We find that accuracy TODO does not strongly increase with more epochs, which is not surprising.
 
 
 
 \section{Image Invariants}
+We investigate how similar our learned image embedding is in comparison to the embedding produced by our baseline ImageNet classifier. One way of quantifying this is by comparing the intersection of ranking predictions with the baseline predictions. As shown in Figure \ref{fig:overlaps}, on average, our models correctly rank 61.3\% of the same triplets that the baseline classifier does. In total, we rank 57.5\% of triplets in the same fashion, counting jointly incorrectly ranked triplets as well. The relatively low overlap between our models, and the fact that this overlaps remains the same range without exception, indicates that the learnable embedding from our dataset differs to a significant degree from the one learnable from ImageNet. Given that the baseline classifier correctly ranks 60\% of triplets, our correct ranking overlaps indicates that roughly 37\% of triplets are correctly ranked by both our models and the baseline. An additional 20-25\% are ranked correctly by either the baseline model or one of our models, but not by both. In theory, a perfect blending model would thus correctly rank triplets around 85\% of the time. 
 
+\begin{figure}[!htbp]
+	\centering
+		\includegraphics[width=0.7\textwidth]{pred_overlaps.png} 
+	\caption{Prediction overlaps with baseline}
+	\label{fig:overlaps}
+\end{figure}
 
-
-
+We use the Middlebury and time lapse datasets to confirm that this difference in prediction is most likely due to the learning of image variants rather than invariants. Just from considering the type of data present in ImageNet, which is strongly labeled and with thousands of examples per class, we suspect this to be true. 
 
 
 

@@ -1,17 +1,118 @@
 \section{Model Design}
-We build off of the general Siamese network formulation advanced by Hadsell et al. for facial recognition and used by Lin et al. for ground-to-air geolocalization.\cite{hadsell2006dimensionality}\cite{lin2015learning} We extend their formulations by recognizing that fine-grained similarity tasks require more than one base CNN. 
+We build off of the general Siamese network formulation proposed by Bromley et al. and used with deep CNNs by Hadsell et al. and Lin et al.\cite{bromley1993signature}\cite{hadsell2006dimensionality}\cite{lin2015learning} We modify the Siamese framework by adding a second module per half. Thus there are two pairs of deep CNNs, rather than one. We will refer to the networks which comprise the two pairs as $\mathbf{I}$ and $\mathbf{V}$. We intend to use $\mathbf{I}$ to extract traditional image invariant features and $\mathbf{V}$ to preserve variant features in our final embedding. $\mathbf{I}$ and $\mathbf{V}$ take images as input and their output feature vectors are concatenated and inputted to a third module, a shallow CNN which we refer to as $\mathbf{B}$. We train $\mathbf{B}$ to learn a proper weighting for invariant and variant features in our final output embedding.
 
-Our final model takes an input image $p$ and produces an image embedding $E$. $p$ is  preprocessed by rescaling to (224, 224), leaving the color channel in place and unmodified. $p$ is fed to two deep residual CNNs, $I$ and $V$, which have been trained to extract the presence of image invariants and variants, respectively. These outputs are concatenated and used as input to a shallow CNN, $B$, which has been trained to blend the presence of invariants and variants. The output of $B$ represents the final image embedding.
+We will first discuss our architecture choices for $\mathbf{I}, \mathbf{V}, $ and $\mathbf{B}$ and then discuss our training process.
 
-We train $I$, $V$, and $B$ through a Siamese configuration. We feed our model pairs of training images, alternating between similar and dissimilar pairs $(p, p_+)$ and $(p, p_-)$. Images are preprocessed by rescaling both the width and height to 224 pixels, leaving the color channel in place and unmodified. Data augmentation, when used, is applied directly after preprocessing. The base image, $p$, is fed to half of our Siamese network, which we denote as $C_p$, and the query image, which will be either $p_+$ or $p_-$, is fed to the other half of the Siamese net, $C_q$. $C_p$ and $C_q$ share weight updates.
+%This Siamese configuration is used only for training. For producing an actual image embedding, our final model runs an input image $p$ through just one side of the double Siamese network. $p$ is preprocessed by rescaling to (224, 224), leaving the color channel in place and unmodified. $p$ is fed to $\mathbf{I}$ and $\mathbf{V}$, which have been trained to extract the presence of image invariants and variants, respectively. These outputs are concatenated and used as input to the shallow CNN, $\mathbf{B}$, which has been trained to blend the presence of invariants and variants. The output of $\mathbf{B}$ represents the final image embedding.
 
-We use the Flickr dataset to train $V$ and $I$ and the Google dataset to train $B$. We illustrate these two processes in Figures \ref{fig:variant_model_train} and \ref{fig:blend_model_train}. For training $V$ and $I$, we use three different methods. In the first, we do not train $I$, but instead use a network pretrained on ImageNet, which has been shown to learn image invariants such as translational, rotational, reflectional, illumination, and crop invariants. We freeze the weights of this network. We train $V$ by running pairs of images through our Siamese network, feeding the images to $I$ and $V$ and concatenating their outputs. For this training, we do not blend their outputs with $B$, but their concatenation is taken as the output of $C_x$, and we find the Euclidean distances of these two output vectors, which represent our image embeddings. Finally, this distance is passed to our contrastive loss layer, which takes our fuzzy binary label for similarity/dissimilarity, and signals the model to update weights so that input pairs labeled as similar produce image embeddings with small Euclidean distances, and input pairs labeled as dissimilar produce image embeddings with larger Euclidean distances. This method is the one illustrated in Figure \ref{fig:variant_model_train}.
 
-In the second method, we feed input images only to $V$ and not to $I$. The output of $V$ is taken as the output of $C_x$, and the rest of the process is the same as in the first method. In the last method, we feed input images to both $V$ and $I$ and take their concatenated outputs as the output of $C_x$. In this case, we do not freeze the weights of $I$, but use the contrastive loss layer to update the weights of both $V$ and $I$. Otherwise, the third method proceeds following the first.
+\subsection{Architecture of $\mathbf{I}$ and $\mathbf{V}$}
+Much research has been done on building deep architectures.
+We do very little exploration of different network configurations, opting to lightly modify a 50 layer ResNet architecture. The ResNet family, which advanced the idea of using residual layers, represented a powerful step forward in deep architectures in 2015, winning first place in the ImageNet classification, ImageNet detection, ImageNet localization, COCO detection, and COCO segmentation competitions.\cite{He2015} While ResNet is no longer considered a cutting edge architecture, as it has been surpassed by the third generation of Inception architectures as well as by ResNet hybrids like Inception-ResNet, we choose to use a ResNet model as our base model because of the large number of ResNet variants.\cite{He2015}\cite{szegedy2016inception} Popular versions of ResNet include ResNet-18, ResNet-34, ResNet-50, ResNet-101, ResNet-152, and ResNet-200, where the number denotes the number of layers. In general, models with increased depths produce higher accuracies on standard vision benchmarks, at the cost of increased memory footprints and slower training speeds for forward and backward passes during backpropagation. The advantage of the ResNet family lies in our ability to easily scale the depth of our network, should we decide our task requires greater visual discriminative power or faster training speeds. The performance gap between ResNet and cutting edge architectures is small enough, as shown in Table \ref{table:cnn_benchmarks}, that we choose to stick with the ResNet family for the increased flexibility. Ultimately, we found that within the ResNet family, ResNet-50 had a suitable balance between model depth and training speed.
 
-Regardless of how we have trained weights for $V$ and $I$, the training of $B$ remains the same. $B$ takes as input the concatenated outputs of $V$ and $I$ and the output of $B$ is taken as the output of $C_x$. The contrastive loss layer is used to update the weights of $B$, but the weights of $V$ and $I$ are frozen. $B$ is trained using the Google dataset, which is strongly labeled. Since the Google dataset is quite small, we use 10-fold cross-validation rather than leaving our part of the data to use as validation and test sets.
+\begin{table}
+	\begin{center}
+		\begin{tabular}{||c c c c c||} 
+			\hline
+			Network & Layers & Top-1 error & Top-5 error & Speed (ms) \\ [0.5ex] 
+			\hline\hline
+			Inception V3 & 48 & 21.2 & 5.6 & NA \\ 
+			\hline
+			Inception-ResNet-2 & NA & 19.6 & 4.7 & NA \\ 
+			\hline
+			ResNet-18 & 18 & 30.43 & 10.76 & 31.54 \\ 
+			\hline
+			ResNet-34 & 34 & 26.73 & 8.74 & 51.59 \\ 
+			\hline
+			ResNet-50 & 50 & 24.01 & 7.02 & 103.58 \\ 
+			\hline
+			ResNet-101 & 101 & 22.44 & 6.21 & 156.44 \\ 
+			\hline
+			ResNet-152 & 152 & 22.16 & 6.16 & 217.91 \\ 
+			\hline
+			ResNet-200 & 200 & 21.66 & 5.79 & 296.51 \\
+			\hline
+		\end{tabular}
+		\caption{CNN benchmarks}
+		\label{table:cnn_benchmarks}
+	\end{center}
+\end{table}
 
-We refer to our entire configuration as a double Siamese network, since each half of the Siamese network has two base CNNs, $I$ and $V$.
+Our implementation modifies ResNet-50 by changing its standard weight initializations, changing the activation functions, and by specifying a 1024-dimensional output for our image embedding. The choice of 1024 for our image embedding dimension is somewhat arbitrary. We desire to keep our dimension around the same magnitude as the outputs for ImageNet and Places365--1000 and 365 respectively.
+
+
+\subsubsection{He Normal weight initialization}
+We use the He Normal weight initialization, which assumes a truncated normal distribution with zero mean and a standard deviation equivalent to $\sqrt{2 / f}$, where $f$ is the number of input connections in a layer's weight tensor. Usually, CNNs are initialized with weights drawn from Gaussian distributions. Glorot and Bengio argue that we would like the variance of a layer $l_{n+1}$ to be equivalent to the variance of our output of the previous layer $l_{n}$ so that our weights neither shrink to 0 nor explode as an input is passed through a deep network.\cite{glorot2010understanding} Their Xavier-Glorot initialization preserves the magnitude of weights for both the forward and backwards passes. This necessitates choosing a weight initialization, $W$, such that $Var(W_i) = \dfrac{2}{n_{in}+n_{out}}$, where $n_{in}$ and $n_{out}$ refer to the number of input and output connections for an $i$-indexed neuron. He et al. find that this initialization leads to a stall in training for very deep architectures with more than 30 layers and propose the He Normal initialization which requires instead that $Var(W_i) = \dfrac{2}{n_{in}}$.\cite{he2015delving}
+
+\subsubsection{Parametric ReLU activation}
+Activation layers are used to control which nodes in a layer send output to the next layer. The standard activation currently used in deep learning is the rectified linear activation unit (ReLU), which takes the form
+\begin{equation}
+f(x) = \begin{cases}
+x & x > 0 \\
+0 & x\leq 0 \\
+\end{cases}
+\end{equation}
+Various forms of ReLU have been proposed, notably the parametric ReLU (pReLU), which adds a learnable parameter, $\alpha$, to control a slope for the negative activation domain and which was used by He et al. to achieve better than human performance for ImageNet classification.\cite{he2016deep}
+\begin{equation}
+f(x) = \begin{cases}
+x & x > 0 \\
+\alpha x & x \leq 0 \\
+\end{cases}
+\end{equation} 
+
+Because we are training on a fairly large and very noisy dataset, we seek to mitigate the possibility of 'dying' ReLU activations by using parametric ReLU activations. ReLU units can 'die' when a large gradient causes the weights to update in such a way that the unit never again activates for the rest of the dataset, causing it to output 0. Since the unit never contributes to the model prediction, it is never updated, and is therefore a dead end in the model. Experimentally, up to 40\% of network ReLU units can die. We expect it will be important to mitigate this since our dataset spans a wide variety of images, from all white to all black, and therefore we are likely to have a high chance of killing more ReLU units than normal.
+
+In addition, we clip the norms of our weight gradients at 1.
+
+\subsection{Loss Function}
+In this paper we use two different loss functions. One loss function, Equation \ref{eq:hadsell_loss}, follows the contrastive loss proposed by Hadsell et al.\cite{hadsell2006dimensionality}, which assigns a high loss to pairs whose embeddings are far apart and a low loss to pairs whose embeddings are close together. The contrastive loss function takes three parameters: $l$, a binary variable which indicates whether a pair is similar or dissimilar, and a base image $p_1$ and a query image $p_2$. $g$ is a gap parameter which we set to be 1. We use the Hadsell loss when training $\mathbf{C}$. Wang et al.\cite{wang2014learning} extend this loss function, given in Equation \ref{eq:Wang_loss}, to take triplets of images. We will refer to this as triplet loss. Again, $g$ is a gap parameter. When a positive pair distance is smaller than a negative pair distance by at least $g$, the loss function takes the value of 0. When the positive pair distance is larger, however, the loss becomes as large as the distance difference, plus the value of $g$. We only use the Wang loss when training $\mathbf{B}$ because it requires passing in a triplet of images. For the $\mathbf{C}$ training phase, it is computationally prohibitive to extend our pair sampling heuristics to sample valid triplets.
+
+\begin{equation} \label{eq:hadsell_loss}
+L(l, p_1, p_2) = \dfrac{1}{2}lS(p_1, p_2) + \dfrac{1}{2}(1-l)\text{max}(0, (g-S(p_1,p_2)))
+\end{equation}
+
+\begin{equation} \label{eq:Wang_loss}
+l(p_i, p_i^+, p_i^-) = \text{max}\{0, g + ||f(p_i) - f(p_i^+)||_2^2 - ||f(p_i)-f(p_i^-)||_2^2\}
+\end{equation}
+
+We add L2 regularization for both of these loss functions. The constrastive loss function becomes
+\begin{equation}
+\dfrac{\lambda}{2}||\mathbf{W}||_2^2 \text{max}\{0, g + ||f(p_i) - f(p_i^+)||_2^2 - ||f(p_i)-f(p_i^-)||_2^2\}
+\end{equation}
+where $\lambda$ is a regularization parameter and $\mathbf{W}$ is our weight parameter matrix.
+
+\subsection{Optimizer}
+
+We considered several optimizers: stochastic gradient descent (SGD), RMSprop\cite{tieleman2012lecture}, Adagrad \cite{duchi2011adaptive}, Adadelta\cite{zeiler2012adadelta}, Adam\cite{kingma2014adam}, and Nadam\cite{kingma2014adam}. Before beginning training, we run a small subsampling of our data to select our optimizer based on validation loss. While Nadam, which is Adam with Nesterov momentum, proved to be the most volatile, often causing exploding gradient updates, it also proved the best at finding successively deeper local minima. The Adam optimizer essentially combines momentum, which averages the direction of gradient updates with an exponential decay parameter to find the proper update vector direction, with RMSprop, which determines the direction of the update vector. Nadam is an adaptive-learning method, meaning that a learning rate schedule is not necessary. We use standard hyperparameters for Nadam, with an initial learning rate of 0.002, $\beta_1=0.9$, $\beta_2=0.999$, and $\epsilon=10^{-8}$.
+
+The results for the majority of our datasets is similar to Figure \ref{fig:nonsmooth_training} (a), with an extremely smooth log-loss curve. As can be seen, loss drops off very quickly in the initial epochs. We found the initial gradients of Nadam to be much steeper in practice than any of the other optimizers. For $\mathcal{P}_{10,2013-2015,user}$, which had a greater than 50\% inversion rate, the loss space is much rougher. Still, Nadam is able to successively escape local minima, as seen by the periodic dropoffs in training loss, and bring validation loss back in line with training loss. Since we checkpoint our models at the end of each epoch when our validation loss decreases, this is almost equivalent to optimal behavior.
+
+\begin{figure}[!htbp]
+	\centering
+	\begin{tabular}{cc}
+		\includegraphics[width=0.5\textwidth]{histories/2014_01_32000.png}  &       \includegraphics[width=0.5\textwidth]{histories/a2013-5_10m_user.png}  \\
+		(a) $\mathcal{P}_{1,2000,01\_2014}$ & (b) $\mathcal{P}_{10,2013-2015,user}$\\[6pt]
+	\end{tabular}
+	\caption{Nonsmooth training}
+	\label{fig:nonsmooth_training}
+\end{figure}
+
+
+
+\subsection{Blending Variant and Invariant Outputs}
+We use a shallow CNN to blend our variant and invariant outputs. We experiment with CNNs with one and two fully connected layers and also experiment with the sizes of these layers. Because of the limited size of our dataset, we experiment with some ad-hoc manual architectures as well by including a residual layer for either the variant output or invariant output, or for both. When using two fully connected ayers, we use dropout improved generalizability. Again, we use a He Normal weight initialization and pReLU for our activation function.
+
+
+
+\section{Training Overview}
+When considered together, we refer to $\mathbf{I}$ and $\mathbf{V}$ as a module $\mathbf{C}$. $\mathbf{B}$ is trained separately. We feed our model pairs of training images, alternating between similar and dissimilar pairs $(p, p^+)$ and $(p, p^-)$. Images are preprocessed by rescaling both the width and height to 224 pixels, leaving the color channel in place and unmodified. Data augmentation, when used, is applied directly after preprocessing. The base image, $p$, is fed to half of our Siamese network, which we denote as $\mathbf{C_p}$, and the query image, which will be either $p^+$ or $p^-$, is fed to the other half of the Siamese net, $\mathbf{C_q}$. As this is a Siamese configuration, $\mathbf{C_p}$ and $\mathbf{C_q}$ are initialized with the same weights and share weight updates throughout training. The Euclidean distance between the outputs of $\mathbf{C_p}$ and $\mathbf{C_q}$ are fed to a contrastive loss layer, which controls the weight update gradients. 
+
+We use the Flickr dataset to train our $\mathbf{C}$ module and the Google dataset to train $\mathbf{B}$. We first discuss the training of $\mathbf{C}$, which is shown in Figure \ref{fig:variant_model_train}. For training $\mathbf{C}$, we use two different methods. $\mathbf{B}$ does not come into play at all for the training of $\mathbf{C}$. For the first method, we do not train $\mathbf{I}$, but instead use a network pretrained on ImageNet, which has been shown to learn image invariants such as translational, rotational, reflectional, illumination, and crop invariants. We freeze the weights of this network. Thus, only the weights of $\mathbf{V}$ will be updated. We run pairs of images through our Siamese network, feeding base images $p$ to $\mathbf{C_p}$ and taking the concatenated output of $\mathbf{I_p}$ and $\mathbf{V_p}$ as its output $E_p$. The query image, which is either similar or dissimilar to $p$, is fed to $\mathbf{C_q}$, which produces the concatenated output of $\mathbf{I_q}$ and $\mathbf{V_q}$ as its output $E_q$. The Euclidean distance of $||E_p - E_q||$ is passed to our contrastive loss layer, which takes our fuzzy binary label for similarity/dissimilarity, and signals the model to update weights so that input pairs labeled as similar produce image embeddings with small Euclidean distances, and input pairs labeled as dissimilar produce image embeddings with larger Euclidean distances. This method is the one illustrated in Figure \ref{fig:variant_model_train}.
+
+In the second method, we feed input images only to $\mathbf{V}$ and not to $\mathbf{I}$. The output of $\mathbf{V}$ is taken as the output of $C$, and the rest of the process is the same as in the first method.
+
+Regardless of how we have trained weights for $\mathbf{V}$ and $\mathbf{I}$, the training of $\mathbf{B}$ remains the same. $\mathbf{B}$ takes as input the concatenated outputs of $\mathbf{V}$ and $\mathbf{I}$ and the output of $\mathbf{B}$ is taken as the output of $C$, which is passed to the Euclidean distance layer and then the contrastive loss layer as before. The computed gradients are used to update the weights of $\mathbf{B}$ only; the weights of $\mathbf{V}$ and $\mathbf{I}$ are frozen. $\mathbf{B}$ is trained using the Google dataset, which is strongly labeled. Since the Google dataset is quite small, we use 10-fold cross-validation.
+
 
 % Define block styles
 %\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
@@ -37,10 +138,10 @@ minimum height=2em]
 	\node [input_source, above=1cm of preprocessed] (pairs) {Positive and negative pair mining};
 	\node [input_source, above=1cm of pairs] (data) {Flickr image data};
 	\node [input, left=1cm of p] (label) {Label};
-	\node [network, below left =1cm and -1cm of p] (inv_p) {Invariant CNN ($I$)\\ (frozen)};
-	\node [network, below right =1cm and -1cm of p] (var_p) {Variant CNN ($V$)};
-	\node [network, below left =1cm and -1 cm of q] (inv_q) {Invariant CNN ($I$)\\ (frozen)};
-	\node [network, below right =1cm and -1 cm of q] (var_q) {Variant CNN ($V$)};
+	\node [network, below left =1cm and -1cm of p] (inv_p) {Invariant CNN ($\mathbf{I}$)\\ (frozen)};
+	\node [network, below right =1cm and -1cm of p] (var_p) {Variant CNN ($\mathbf{V}$)};
+	\node [network, below left =1cm and -1 cm of q] (inv_q) {Invariant CNN ($\mathbf{I}$)\\ (frozen)};
+	\node [network, below right =1cm and -1 cm of q] (var_q) {Variant CNN ($\mathbf{V}$)};
 	\node [layer, below =3cm of p] (concatenate_p) {Concatenate outputs};
 	\node [layer, below =3cm of q] (concatenate_q) {Concatenate outputs};
 	
@@ -71,8 +172,48 @@ minimum height=2em]
 	%\draw[dotted, bend left,->] (loss) to node {update weights} (blend_p);
 	%\draw[dotted, bend right,->] (loss) to node[yshift=5pt] {update weights} (blend_q);
 	\end{tikzpicture}
+	\caption{Method 1 for training the variant network, $\mathbf{V}$}
 	\label{fig:variant_model_train}
-	\caption{Pipeline for training the variant network, $V$}
+\end{figure}
+
+\begin{figure}[!htpb]
+	\centering
+	\begin{tikzpicture}[node distance = 2cm, auto]
+	
+	% Place nodes
+	\node [input] (p) {Base image ($p$)};
+	\node [input, right=3cm of p] (q) {Query image ($p_{+,-}$)};
+	\coordinate (image_middle) at ($(p)!0.5!(q)$);
+	\node [data, above=1cm of image_middle] (preprocessed) {Preprocessed image pairs};
+	\node [input_source, above=1cm of preprocessed] (pairs) {Positive and negative pair mining};
+	\node [input_source, above=1cm of pairs] (data) {Flickr image data};
+	\node [input, left=1cm of p] (label) {Label};
+	\node [network, below  =1cm and -1cm of p] (var_p) {Variant CNN ($\mathbf{V}$)};
+	\node [network, below  =1cm and -1 cm of q] (var_q) {Variant CNN ($\mathbf{V}$)};
+	
+	%\node [draw=black!50, fit={(inv_p), (var_p), (blend_p), (concatenate_p)}] {};
+	%\node [draw=black!50, fit={(inv_q), (var_q), (blend_q), (concatenate_q)}] {};
+	
+	\coordinate (concat_middle) at ($(var_p)!0.5!(var_q)$);
+	\node [layer, below of=concat_middle] (euclidean) {Euclidean distance};
+	\node [layer, below of=euclidean] (loss) {Constrastive loss};
+	% Draw edges
+	\path [line] (p) -- (var_p);
+	\path [line] (q) -- (var_q);
+	\path [line] (label) |- (loss);
+	\path [line] (var_p) -- (euclidean);
+	\path [line] (var_q) -- (euclidean);
+	\path [line] (euclidean) -- (loss);
+	\path [line] (data) -- (pairs);
+	\path [line] (pairs) -- (preprocessed);
+	\path[line] (preprocessed) -| (label);
+	\path[line] (preprocessed) -- (p);
+	\path[line] (preprocessed) -- (q);
+	%\draw[dotted, bend left,->] (loss) to node {update weights} (blend_p);
+	%\draw[dotted, bend right,->] (loss) to node[yshift=5pt] {update weights} (blend_q);
+	\end{tikzpicture}
+	\caption{Method 2 for training the variant network, $\mathbf{V}$}
+	\label{fig:variant_model_train_2}
 \end{figure}
 
 
@@ -87,14 +228,14 @@ minimum height=2em]
 \node [data, above=1cm of image_middle] (preprocessed) {Preprocessed image pairs};
 \node [input_source, above=1cm of preprocessed] (data) {Google image queries};
 \node [input, left=1cm of p] (label) {Label};
-\node [network, below left =1cm and -1cm of p] (inv_p) {Invariant CNN ($I$)\\ (frozen)};
-\node [network, below right =1cm and -1cm of p] (var_p) {Variant CNN ($V$)\\ (frozen)};
-\node [network, below left =1cm and -1 cm of q] (inv_q) {Invariant CNN ($I$)\\ (frozen)};
-\node [network, below right =1cm and -1 cm of q] (var_q) {Variant CNN ($V$)\\ (frozen)};
+\node [network, below left =1cm and -1cm of p] (inv_p) {Invariant CNN ($\mathbf{I}$)\\ (frozen)};
+\node [network, below right =1cm and -1cm of p] (var_p) {Variant CNN ($\mathbf{V}$)\\ (frozen)};
+\node [network, below left =1cm and -1 cm of q] (inv_q) {Invariant CNN ($\mathbf{I}$)\\ (frozen)};
+\node [network, below right =1cm and -1 cm of q] (var_q) {Variant CNN ($\mathbf{V}$)\\ (frozen)};
 \node [layer, below =3cm of p] (concatenate_p) {Concatenate outputs};
 \node [layer, below =3cm of q] (concatenate_q) {Concatenate outputs};
-\node [network, below =1cm of concatenate_p] (blend_p) {Blending CNN ($B$)};
-\node [network, below =1cm of concatenate_q] (blend_q) {Blending CNN ($B$)};
+\node [network, below =1cm of concatenate_p] (blend_p) {Blending CNN ($\mathbf{B}$)};
+\node [network, below =1cm of concatenate_q] (blend_q) {Blending CNN ($\mathbf{B}$)};
 
 %\node [draw=black!50, fit={(inv_p), (var_p), (blend_p), (concatenate_p)}] {};
 %\node [draw=black!50, fit={(inv_q), (var_q), (blend_q), (concatenate_q)}] {};
@@ -124,89 +265,20 @@ minimum height=2em]
 %\draw[dotted, bend left,->] (loss) to node {update weights} (blend_p);
 %\draw[dotted, bend right,->] (loss) to node[yshift=5pt] {update weights} (blend_q);
 \end{tikzpicture}
+\caption{Pipeline for training the blending network, $\mathbf{B}$}
 \label{fig:blend_model_train}
-\caption{Pipeline for training the blending network, $B$}
 \end{figure}
 
-% Each half $C_x$ is composed of three CNNs: $I, V,$ and $B$. The input image is passed to $I$ and $V$, which are intended to output the presence of image invariants and  learned variants respectively. We combine their outputs with a shallow CNN, $B$, which has learned a function to blend their contributions. In essence, $B$ has learned when image invariants are more critical to image similarity than variants, and vice versa. The output of $B$ is taken as the output of $C_x$, and we find the Euclidean distances of these two output vectors, which represent our image embeddings. Smaller distances indicate similar images, and larger distances indicate dissimilar images. These distance outputs can either be used either for relative similarity comparisons or to produce a binary similar/dissimilar judgement for a pair of images by using a separating margin of 0.5. 
+% Each half $C_x$ is composed of three CNNs: $I, V,$ and $\mathbf{B}$. The input image is passed to $\mathbf{I}$ and $\mathbf{V}$, which are intended to output the presence of image invariants and  learned variants respectively. We combine their outputs with a shallow CNN, $\mathbf{B}$, which has learned a function to blend their contributions. In essence, $\mathbf{B}$ has learned when image invariants are more critical to image similarity than variants, and vice versa. The output of $\mathbf{B}$ is taken as the output of $C_x$, and we find the Euclidean distances of these two output vectors, which represent our image embeddings. Smaller distances indicate similar images, and larger distances indicate dissimilar images. These distance outputs can either be used either for relative similarity comparisons or to produce a binary similar/dissimilar judgement for a pair of images by using a separating margin of 0.5. 
 
 
-\subsection{Proprocessing}
+\subsection{Preprocessing}
 We downsample all images to size (224,224), a common size proven useful for feature representation for the ImageNet classification task by the ResNet architectures.\cite{He2015} We do not grayscale our images or perform any other color manipulation because we expect the time of day a photo is taken to have a significant effect on its representation in our image embedding. However, many photos uploaded to Flickr are in grayscale, so we remove these using an entropy metric. We first apply a Laplacian filter to each image and then find the Shannon entropy, pruning images with an entropy below a threshold. For some experiments, we apply mean pixel subtraction to center our data by subtracting the color channel means for our entire dataset from each training image. This is to bound each input image's pixel values to roughly the same range so that when we share gradients in the backpropagation phase of our CNN training, we don't have weights of varying magnitudes. We find that our use of batch normalization layers is able to share gradients effectively, negating the usefulness of mean pixel subtraction, so we do not use this technique for all experiments.
 
 \subsection{Data Augmentation}
 Data augmentation is applied after preprocessing for some of our experiments, mainly to improve model generalizability. Images are randomly flipped, both horizontally and vertically,  rotated up to 20 degrees, and cropped on zooms of up to 5\%. We do not apply any augmentation to color channels. 
 
-\subsection{Detecting Variants and Invariants}
-
-We do very little exploration of different network configurations, opting to lightly modify a 50 layer ResNet architecture. The ResNet family, which advanced the idea of using residual layers, represented a powerful step forward in deep architectures in 2015, winning first place in the ImageNet classification, ImageNet detection, ImageNet localization, COCO detection, and COCO segmentation competitions.\cite{He2015} While ResNet is no longer considered a cutting edge architecture, as it has been surpassed by the third generation of Inception architectures as well as by ResNet hybrids like Inception-ResNet, we choose to use a ResNet model as our base model because of the previous work done in demonstrating the effectiveness of various ResNet depths.\cite{He2015}\cite{szegedy2016inception} Popular versions of ResNet include ResNet-18, ResNet-34, ResNet-50, ResNet-101, ResNet-152, and ResNet-200. In general, increasing depths produce increased accuracy on standard vision benchmarks, while taking greater penalties in the form of increased memory footprints and slower training speeds for forward and backward passes during backpropagation. The advantage of the ResNet family lies in our ability to easily scale the depth of our network, should we decide our task requires greater visual discriminative power or faster training speeds. More powerful Inception architectures are tuned with a different preprocessing pipeline, so swapping out deeper architectures would not be as easy. The performance gap between ResNet and cutting edge architectures is small enough, as shown in Table \ref{table:cnn_benchmarks}, that we choose to stick with the ResNet family for the increased flexibility. Ultimately, we found that within the ResNet family, ResNet-50 had a suitable balance between model depth and training speed.
-
-\begin{center}
- \begin{tabular}{||c c c c c||} 
- \hline
- Network & Layers & Top-1 error & Top-5 error & Speed (ms) \\ [0.5ex] 
- \hline\hline
- Inception V3 & 48 & 21.2 & 5.6 & NA \\ 
- \hline
- Inception-ResNet-2 & NA & 19.6 & 4.7 & NA \\ 
- \hline
- ResNet-18 & 18 & 30.43 & 10.76 & 31.54 \\ 
- \hline
- ResNet-34 & 34 & 26.73 & 8.74 & 51.59 \\ 
- \hline
-  ResNet-50 & 50 & 24.01 & 7.02 & 103.58 \\ 
- \hline
-  ResNet-101 & 101 & 22.44 & 6.21 & 156.44 \\ 
- \hline
-  ResNet-152 & 152 & 22.16 & 6.16 & 217.91 \\ 
- \hline
-  ResNet-200 & 200 & 21.66 & 5.79 & 296.51 \\[1ex] 
- \hline
-\end{tabular}
-\label{table:cnn_benchmarks}
-\end{center}
-
-Our implementation modifies ResNet-50 by changing its standard weight initializations, changing the activation functions, and by specifying a 1024-dimensional output for our image embedding. The choice of 1024 for our image embedding dimension is somewhat arbitrary. We desire to keep our dimension around the same magnitude as the outputs for ImageNet and Places365--1000 and 365 respectively.
-
 \subsubsection{}
-
-\subsubsection{He Normal weight initialization}
-We use the He Normal weight initialization, which assumes a truncated normal distribution with zero mean and a standard deviation equivalent to $\sqrt{2 / f}$, where $f$ is the number of input connections in a layer's weight tensor. Usually, CNNs are initialized with weights drawn from Gaussian distributions. Glorot and Bengio argue that we would like the variance of a layer $l_{n+1}$ to be equivalent to the variance of our output of the previous layer $l_{n}$ so that our weights neither shrink to 0 nor explode as an input is passed through a deep network.\cite{glorot2010understanding} Their Xavier-Glorot initialization preserves the magnitude of weights for both the forward and backwards passes. This necessitates choosing a weight initialization, $W$, such that $Var(W_i) = \dfrac{2}{n_{in}+n_{out}}$, where $n_{in}$ and $n_{out}$ refer to the number of input and output connections for an $i$-indexed neuron. He et al. find that this initialization leads to a stall in training for very deep architectures with more than 30 layers and propose the He Normal initialization which requires instead that $Var(W_i) = \dfrac{2}{n_{in}}$.\cite{he2015delving}
-
-\subsubsection{Parametric ReLU activation}
-Activation layers are used to control which nodes in a layer send output to the next layer. The standard activation currently used in deep learning is the rectified linear activation unit (ReLU), which takes the form
-\begin{equation}
-	f(x) = \begin{cases}
-	   x & x > 0 \\
-	   0 & x\leq 0 \\
-     \end{cases}
-\end{equation}
-Various forms of ReLU have been proposed, notably the parametric ReLU (pReLU), which adds a learnable parameter, $\alpha$, to control a slope for the negative activation domain and which was used by He et al. to achieve better than human performance for ImageNet classification.\cite{he2016deep}
-\begin{equation}
-	f(x) = \begin{cases}
-	   x & x > 0 \\
-	   \alpha x & x \leq 0 \\
-     \end{cases}
-\end{equation} 
-
-Because we are training on a fairly large and very noisy dataset, we seek to mitigate the possibility of 'dying' ReLU activations by using parametric ReLU activations. ReLU units can 'die' when a large gradient causes the weights to update in such a way that the unit never again activates for the rest of the dataset, causing it to output 0. Since the unit never contributes to the model prediction, it is never updated, and is therefore a dead end in the model. Experimentally, up to 40\% of network ReLU units can die. We expect it will be important to mitigate this since our dataset spans a wide variety of images, from all white to all black, and therefore we are likely to have a high chance of killing more ReLU units than normal.
-
-In addition, we clip the norms of our weight gradients at 1.
-
-\subsection{Blending Variant and Invariant Outputs}
-We use a shallow CNN to blend our variant and invariant outputs. We experiment with CNNs with one and two fully connected layers and also experiment with the sizes of these layers. Because of the limited size of our dataset, we experiment with some ad-hoc manual architectures as well by including a residual layer for either the variant output or invariant output, or for both. When using two fully connected ayers, we use dropout improved generalizability. Again, we use a He Normal weight initialization and pReLU for our activation function.
-
-\subsection{Loss Function}
-Our loss function follows the contrastive loss proposed by Hadsell et al.\cite{hadsell2006dimensionality}, which assigns a high loss to pairs whose embeddings are far apart and a low loss to pairs whose embeddings are close together. Wang et al.\cite{wang2014learning} had extended this loss function to take triplets of images, but in order to use this loss, we would have to prepare triplets of images, which proved computationally intractible for certain experiments we wanted to run, which we will discuss in Chapter \ref{chapter:data}.
-
-\begin{equation}
-L(l, p_1, p_2) = \dfrac{1}{2}lS(p_1, p_2) + \dfrac{1}{2}(1-l)\text{max}(0, (g-S(p_1,p_2)))
-\end{equation}
-
-\begin{equation}
-l(p_i, p_i^+, p_i^-) = \text{max}\{0, g + ||f(p_i) - f(p_i^+)||_2^2 - ||f(p_i)-f(p_i^-)||_2^2\}
-\end{equation}
-
 
 
 \section{Training and Validation}

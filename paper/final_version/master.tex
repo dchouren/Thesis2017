@@ -4,13 +4,12 @@
 \usepackage{enumerate}
 \usepackage[OT1]{fontenc}
 \usepackage{amsmath,amssymb}
-\usepackage{natbib}
+\usepackage[numbers]{natbib}
 \usepackage[usenames]{color}
 %\usepackage[dvips]{graphicx}
 %\usepackage{bm}
 
 \usepackage{smile}
-\usepackage{natbib}
 \usepackage{multirow}
 \usepackage{listings}
 % \usepackage{geometry}
@@ -48,6 +47,7 @@
 \usepackage{afterpage}
 \usepackage{relsize}
 \usepackage{tabularx}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X} 
 
 %\mathbb{set}
 
@@ -82,8 +82,8 @@
 \setlength{\parindent}{0pt}
 \renewcommand{\indent}{\hspace*{\tindent}}
 
-\renewcommand*{\chapterheadstartvskip}{\vspace*{1cm}}
-\renewcommand*{\chapterheadendvskip}{\vspace{2cm}}
+%\renewcommand*{\chapterheadstartvskip}{\vspace*{1cm}}
+%\renewcommand*{\chapterheadendvskip}{\vspace{2cm}}
 
 \usepackage{mathrsfs}
 
@@ -94,6 +94,7 @@
 \usepackage{hyperref}
 %\usepackage[protrusion=false,expansion=true]{microtype}
 %\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+\usepackage[english]{babel}
 \usepackage[    protrusion=true,
             expansion=true,
             final,
@@ -131,14 +132,17 @@
 %% chapter-fixing
 \newcommand{\mychapter}[2]{
     \setcounter{chapter}{#1}
-    \setcounter{section}{0}
+%    \setcounter{section}{0}
     \chapter{#2}
     \addcontentsline{toc}{chapter}{#2}
 }
 
 %% landscaping
+%\usepackage[toc,page]{appendix}
+\usepackage[titletoc]{appendix}
 \usepackage{rotating}
 \usepackage{pdflscape}
+\usepackage{textcomp} % https://tex.stackexchange.com/questions/165115/getting-not-defining-perthousnad-and-not-defining-micro-when-compiling-beamer
 \usepackage{gensymb}
 
 %% indicator function
@@ -189,7 +193,7 @@
 \HRule \\[0.2cm]
 %{\Large \bfseries Weakly Learning\\
 %	a Fine-Grained Image Similarity\\
-{\Large \bfseries Learning Fine-Grained\\
+{\LARGE \bfseries Learning Fine-Grained\\
 	Image Similarity Through\\
 	Weak Supervision\\
 \par}
@@ -296,25 +300,33 @@ purpose of scholarly research.}
 % \pagestyle{headings}
 \pagenumbering{arabic}
 
-\mychapter{0}{Abstract} \label{chapter:abstract}
+\chapter*{Abstract} \label{section:abstract}
+	\addcontentsline{toc}{chapter}{Abstract}
+	Learning an embedding useful for fine-grained image similarity on a human perception level requires detecting three general classes of attributes: 1) high level semantic characteristics, such as emotional qualities or aesthetic styles; 2) complex visual descriptors such as the objects that comprise the focus on an image; and 3) low level descriptors such as textures and colors which can influence human perception of the first two classes. In this paper, we present a deep multi-module Siamese network that allows for the learning and blending of these three attribute classes. We train the network using weak supervision by sampling publicly available Flickr images for image pairs deemed similar and dissimilar by a set of constructed heuristics. Experiments show that this weakly supervised model learns a highly generalizable similarity embedding which surpasses the effectiveness of ImageNet trained models.
+	
 
-\mychapter{1}{Introduction} \label{chapter:intro}
+\chapter{Introduction} \label{chapter:intro}
 \subfile{Introduction}
 
-\mychapter{2}{Background} \label{chapter:background}
+\chapter{Background} \label{chapter:background}
 \subfile{Background}
 
-\mychapter{3}{Network Architecture and Training} \label{chapter:network}
+\chapter{Network Architecture and Training} \label{chapter:network}
 \subfile{Network}
 
-\mychapter{4}{Data} \label{chapter:data}
+\chapter{Data} \label{chapter:data}
 \subfile{Data}
 
-\mychapter{5}{Experiments} \label{chapter:experiments}
+\chapter{Experiments and Discussion} \label{chapter:experiments}
 \subfile{Experiments}
 
-\mychapter{6}{Results and Conclusion} \label{chapter:results}
-\subfile{Results}
+\chapter{Conclusion} \label{chapter:conclusion}
+\subfile{Conclusion}
+
+\begin{appendices}
+%\appendix
+\subfile{Appendix}
+\end{appendices}
 
 \setlength{\bibsep}{1pt}
 {

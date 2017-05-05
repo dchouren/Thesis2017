@@ -21,6 +21,12 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
+\bibitem{abdel2006csift}
+A.~E. Abdel-Hakim and A.~A. Farag, ``Csift: A sift descriptor with color
+  invariant characteristics,'' in \emph{Computer Vision and Pattern
+  Recognition, 2006 IEEE Computer Society Conference on}, vol.~2.\hskip 1em
+  plus 0.5em minus 0.4em\relax IEEE, 2006, pp. 1978--1983.
+
 \bibitem{angelova2013image}
 A.~Angelova, S.~Zhu, and Y.~Lin, ``Image segmentation for large-scale
   subcategory flower recognition,'' in \emph{Applications of Computer Vision
@@ -47,15 +53,33 @@ A.~Bergamo and L.~Torresani, ``Exploiting weakly-labeled web images to improve
   object classification: a domain adaptation approach,'' in \emph{Advances in
   Neural Information Processing Systems}, 2010, pp. 181--189.
 
+\bibitem{bober2001mpeg}
+M.~Bober, ``Mpeg-7 visual shape descriptors,'' \emph{IEEE Transactions on
+  circuits and systems for video technology}, vol.~11, no.~6, pp. 716--719,
+  2001.
+
+\bibitem{bouchard2005hierarchical}
+G.~Bouchard and B.~Triggs, ``Hierarchical part-based visual object
+  categorization,'' in \emph{Computer Vision and Pattern Recognition, 2005.
+  CVPR 2005. IEEE Computer Society Conference on}, vol.~1.\hskip 1em plus 0.5em
+  minus 0.4em\relax IEEE, 2005, pp. 710--715.
+
 \bibitem{bowyer2016nd}
 K.~W. Bowyer and P.~J. Flynn, ``The nd-iris-0405 iris image dataset,''
   \emph{arXiv preprint arXiv:1606.04853}, 2016.
 
 \bibitem{bromley1993signature}
 J.~Bromley, J.~W. Bentz, L.~Bottou, I.~Guyon, Y.~LeCun, C.~Moore,
-  E.~S{\"a}ckinger, and R.~Shah, ``Signature verification using a "siamese"
+  E.~S{\"a}ckinger, and R.~Shah, ``Signature verification using a 'siamese'
   time delay neural network,'' \emph{IJPRAI}, vol.~7, no.~4, pp. 669--688,
   1993.
+
+\bibitem{chopra2005learning}
+S.~Chopra, R.~Hadsell, and Y.~LeCun, ``Learning a similarity metric
+  discriminatively, with application to face verification,'' in \emph{Computer
+  Vision and Pattern Recognition, 2005. CVPR 2005. IEEE Computer Society
+  Conference on}, vol.~1.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2005,
+  pp. 539--546.
 
 \bibitem{chu2016image2weather}
 W.-T. Chu, X.-Y. Zheng, and D.-S. Ding, ``Image2weather: A large-scale image
@@ -81,6 +105,15 @@ J.~Deng, W.~Dong, R.~Socher, L.-J. Li, K.~Li, and L.~Fei-Fei, ``Imagenet: A
   Pattern Recognition, 2009. CVPR 2009. IEEE Conference on}.\hskip 1em plus
   0.5em minus 0.4em\relax IEEE, 2009, pp. 248--255.
 
+\bibitem{duchi2011adaptive}
+J.~Duchi, E.~Hazan, and Y.~Singer, ``Adaptive subgradient methods for online
+  learning and stochastic optimization,'' \emph{Journal of Machine Learning
+  Research}, vol.~12, no. Jul, pp. 2121--2159, 2011.
+
+\bibitem{eakins1999university}
+J.~Eakins, M.~Graham, and C.-b.~I. Retrieval, ``University of northumbria at
+  newcastle,'' \emph{Content-based Image Retrieval}, 1999.
+
 \bibitem{fergus2010learning}
 R.~Fergus, L.~Fei-Fei, P.~Perona, and A.~Zisserman, ``Learning object
   categories from internet image searches,'' \emph{Proceedings of the IEEE},
@@ -95,6 +128,12 @@ R.~Girshick, J.~Donahue, T.~Darrell, and J.~Malik, ``Rich feature hierarchies
 \bibitem{glorot2010understanding}
 X.~Glorot and Y.~Bengio, ``Understanding the difficulty of training deep
   feedforward neural networks.'' in \emph{Aistats}, vol.~9, 2010, pp. 249--256.
+
+\bibitem{grauman2005efficient}
+K.~Grauman and T.~Darrell, ``Efficient image matching with distributions of
+  local invariant features,'' in \emph{Computer Vision and Pattern Recognition,
+  2005. CVPR 2005. IEEE Computer Society Conference on}, vol.~2.\hskip 1em plus
+  0.5em minus 0.4em\relax IEEE, 2005, pp. 627--634.
 
 \bibitem{hadsell2006dimensionality}
 R.~Hadsell, S.~Chopra, and Y.~LeCun, ``Dimensionality reduction by learning an
@@ -116,21 +155,15 @@ K.~He, X.~Zhang, S.~Ren, and J.~Sun, ``Deep residual learning for image
   of the IEEE Conference on Computer Vision and Pattern Recognition}, 2016, pp.
   770--778.
 
-\bibitem{jain1997object}
-A.~K. Jain, N.~K. Ratha, and S.~Lakshmanan, ``Object detection using gabor
-  filters,'' \emph{Pattern recognition}, vol.~30, no.~2, pp. 295--309, 1997.
-
-\bibitem{jegou2012aggregating}
-H.~Jegou, F.~Perronnin, M.~Douze, J.~S{\'a}nchez, P.~Perez, and C.~Schmid,
-  ``Aggregating local image descriptors into compact codes,'' \emph{IEEE
-  transactions on pattern analysis and machine intelligence}, vol.~34, no.~9,
-  pp. 1704--1716, 2012.
-
 \bibitem{karpathy2014large}
 A.~Karpathy, G.~Toderici, S.~Shetty, T.~Leung, R.~Sukthankar, and L.~Fei-Fei,
   ``Large-scale video classification with convolutional neural networks,'' in
   \emph{Proceedings of the IEEE conference on Computer Vision and Pattern
   Recognition}, 2014, pp. 1725--1732.
+
+\bibitem{kingma2014adam}
+D.~Kingma and J.~Ba, ``Adam: A method for stochastic optimization,''
+  \emph{arXiv preprint arXiv:1412.6980}, 2014.
 
 \bibitem{koch2015siamese}
 G.~Koch, ``Siamese neural networks for one-shot image recognition,'' Ph.D.
@@ -154,10 +187,21 @@ S.~Lazebnik, C.~Schmid, and J.~Ponce, ``Beyond bags of features: Spatial
   conference on}, vol.~2.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2006,
   pp. 2169--2178.
 
+\bibitem{le2013building}
+Q.~V. Le, ``Building high-level features using large scale unsupervised
+  learning,'' in \emph{Acoustics, Speech and Signal Processing (ICASSP), 2013
+  IEEE International Conference on}.\hskip 1em plus 0.5em minus 0.4em\relax
+  IEEE, 2013, pp. 8595--8598.
+
 \bibitem{lecun1989backpropagation}
 Y.~LeCun, B.~Boser, J.~S. Denker, D.~Henderson, R.~E. Howard, W.~Hubbard, and
   L.~D. Jackel, ``Backpropagation applied to handwritten zip code
   recognition,'' \emph{Neural computation}, vol.~1, no.~4, pp. 541--551, 1989.
+
+\bibitem{lenc2015understanding}
+K.~Lenc and A.~Vedaldi, ``Understanding image representations by measuring
+  their equivariance and equivalence,'' in \emph{Proceedings of the IEEE
+  conference on computer vision and pattern recognition}, 2015, pp. 991--999.
 
 \bibitem{li2010optimol}
 L.-J. Li and L.~Fei-Fei, ``Optimol: automatic online picture collection via
@@ -175,22 +219,47 @@ T.-Y. Lin, M.~Maire, S.~Belongie, J.~Hays, P.~Perona, D.~Ramanan,
   context,'' in \emph{European Conference on Computer Vision}.\hskip 1em plus
   0.5em minus 0.4em\relax Springer, 2014, pp. 740--755.
 
+\bibitem{lodha2005gsift}
+S.~K. Lodha and Y.~Xiao, ``Gsift: Geometric scale invariant feature transform
+  for data registration,'' in \emph{SPIE Conference on Vision Geometry XIV},
+  2005.
+
 \bibitem{lowe1999object}
 D.~G. Lowe, ``Object recognition from local scale-invariant features,'' in
   \emph{Computer vision, 1999. The proceedings of the seventh IEEE
   international conference on}, vol.~2.\hskip 1em plus 0.5em minus 0.4em\relax
   Ieee, 1999, pp. 1150--1157.
 
-\bibitem{oliva2001modeling}
-A.~Oliva and A.~Torralba, ``Modeling the shape of the scene: A holistic
-  representation of the spatial envelope,'' \emph{International journal of
-  computer vision}, vol.~42, no.~3, pp. 145--175, 2001.
+\bibitem{manjunath2001color}
+B.~S. Manjunath, J.-R. Ohm, V.~V. Vasudevan, and A.~Yamada, ``Color and texture
+  descriptors,'' \emph{IEEE Transactions on circuits and systems for video
+  technology}, vol.~11, no.~6, pp. 703--715, 2001.
+
+\bibitem{mehrotra1992gabor}
+R.~Mehrotra, K.~R. Namuduri, and N.~Ranganathan, ``Gabor filter-based edge
+  detection,'' \emph{Pattern recognition}, vol.~25, no.~12, pp. 1479--1494,
+  1992.
+
+\bibitem{muja2014scalable}
+M.~Muja and D.~G. Lowe, ``Scalable nearest neighbor algorithms for high
+  dimensional data,'' \emph{IEEE Transactions on Pattern Analysis and Machine
+  Intelligence}, vol.~36, no.~11, pp. 2227--2240, 2014.
+
+\bibitem{ohm2001mpeg}
+J.-R. Ohm, L.~Cieplinski, H.~J. Kim, S.~Krishnamachari, B.~Manjunath, D.~S.
+  Messing, and A.~Yamada, ``The mpeg-7 color descriptors.''
 
 \bibitem{paudyal2016smart}
 P.~Paudyal, R.~Olsson, M.~Sj{\"o}str{\"o}m, F.~Battisti, and M.~Carli, ``Smart:
   a light field image quality dataset,'' in \emph{Proceedings of the 7th
   International Conference on Multimedia Systems}.\hskip 1em plus 0.5em minus
   0.4em\relax ACM, 2016, p.~49.
+
+\bibitem{porter1997robust}
+R.~Porter and N.~Canagarajah, ``Robust rotation-invariant texture
+  classification: wavelet, gabor filter and gmrf based schemes,'' \emph{IEE
+  Proceedings-Vision, Image and Signal Processing}, vol. 144, no.~3, pp.
+  180--188, 1997.
 
 \bibitem{pouladzadeh2015foodd}
 P.~Pouladzadeh, A.~Yassine, and S.~Shirmohammadi, ``Foodd: food detection
@@ -203,6 +272,16 @@ A.~Rejeb~Sfar, N.~Boujemaa, and D.~Geman, ``Vantage feature frames for
   fine-grained categorization,'' in \emph{Proceedings of the IEEE Conference on
   Computer Vision and Pattern Recognition}, 2013, pp. 835--842.
 
+\bibitem{ro2001mpeg}
+Y.~M. Ro, M.~Kim, H.~K. Kang, B.~Manjunath, and J.~Kim, ``Mpeg-7 homogeneous
+  texture descriptor,'' \emph{ETRI journal}, vol.~23, no.~2, pp. 41--51, 2001.
+
+\bibitem{rogowitz1998perceptual}
+B.~E. Rogowitz, T.~Frese, J.~R. Smith, C.~A. Bouman, and E.~B. Kalin,
+  ``Perceptual image similarity experiments,'' in \emph{Photonics West'98
+  Electronic Imaging}.\hskip 1em plus 0.5em minus 0.4em\relax International
+  Society for Optics and Photonics, 1998, pp. 576--590.
+
 \bibitem{rubinstein2013unsupervised}
 M.~Rubinstein, A.~Joulin, J.~Kopf, and C.~Liu, ``Unsupervised joint object
   discovery and segmentation in internet images,'' in \emph{Proceedings of the
@@ -214,6 +293,25 @@ O.~Russakovsky, J.~Deng, Z.~Huang, A.~C. Berg, and L.~Fei-Fei, ``Detecting
   avocados to zucchinis: what have we done, and where are we going?'' in
   \emph{Proceedings of the IEEE International Conference on Computer Vision},
   2013, pp. 2064--2071.
+
+\bibitem{russakovsky2015imagenet}
+O.~Russakovsky, J.~Deng, H.~Su, J.~Krause, S.~Satheesh, S.~Ma, Z.~Huang,
+  A.~Karpathy, A.~Khosla, M.~Bernstein \emph{et~al.}, ``Imagenet large scale
+  visual recognition challenge,'' \emph{International Journal of Computer
+  Vision}, vol. 115, no.~3, pp. 211--252, 2015.
+
+\bibitem{sanchez2013image}
+J.~S{\'a}nchez, F.~Perronnin, T.~Mensink, and J.~Verbeek, ``Image
+  classification with the fisher vector: Theory and practice,''
+  \emph{International journal of computer vision}, vol. 105, no.~3, pp.
+  222--245, 2013.
+
+\bibitem{scharstein2014high}
+D.~Scharstein, H.~Hirschm{\"u}ller, Y.~Kitajima, G.~Krathwohl,
+  N.~Ne{\v{s}}i{\'c}, X.~Wang, and P.~Westling, ``High-resolution stereo
+  datasets with subpixel-accurate ground truth,'' in \emph{German Conference on
+  Pattern Recognition}.\hskip 1em plus 0.5em minus 0.4em\relax Springer, 2014,
+  pp. 31--42.
 
 \bibitem{schroff2011harvesting}
 F.~Schroff, A.~Criminisi, and A.~Zisserman, ``Harvesting image databases from
@@ -247,21 +345,36 @@ C.~Szegedy, W.~Liu, Y.~Jia, P.~Sermanet, S.~Reed, D.~Anguelov, D.~Erhan,
   \emph{Proceedings of the IEEE Conference on Computer Vision and Pattern
   Recognition}, 2015, pp. 1--9.
 
+\bibitem{tamura1978textural}
+H.~Tamura, S.~Mori, and T.~Yamawaki, ``Textural features corresponding to
+  visual perception,'' \emph{IEEE Transactions on Systems, Man, and
+  Cybernetics}, vol.~8, no.~6, pp. 460--473, 1978.
+
+\bibitem{tieleman2012lecture}
+T.~Tieleman and G.~Hinton, ``Lecture 6.5-rmsprop: Divide the gradient by a
+  running average of its recent magnitude,'' \emph{COURSERA: Neural networks
+  for machine learning}, vol.~4, no.~2, 2012.
+
+\bibitem{vedaldi2010vlfeat}
+A.~Vedaldi and B.~Fulkerson, ``Vlfeat: An open and portable library of computer
+  vision algorithms,'' in \emph{Proceedings of the 18th ACM international
+  conference on Multimedia}.\hskip 1em plus 0.5em minus 0.4em\relax ACM, 2010,
+  pp. 1469--1472.
+
 \bibitem{wang2014learning}
 J.~Wang, Y.~Song, T.~Leung, C.~Rosenberg, J.~Wang, J.~Philbin, B.~Chen, and
   Y.~Wu, ``Learning fine-grained image similarity with deep ranking,'' in
   \emph{Proceedings of the IEEE Conference on Computer Vision and Pattern
   Recognition}, 2014, pp. 1386--1393.
 
-\bibitem{weyand2016planet}
-T.~Weyand, I.~Kostrikov, and J.~Philbin, ``Planet-photo geolocation with
-  convolutional neural networks,'' in \emph{European Conference on Computer
-  Vision}.\hskip 1em plus 0.5em minus 0.4em\relax Springer, 2016, pp. 37--55.
+\bibitem{weldon1996efficient}
+T.~P. Weldon, W.~E. Higgins, and D.~F. Dunn, ``Efficient gabor filter design
+  for texture segmentation,'' \emph{Pattern recognition}, vol.~29, no.~12, pp.
+  2005--2015, 1996.
 
-\bibitem{wu2011centrist}
-J.~Wu and J.~M. Rehg, ``Centrist: A visual descriptor for scene
-  categorization,'' \emph{IEEE transactions on pattern analysis and machine
-  intelligence}, vol.~33, no.~8, pp. 1489--1501, 2011.
+\bibitem{won2002efficient}
+C.~S. Won, D.~K. Park, and S.-J. Park, ``Efficient use of mpeg-7 edge histogram
+  descriptor,'' \emph{ETRI journal}, vol.~24, no.~1, pp. 23--30, 2002.
 
 \bibitem{xiao2010sun}
 J.~Xiao, J.~Hays, K.~A. Ehinger, A.~Oliva, and A.~Torralba, ``Sun database:
@@ -284,6 +397,10 @@ J.~Yang, K.~Yu, Y.~Gong, and T.~Huang, ``Linear spatial pyramid matching using
 S.~Zagoruyko and N.~Komodakis, ``Learning to compare image patches via
   convolutional neural networks,'' in \emph{Proceedings of the IEEE Conference
   on Computer Vision and Pattern Recognition}, 2015, pp. 4353--4361.
+
+\bibitem{zeiler2012adadelta}
+M.~D. Zeiler, ``Adadelta: an adaptive learning rate method,'' \emph{arXiv
+  preprint arXiv:1212.5701}, 2012.
 
 \bibitem{zhou2014learning}
 B.~Zhou, A.~Lapedriza, J.~Xiao, A.~Torralba, and A.~Oliva, ``Learning deep
