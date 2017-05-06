@@ -59,7 +59,7 @@ def euclidean_distance(vects):
 
 
 def eucl_dist_output_shape(shapes):
-    shape1, shape2 = shapes
+    shape1 = shapes[0]
     return (shape1[0], 1)
 
 

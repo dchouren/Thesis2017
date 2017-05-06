@@ -17,6 +17,8 @@ if len(sys.argv) > 1:
 
 doc = hm.begin_document()
 
+base_preds = np.load(join('/tigress/dchouren/thesis/evaluation/preds', 'base_preds.npy'))
+
 with open('/tigress/dchouren/thesis/evaluation/query_and_triplets.txt', 'r') as inf:
 
     for i, line in enumerate(inf.readlines()):
@@ -27,8 +29,8 @@ with open('/tigress/dchouren/thesis/evaluation/query_and_triplets.txt', 'r') as 
 
         if index == 1:
             doc += hm.open_div()
-            if preds:
-                doc += hm.add_image(line, str(preds[int(i/4)]))
+            if not preds is None:
+                doc += hm.add_image(line, str(preds[int(i/4)]) + ' ' + str(base_preds[int(i/4)]))
             else:
                 doc += hm.add_image(line, label)
         elif index == 2:

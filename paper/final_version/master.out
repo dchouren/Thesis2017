@@ -1,0 +1,45 @@
+\BOOKMARK [0][-]{chapter*.2}{Abstract}{}% 1
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 2
+\BOOKMARK [1][-]{section.1.1}{Image Similarity}{chapter.1}% 3
+\BOOKMARK [1][-]{section.1.2}{Data Constraints}{chapter.1}% 4
+\BOOKMARK [2][-]{subsection.1.2.1}{Alternatives to Strongly Supervised Learning}{section.1.2}% 5
+\BOOKMARK [2][-]{subsection.1.2.2}{Image Invariants}{section.1.2}% 6
+\BOOKMARK [1][-]{section.1.3}{Motivations}{chapter.1}% 7
+\BOOKMARK [1][-]{section.1.4}{Outline}{chapter.1}% 8
+\BOOKMARK [0][-]{chapter.2}{Background}{}% 9
+\BOOKMARK [1][-]{section.2.1}{A History of Image Similarity}{chapter.2}% 10
+\BOOKMARK [2][-]{subsection.2.1.1}{Low-Level Descriptors and Classical Techniques}{section.2.1}% 11
+\BOOKMARK [2][-]{subsection.2.1.2}{The Deep Learning Revolution}{section.2.1}% 12
+\BOOKMARK [2][-]{subsection.2.1.3}{Deep Convolutional Neural Networks}{section.2.1}% 13
+\BOOKMARK [2][-]{subsection.2.1.4}{Deep Networks Today}{section.2.1}% 14
+\BOOKMARK [2][-]{subsection.2.1.5}{Image Invariants}{section.2.1}% 15
+\BOOKMARK [1][-]{section.2.2}{Deep Learning for Image Similarity}{chapter.2}% 16
+\BOOKMARK [2][-]{subsection.2.2.1}{Siamese Neural Networks}{section.2.2}% 17
+\BOOKMARK [1][-]{section.2.3}{Weakly Supervised Learning}{chapter.2}% 18
+\BOOKMARK [0][-]{chapter.3}{Data}{}% 19
+\BOOKMARK [1][-]{section.3.1}{Flickr Data}{chapter.3}% 20
+\BOOKMARK [2][-]{subsection.3.1.1}{Pair Sampling}{section.3.1}% 21
+\BOOKMARK [1][-]{section.3.2}{Middlebury Stereo Data}{chapter.3}% 22
+\BOOKMARK [1][-]{section.3.3}{Google Image Data}{chapter.3}% 23
+\BOOKMARK [2][-]{subsection.3.3.1}{Quantifying the Amount of Fuzziness}{section.3.3}% 24
+\BOOKMARK [1][-]{section.3.4}{Differences with ImageNet}{chapter.3}% 25
+\BOOKMARK [0][-]{chapter.4}{Network Architecture and Training}{}% 26
+\BOOKMARK [1][-]{section.4.1}{Model Design}{chapter.4}% 27
+\BOOKMARK [2][-]{subsection.4.1.1}{Architecture of I and V}{section.4.1}% 28
+\BOOKMARK [2][-]{subsection.4.1.2}{Loss Function}{section.4.1}% 29
+\BOOKMARK [2][-]{subsection.4.1.3}{Optimizer}{section.4.1}% 30
+\BOOKMARK [2][-]{subsection.4.1.4}{Architecture of B}{section.4.1}% 31
+\BOOKMARK [1][-]{section.4.2}{Training Pipeline}{chapter.4}% 32
+\BOOKMARK [2][-]{subsection.4.2.1}{Preprocessing}{section.4.2}% 33
+\BOOKMARK [2][-]{subsection.4.2.2}{Data Augmentation}{section.4.2}% 34
+\BOOKMARK [2][-]{subsection.4.2.3}{Training}{section.4.2}% 35
+\BOOKMARK [0][-]{chapter.5}{Experiments and Discussion}{}% 36
+\BOOKMARK [1][-]{section.5.1}{Weakly Supervised Image Embedding}{chapter.5}% 37
+\BOOKMARK [2][-]{subsection.5.1.1}{Training Module V}{section.5.1}% 38
+\BOOKMARK [2][-]{subsection.5.1.2}{Training Module B}{section.5.1}% 39
+\BOOKMARK [2][-]{subsection.5.1.3}{Ranking Accuracy of Full Blended Model}{section.5.1}% 40
+\BOOKMARK [2][-]{subsection.5.1.4}{Comparison of Training Methods for V}{section.5.1}% 41
+\BOOKMARK [1][-]{section.5.2}{Importance of Low-Level Descriptors}{chapter.5}% 42
+\BOOKMARK [0][-]{chapter.6}{Conclusion}{}% 43
+\BOOKMARK [1][-]{section.6.1}{Conclusion}{chapter.6}% 44
+\BOOKMARK [1][-]{section.6.2}{Future Work}{chapter.6}% 45

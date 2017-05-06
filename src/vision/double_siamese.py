@@ -67,6 +67,7 @@ def build_variant_model(input_shape, model_name, model_weights=None, name='varia
         # model = Flatten()(model.output)
         # pop_layer(model)
     if model_weights:
+        print('loading weights')
         model.load_weights(model_weights, by_name=True)
 
     if frozen:
@@ -115,6 +116,17 @@ def skip_invariant(models, layer_size_1, layer_size_2, name):
     return model
 
 
+# def contrastive_loss(y_true, y_pred):
+#     '''Contrastive loss from Hadsell-et-al.'06
+#     http://yann.lecun.com/exdb/publis/pdf/hadsell-chopra-lecun-06.pdf
+#     '''
+#     margin = 1
+#     loss = K.mean(y_true * K.square(y_pred) + (1 - y_true) * K.square(K.maximum(margin - y_pred, 0)))
+#     return loss
+
+
+
+
 def blend_models(models, layer_size_1, layer_size_2, name):
     model = concatenate(models)
     model = Dense(layer_size_1, kernel_initializer=initializers.he_normal(), name=name + '_blend_1')(model)
@@ -123,14 +135,17 @@ def blend_models(models, layer_size_1, layer_size_2, name):
         model = Dropout(0.3)(model)
         model = Dense(layer_size_2,kernel_initializer=initializers.he_normal(), name=name + '_blend_2')(model)
         model = PReLU(weights=None, alpha_initializer='zero')(model)
+    #     model = Dropout(0.3)(model)
+    #     model = Dense(layer_size_2,kernel_initializer=initializers.he_normal(), name=name + '_blend_3')(model)
+    #     model = PReLU(weights=None, alpha_initializer='zero')(model)
 
     return model
 
 
 def build_double_siamese_network(input_shape, variant_model_name, variant_model_weights, layer_size_1, layer_size_2, invariant_model_name='resnet50', invariant_model_weights='imagenet', optimizer='nadam'):
 
-    variant_model = build_variant_model(input_shape, variant_model_name, variant_model_weights, frozen=False)
-    invariant_model = build_invariant_model(input_shape, invariant_model_name, invariant_model_weights, frozen=False)
+    variant_model = build_variant_model(input_shape, variant_model_name, variant_model_weights, frozen=True)
+    invariant_model = build_invariant_model(input_shape, invariant_model_name, invariant_model_weights, frozen=True)
 
     # ipdb.set_trace()
 
@@ -143,8 +158,8 @@ def build_double_siamese_network(input_shape, variant_model_name, variant_model_
     invariant_processed_b = invariant_model(input_b)
 
 
-    processed_a = blend_models([variant_processed_a, invariant_processed_a], layer_size_1, layer_size_2, name='a')
-    processed_b = blend_models([variant_processed_b, invariant_processed_b], layer_size_1, layer_size_2, name='b')
+    processed_a = blend_models([variant_processed_a, variant_processed_a, invariant_processed_a], layer_size_1, layer_size_2, name='a')
+    processed_b = blend_models([variant_processed_b, variant_processed_b, invariant_processed_b], layer_size_1, layer_size_2, name='b')
 
     distance = Lambda(euclidean_distance, output_shape=eucl_dist_output_shape)([processed_a, processed_b])
 
@@ -226,7 +241,8 @@ def main():
     pairs_file = '/tigress/dchouren/thesis/evaluation/pairs.h5'
     with h5py.File(pairs_file, 'r') as f:
         num_pairs = f['pairs'].shape[0]
-    n_batch = int(num_pairs / batch_size) + 1
+    n_batch = int(num_pairs / batch_size)
+    n_train_batch = int(n_batch * 9 / 10)
 
     skip = int((num_pairs - num_pairs % k*batch_size) / (k*batch_size)) * batch_size
     leave_out_indices = list(np.arange(0, num_pairs, skip))
@@ -266,6 +282,18 @@ def main():
         # ipdb.set_trace()    
 
         history = model.fit_generator(generator, steps_per_epoch=n_train_batch, epochs=nb_epoch, validation_data=val_generator, validation_steps=n_val_batch, callbacks=[checkpointer])
+
+
+
+        # n_val_batch = n_batch - n_train_batch
+
+        # augment = True
+        # generator = _generator(pairs_file, batch_size=batch_size, augment=augment)
+        # val_generator = _generator(pairs_file, batch_size=batch_size, index=n_train_batch*batch_size, augment=augment)
+        # print('Generator constructed')
+        # history = model.fit_generator(generator, steps_per_epoch=n_train_batch, epochs=nb_epoch, validation_data=val_generator, validation_steps=n_batch-n_train_batch, callbacks=[checkpointer])
+
+
         print('Finished fitting')
 
         k_identifier = identifier + '_' + str(i)

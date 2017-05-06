@@ -1,5 +1,12 @@
 
 
 \section{Conclusion}
+This paper presents a deep Siamese network designed and trained for the purpose of preserving the extraction of both invariant and variant features from images. Most importantly, we find that this preservation allows us to learn an image embedding function which appears to describe a space mostly separate from the embedding space learned by ImageNet-trained models. Multiple steps are taken to increase the likelihood of this preservation. Our multi-module Siamese network separates the weights used to extract variant and invariant features. We use weakly supervised learning on class-less data, and this likely prevents the learning naturally occurring image invariants. We empirically show that the use of a shallow CNN can blend together our invariant and variant features in a way that outperforms ImageNet on an image similarity task, and this contributes to the evidence that alternatives to strongly supervised learning are not only viable, but also effective.
+
 
 \section{Future Work}
+The most important future work would include verifying and exploring to a greater degree the type and quality of features learned by $\mathbf{V}$. This is possibly best done by examining predictions for curated pairs of images that share certain stylistic or semantic characteristics. 
+
+While the predictive power of $\mathbf{V}$ has enough generalizability to extend to the Wang set, the Wang set was still constructed for use as an image similarity task. It would be interesting to see if $\mathbf{V}$ can be used to transfer learning to other machine vision tasks, or how well it would be able to learn for an ImageNet classification task. 
+
+Lastly, this project exploited only the tiniest fraction of the data availble in the Flickr set, and this Flickr set itself only contains images geotagged from New York City. It is possible that truly large scale training, for longer than 50 epochs, and with better sampling heuristics could improve the empirical results in this study as well as open the doors to even more weakly supervised applications.

@@ -287,6 +287,14 @@ purpose of scholarly research.}
 \begin{minipage}{\textwidth}
 { \LARGE \bfseries Acknowledgements\par}
 \parskip=\baselineskip \advance\parskip by 0pt plus 2pt
+
+This thesis would not have been possible without the love, kindness, and help of a great many people. 
+
+Firstly, I would like to thank my advisor, Szymon, for all of his guidance and his amazingly fast email response time.
+
+Mom, Ann, and Dad, thank you for helping me become the person I am today. I will never be able to match the sacrifices you have made in helping me get to this point.
+
+Thank you, Hannah, for the love. James and Dee, I would not have made it here without you. Lucia, Eddie, Davy, Katz, and Dominguez, you have made this place so wonderful. Finally, I'm so glad to have met you, Eliot.
 \end{minipage}
 
 \end{titlepage}
@@ -302,7 +310,7 @@ purpose of scholarly research.}
 
 \chapter*{Abstract} \label{section:abstract}
 	\addcontentsline{toc}{chapter}{Abstract}
-	Learning an embedding useful for fine-grained image similarity on a human perception level requires detecting three general classes of attributes: 1) high level semantic characteristics, such as emotional qualities or aesthetic styles; 2) complex visual descriptors such as the objects that comprise the focus on an image; and 3) low level descriptors such as textures and colors which can influence human perception of the first two classes. In this paper, we present a deep multi-module Siamese network that allows for the learning and blending of these three attribute classes. We train the network using weak supervision by sampling publicly available Flickr images for image pairs deemed similar and dissimilar by a set of constructed heuristics. Experiments show that this weakly supervised model learns a highly generalizable similarity embedding which surpasses the effectiveness of ImageNet trained models.
+	Learning an embedding useful for fine-grained image similarity on a human perception level requires detecting three general classes of attributes: 1) high level semantic characteristics, such as emotional qualities or aesthetic styles; 2) complex visual descriptors such as the objects that comprise the focus on an image; and 3) low level descriptors such as textures and colors which can influence human perception of the first two classes. In this paper, we present a deep Siamese network that uses multiple modules to allow for the learning and blending of different attribute classes. We train the network using weak supervision by sampling publicly available Flickr images for image pairs deemed similar and dissimilar by a set of constructed heuristics. Experiments show that this weakly supervised model learns a highly generalizable similarity embedding which surpasses the effectiveness of ImageNet trained models and appears to span a space mostly outside that described by ImageNet.
 	
 
 \chapter{Introduction} \label{chapter:intro}
@@ -311,11 +319,11 @@ purpose of scholarly research.}
 \chapter{Background} \label{chapter:background}
 \subfile{Background}
 
-\chapter{Network Architecture and Training} \label{chapter:network}
-\subfile{Network}
-
 \chapter{Data} \label{chapter:data}
 \subfile{Data}
+
+\chapter{Network Architecture and Training} \label{chapter:network}
+\subfile{Network}
 
 \chapter{Experiments and Discussion} \label{chapter:experiments}
 \subfile{Experiments}

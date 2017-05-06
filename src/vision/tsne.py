@@ -67,6 +67,8 @@ def image_scatter(features, images, img_res, perplexity, n_iter, res=4000, cval=
     max_height = img_res[1]
 
     tsne = TSNE(n_components=2, perplexity=perplexity, n_iter=n_iter)
+
+    features = np.squeeze(features)
     f2d = tsne.fit_transform(features)
 
     xx = f2d[:, 0]
@@ -103,15 +105,26 @@ def main():
 
     start_time = time.time()
 
-    preds_dir = join('/tigress/dchouren/thesis/preds/test', model)
+    preds_dir = join('/tigress/dchouren/thesis/', 'bottleneck3.h5')
     image_dir = join('/scratch/network/dchouren/images/', year, month, month)
 
-    preds = h5py.File(join(preds_dir, year + '_' + month + '.h5'))
+    # preds = h5py.File(join(preds_dir, year + '_' + month + '.h5'))
+    preds = h5py.File(preds_dir)
 
     embeddings = preds['bottlenecks'][:10000]
     filenames = preds['filenames'][:10000]
 
-    images = np.array([cv2.imread(join(image_dir, im.decode('utf8'))) for im in filenames])
+    images = []
+    for im in filenames:
+        try:
+            x = cv2.imread(join(image_dir, im.decode('utf8')))
+            images.append(x)
+        except:
+            pass
+
+    images = np.array(images)
+    # ipdb.set_trace()
+    # images = np.array([cv2.imread(join(image_dir, im.decode('utf8'))) for im in filenames])
     
     canvas = image_scatter(embeddings, images, (64,64), perplexity, n_iter, res=8000)
 

@@ -10,3 +10,4 @@ plots/tsne
 *.pptx
 *sftp-config.json
 *.zip
+histories/*

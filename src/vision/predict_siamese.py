@@ -32,9 +32,11 @@ model_dir = '/tigress/dchouren/thesis/trained_models/'
 
 weights_path = join(model_dir, weights)
 
-model = build_siamese_network(model_name, input_shape, optimizer_name)
+model = load_model(weights_path)
 
-model.load_weights(weights_path, by_name=True)
+# model = build_siamese_network(model_name, input_shape, optimizer_name)
+
+# model.load_weights(weights_path, by_name=True)
 
 start_time = time.time()
 
