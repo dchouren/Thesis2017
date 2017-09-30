@@ -22,20 +22,6 @@ logging.basicConfig(level=logging.INFO,
 log = logging.getLogger(__name__)
 
 vr_connections = {
-    'site_data' : 'mssql+pymssql://VRYieldProcessReader:VQuattr0$R@warehousesql.'+ \
-                  'tripadvisor.com:1433/Site_Data?charset=utf8',
-
-    'vr_data' : 'mssql+pymssql://VRYieldProcessReader:VQuattr0$R@warehousesql.'+ \
-                'tripadvisor.com:1433/VRData?charset=utf8',
-
-    'hldb' : 'mysql://readonly:9XhrqwPUxSZp@mysql-slave01.hq.internalhl.com/'+ \
-             'hldb?charset=utf8',
-
-    'tripmonster':
-        'postgresql://tripmonster@tripmonster.tripadvisor.com:5432/tripmonster',
-
-    'vr_sem' : 'mssql+pymssql://VRSEM_Runner:gethGmY9@vrsql01d.d.tripadvisor.com'+ \
-               ':1433/vr_sem_new?charset=utf8'
 
 }
 
